@@ -1,0 +1,538 @@
+.--markdown {
+  width: 100%;
+  display: block;
+  word-break: break-word;
+  line-height: 1.8rem;
+  font-size: 0.88rem;
+}
+.--markdown h1 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 1.6rem;
+  position: relative;
+}
+.--markdown h1:hover {
+  text-decoration: underline;
+}
+.--markdown h1 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h1 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown h2 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 1.2rem;
+  position: relative;
+}
+.--markdown h2:hover {
+  text-decoration: underline;
+}
+.--markdown h2 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h2 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown h3 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 1.0666666667rem;
+  position: relative;
+}
+.--markdown h3:hover {
+  text-decoration: underline;
+}
+.--markdown h3 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h3 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown h4 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 1rem;
+  position: relative;
+}
+.--markdown h4:hover {
+  text-decoration: underline;
+}
+.--markdown h4 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h4 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown h5 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 0.96rem;
+  position: relative;
+}
+.--markdown h5:hover {
+  text-decoration: underline;
+}
+.--markdown h5 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h5 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown h6 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  margin: 0.8rem 0;
+  color: #ff5218;
+  font-size: 0.9333333333rem;
+  position: relative;
+}
+.--markdown h6:hover {
+  text-decoration: underline;
+}
+.--markdown h6 > img {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  position: absolute;
+  transform: translateX(calc(-100% - 0.4rem));
+}
+@media screen and (max-width: 768px) {
+  .--markdown h6 > img {
+    position: relative;
+    transform: translateX(-0.4rem);
+  }
+}
+.--markdown hr {
+  width: 100%;
+  background: black;
+  margin: 1rem 0;
+}
+.--markdown p {
+  white-space: pre-line;
+}
+.--markdown a[href]:not([data-self-site]) {
+  margin: 0 0.15rem;
+  display: inline-block;
+  color: #0014ff;
+  position: relative;
+  word-break: break-all;
+  background: #f0fffd;
+  transition: all 0.1s linear;
+  padding: 0 0.5rem;
+  border-radius: 0.15rem;
+}
+.--markdown a[href]:not([data-self-site]):hover {
+  background: #9dfffa;
+}
+.--markdown a[data-self-site] {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1.4rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+.--markdown a[data-self-site]:hover {
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.6);
+}
+.--markdown a[data-self-site]:hover > span > strong {
+  text-decoration: underline;
+  color: blue;
+}
+.--markdown a[data-self-site] > img {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.4rem;
+  box-shadow: none !important;
+  border: 1px solid #d2d2d2;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+.--markdown a[data-self-site] > span {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.--markdown a[data-self-site] > span > strong, .--markdown a[data-self-site] > span > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.--markdown a[data-self-site] > span > strong {
+  font-size: 1.1rem;
+  color: black;
+}
+.--markdown a[data-self-site] > span > span {
+  -webkit-line-clamp: 5;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: gray;
+}
+.--markdown span.anchor-id {
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.--markdown a[data-anchor-id].anchor-id-ref {
+  cursor: pointer;
+  color: #ff5218;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.2rem;
+}
+.--markdown a[data-anchor-id].anchor-id-ref:hover {
+  text-decoration: underline;
+}
+.--markdown a[data-anchor-id].anchor-id-ref:before {
+  content: "#";
+  font-size: 1.2em;
+  margin-right: 0.3rem;
+}
+.--markdown img[alt=sticker] {
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0 0.2rem -0.2rem 0.2rem;
+  object-fit: contain;
+}
+.--markdown span.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem auto;
+  width: 80%;
+}
+.--markdown span.image-container > img {
+  width: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.5);
+}
+.--markdown span.image-container > small {
+  color: gray;
+  font-size: 0.65rem;
+  margin-top: 0.4rem;
+}
+.--markdown strong, .--markdown em {
+  margin: 0 0.15rem;
+}
+.--markdown del {
+  text-decoration-color: red;
+}
+.--markdown blockquote {
+  line-height: 1.8rem;
+  position: relative;
+  border-left: 0.3rem solid #aa40ff;
+  padding: 0.5rem 0.8rem;
+  margin: 1rem 0;
+  background: #efefef;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.--markdown table {
+  width: 90%;
+  margin: 1rem auto;
+}
+.--markdown table tbody td {
+  text-align: center;
+}
+.--markdown ul > li:not(.task-list-item) > img:first-child:not(alt), .--markdown ul > li:not(.task-list-item) > p > img:first-child:not(alt) {
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  top: 0.3rem;
+  left: -1.8rem;
+}
+.--markdown ol > li:before {
+  content: attr(data-count) ".";
+  color: black;
+  position: absolute;
+  left: -1.2rem;
+  top: 0;
+  font-size: 0.92rem;
+  font-weight: bold;
+  line-height: 1.8rem;
+}
+.--markdown ul, .--markdown ol {
+  padding: 0 0 0 1.8rem;
+  list-style: none;
+}
+.--markdown ul > li, .--markdown ol > li {
+  position: relative;
+  margin: 0.4rem 0 0.4rem 0.2rem;
+}
+.--markdown ul > li.task-list-item, .--markdown ol > li.task-list-item {
+  position: relative;
+}
+.--markdown ul > li.task-list-item > img, .--markdown ol > li.task-list-item > img {
+  position: absolute;
+  top: 0.3rem;
+  left: 0;
+  transform: translateX(calc(-100% - 0.4rem));
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+}
+.--markdown code {
+  font-family: "Source Code Pro", serif;
+}
+.--markdown code:not(.hljs) {
+  background: #f3f3f3;
+  border: 1px solid #d4d4d4;
+  padding: 0.15rem 0.25rem;
+  color: #ca0000;
+  border-radius: 0.25rem;
+  margin: 0 0.2rem;
+  font-size: 0.9em;
+}
+.--markdown pre {
+  margin: 1.3rem 0;
+  border-radius: 0.3rem;
+  box-shadow: rgba(0, 0, 0, 0.55) 0 2px 10px;
+  background: #282c34;
+  display: flex;
+  flex-direction: column;
+}
+.--markdown pre:hover > div > span {
+  background: #ff5500;
+  color: white;
+}
+.--markdown pre > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.--markdown pre > div > img {
+  height: 0.92rem;
+  object-fit: contain;
+}
+.--markdown pre > div > span {
+  text-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+  border-radius: 0.16rem;
+  color: #b5b5b5;
+  padding: 0 0.3rem;
+  font-family: "Source Code Pro", serif;
+}
+.--markdown pre > code.hljs {
+  display: block;
+  overflow: visible;
+  overflow-x: auto;
+  padding: 0 0.8rem 0.5rem 0.8rem;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background: transparent;
+  max-height: 100vh;
+  font-size: 0.7rem;
+  line-height: 1.2rem;
+}
+.--markdown pre > code.hljs, .--markdown pre > code.hljs .hljs-subst {
+  color: #d4d4d4;
+}
+.--markdown pre > code.hljs .hljs-comment {
+  color: #888888;
+  font-style: italic;
+}
+.--markdown pre > code.hljs .hljs-keyword, .--markdown pre > code.hljs .hljs-attribute, .--markdown pre > code.hljs .hljs-selector-tag, .--markdown pre > code.hljs .hljs-meta-keyword, .--markdown pre > code.hljs .hljs-doctag, .--markdown pre > code.hljs .hljs-name {
+  font-weight: bold;
+  color: #ff7b3c;
+}
+.--markdown pre > code.hljs .hljs-type, .--markdown pre > code.hljs .hljs-string, .--markdown pre > code.hljs .hljs-selector-id, .--markdown pre > code.hljs .hljs-selector-class, .--markdown pre > code.hljs .hljs-quote, .--markdown pre > code.hljs .hljs-template-tag, .--markdown pre > code.hljs .hljs-deletion {
+  color: #7ec555;
+}
+.--markdown pre > code.hljs .hljs-number {
+  color: #5aa1ff;
+}
+.--markdown pre > code.hljs .hljs-title, .--markdown pre > code.hljs .hljs-section {
+  color: #ffc66d;
+  font-weight: bold;
+}
+.--markdown pre > code.hljs .hljs-regexp, .--markdown pre > code.hljs .hljs-symbol, .--markdown pre > code.hljs .hljs-variable, .--markdown pre > code.hljs .hljs-template-variable, .--markdown pre > code.hljs .hljs-link, .--markdown pre > code.hljs .hljs-selector-attr, .--markdown pre > code.hljs .hljs-selector-pseudo {
+  color: #ffe13e;
+}
+.--markdown pre > code.hljs .hljs-literal {
+  color: #78a960;
+}
+.--markdown pre > code.hljs .hljs-built_in, .--markdown pre > code.hljs .hljs-bullet, .--markdown pre > code.hljs .hljs-code, .--markdown pre > code.hljs .hljs-addition {
+  color: #e786ff;
+}
+.--markdown pre > code.hljs .hljs-meta {
+  color: #f1eb33;
+}
+.--markdown pre > code.hljs .hljs-meta-string {
+  color: #4d99bf;
+}
+.--markdown pre > code.hljs .hljs-emphasis {
+  font-style: italic;
+}
+.--markdown pre > code.hljs .hljs-strong {
+  font-weight: bold;
+}
+.--markdown div.hidable, .--markdown fieldset, .--markdown a[data-self-site] {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.--markdown fieldset {
+  width: calc(96% - 2rem);
+  margin-left: 2%;
+  margin-right: 2%;
+  padding: 1.2rem 1rem 0.6rem 1rem;
+  position: relative;
+  transition: all 0.15s ease-out;
+  border-radius: 0.2rem;
+  border: 1px solid #aaa;
+}
+.--markdown fieldset:hover {
+  border-color: #666;
+}
+.--markdown fieldset * {
+  position: relative;
+}
+.--markdown fieldset > legend {
+  position: absolute;
+  font-size: 0.88rem;
+  line-height: 1rem;
+  top: -0.8rem;
+  left: 1rem;
+  display: block;
+  background: #826aff;
+  border-radius: 0.2rem;
+  box-shadow: 0 0.1rem 0.2rem rgba(93, 10, 255, 0.72);
+  color: white;
+  padding: 0.2rem 0.8rem;
+}
+.--markdown div.hidable {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.3rem;
+  background: whitesmoke;
+  border: 1px solid #a0a0a0;
+}
+.--markdown div.hidable[data-hidden] {
+  border-color: transparent;
+}
+.--markdown div.hidable[data-hidden] > p {
+  border-radius: inherit;
+}
+.--markdown div.hidable[data-hidden] > p > img {
+  transform: rotate(-90deg);
+}
+.--markdown div.hidable[data-hidden] > span {
+  padding: 0 0.5rem;
+  height: 0;
+}
+.--markdown div.hidable > p {
+  width: 100%;
+  padding: 0.5rem 0;
+  background: #e7e7e7;
+  border-radius: 0.3rem 0.3rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease-out;
+}
+.--markdown div.hidable > p:hover {
+  background: #d0d0d0;
+}
+.--markdown div.hidable > p > img {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0 0.5rem;
+  transform: rotate(0deg);
+  flex-shrink: 0;
+}
+.--markdown div.hidable > span {
+  display: block;
+  width: calc(100% - 1rem);
+  padding: 0.5rem;
+  overflow: hidden;
+  border-radius: 0 0 0.3rem 0.3rem;
+}
+@media screen and (max-width: 768px) {
+  .--markdown pre > code.hljs {
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/*# sourceMappingURL=markdown.css.map */

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>云与原的博客</title><link>https://blog.halberd.cn</link><description>云与原的博文Rss</description><ttl>3600</ttl><category>Blog/Web development</category><lastBuildDate>2021-03-11 10:13:18</lastBuildDate><language>zh-cn</language><item><author>yunyuyuan</author><title>树莓派初次使用小记</title><link>https://blog.halberd.cn/article/1613797166312</link><description>
+            <h3><b>树莓派初次使用小记</b></h3>
+            <span style="display: block">raspberry pi!!!</span>
+            <img src="https://s3.ax1x.com/2021/02/19/yhMAfg.jpg" alt=""/>
+        </description><category>树莓派</category><pubDate>2021-02-20 12:59:26</pubDate><guid>1613797166312</guid></item><item><author>yunyuyuan</author><title>批量重命名工具</title><link>https://blog.halberd.cn/article/1611127151873</link><description>
+            <h3><b>批量重命名工具</b></h3>
+            <span style="display: block">一个使用PyQt5开发的批量重命名小工具</span>
+            <img src="https://s3.ax1x.com/2021/01/20/sWZ28J.png" alt=""/>
+        </description><category>PyQt5/软件/python</category><pubDate>2021-01-20 15:19:11</pubDate><guid>1611127151873</guid></item><item><author>yunyuyuan</author><title>论vue-cli项目如何优雅的托管在github page上</title><link>https://blog.halberd.cn/article/1603206409367</link><description>
+            <h3><b>论vue-cli项目如何优雅的托管在github page上</b></h3>
+            <span style="display: block">简谈我最近尝试的一些静态网站骚操作</span>
+            <img src="https://s1.ax1x.com/2020/10/20/BpxBvQ.png" alt=""/>
+        </description><category>前端/vue/github</category><pubDate>2020-10-20 23:06:49</pubDate><guid>1603206409367</guid></item><item><author>yunyuyuan</author><title>关于此站建设</title><link>https://blog.halberd.cn/article/1602140660667</link><description>
+            <h3><b>关于此站建设</b></h3>
+            <span style="display: block">第一篇文章，就谈谈本站的建设过程吧!</span>
+            <img src="https://s1.ax1x.com/2020/10/08/0wH4oR.jpg" alt=""/>
+        </description><category>非技术</category><pubDate>2020-10-08 15:04:20</pubDate><guid>1602140660667</guid></item></channel></rss>

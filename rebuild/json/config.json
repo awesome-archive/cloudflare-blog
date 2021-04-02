@@ -1,0 +1,29 @@
+{
+    "name": "云与原",
+    "describe": "\"别否认自己\"",
+    "aboutme": "<del>我是一个无趣的人</del>",
+    "aboutthis": "https://github.com/yunyuyuan/yunyuyuan.github.io/wiki/%E4%BB%8B%E7%BB%8D",
+    "copyright": "2019-2021",
+    "github": "https://github.com/yunyuyuan",
+    "email": "mailto:yun-yu-yuan@qq.com",
+    "sticker": [
+        {
+            "name": "阿鲁",
+            "folder": "aru",
+            "count": 143
+        },
+        {
+            "name": "小黄脸",
+            "folder": "yellow-face",
+            "count": 71
+        }
+    ],
+    "backgroundImg": "random",
+    "friends": [
+        {
+            "summary": "我自己",
+            "github": "yunyuyuan",
+            "site": "https://blog.halberd.cn"
+        }
+    ]
+}
