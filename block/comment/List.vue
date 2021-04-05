@@ -103,12 +103,14 @@ import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
 import {hljsAndInsertCopyBtn} from "~/utils/highlight";
 import UserCard from "~/block/comment/userCard";
 import ErrAvatar from "~/block/comment/errAvatar";
+import SvgIcon from "@/components/svg-icon";
+import Pagination from "@/components/pagination";
 
 let doingReact = false;
 
 export default {
   name: "ListComment",
-  components: {ErrAvatar, UserCard, WriteComment},
+  components: {Pagination, SvgIcon, ErrAvatar, UserCard, WriteComment},
   props: {
     title: {
       type: String,

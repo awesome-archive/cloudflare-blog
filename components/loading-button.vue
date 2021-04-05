@@ -6,8 +6,10 @@
 </template>
 
 <script>
+import SvgIcon from "@/components/svg-icon";
 export default {
   name: "LoadingButton",
+  components: {SvgIcon},
   props: {
     loading: {
       type: Boolean,

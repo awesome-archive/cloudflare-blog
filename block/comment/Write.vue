@@ -79,10 +79,17 @@ import {parseMarkdown, processMdHtml} from "@/utils/parseMd";
 import siteConfig from "~/assets/site-config";
 import config from "~/rebuild/json/config.json";
 import md from "~/rebuild/json/md.json";
+import SvgIcon from "@/components/svg-icon";
+import SingleButton from "@/components/single-button";
+import Resizer from "@/components/resizer";
+import LoadingButton from "@/components/loading-button";
+import TopDialog from "@/components/top-dialog";
+import LoadingImg from "@/components/loading-img";
+import FloatInput from "@/components/float-input";
 
 export default {
   name: "WriteComment",
-  components: {MarkdownHelp},
+  components: {FloatInput, LoadingImg, TopDialog, LoadingButton, Resizer, SingleButton, SvgIcon, MarkdownHelp},
   props: {
     loading: {
       type: Boolean,
@@ -153,12 +160,6 @@ export default {
     })
   },
   methods: {
-    codeMirrorInput (e){
-      this.comment = this.codeMirror.getValue();
-    },
-    codeMirrorBlur (e){
-      this.focusAt = this.codeMirror.getCursor();
-    },
     enableSticker(e) {
       if (this.showSticker) {
         document.removeEventListener('click', this.handleStickerDiv);

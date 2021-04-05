@@ -8,9 +8,12 @@
 <script>
 import axios from "axios";
 import siteConfig from '~/assets/site-config'
+import SingleButton from "@/components/single-button";
+import TopDialog from "@/components/top-dialog";
 
 export default {
   name: "UploadImg",
+  components: {TopDialog, SingleButton},
   data() {
     return {
       file: null

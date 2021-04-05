@@ -12,9 +12,13 @@
 
 <script>
 import {checkPwd, dontInput} from "~/pages/backend/utils";
+import FloatInput from "@/components/float-input";
+import SingleButton from "@/components/single-button";
+import LoadingButton from "@/components/loading-button";
 
 export default {
 name: "pwd",
+  components: {LoadingButton, SingleButton, FloatInput},
   data (){
     return {
       input: ''

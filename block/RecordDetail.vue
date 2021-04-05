@@ -16,9 +16,13 @@
 
 <script>
 import {parseAjaxError} from "@/utils/utils";
+import TopDialog from "@/components/top-dialog";
+import LoadingImg from "@/components/loading-img";
+import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "RecordDetail",
+  components: {SvgIcon, LoadingImg, TopDialog},
   props: {
     info: {
       type: Object,

@@ -5,7 +5,7 @@
       <b>修改配置信息</b>
     </div>
     <div class="list" flex>
-      <float-input v-for="k in keys" :name="k" :value="info[k]||''" :id="k" :size="1" :isArea="['describe', 'aboutme'].indexOf(k)!==-1" @input="input"/>
+      <float-input v-for="k in keys" :key="k" :name="k" :value="info[k]||''" :id="k" :size="1" :isArea="['describe', 'aboutme'].indexOf(k)!==-1" @input="input"/>
       <label flex>
         <span :class="{active: info.backgroundImg==='img'}" @click="changeBg('img')">图片背景</span>
         <span :class="{active: info.backgroundImg==='color'}" @click="changeBg('color')">彩色背景</span>
@@ -18,7 +18,7 @@
           <float-input :name="'网站'" :value="item.site" :id="item.id" :size="0.85" @input="friendsSite"/>
           <single-button class="del-btn" @click.native="friendsDel(item)">删除</single-button>
         </div>
-        <loading-button :loading="false" icon="add" :size="1.1" @click.native="friendsNew">添加</loading-button>
+        <loading-button :loading="false" icon="add" :size="0.9" @click.native="friendsNew">添加</loading-button>
       </div>
     </div>
     <loading-button :loading="updating" icon="save" @click.native="commitConfig">上传</loading-button>
@@ -29,15 +29,26 @@
 import {parseAjaxError} from "@/utils/utils";
 import config from '~/rebuild/json/config.json';
 import {mapState} from "vuex";
+import SvgIcon from "@/components/svg-icon";
+import FloatInput from "@/components/float-input";
+import SingleButton from "@/components/single-button";
+import LoadingButton from "@/components/loading-button";
 
 export default {
   name: "Config",
+  components: {LoadingButton, SingleButton, FloatInput, SvgIcon},
+  layout: 'backend',
   data() {
     return {
       config,
       updating: false,
       info: {},
       keys: ["name", "describe", "aboutme", "copyright", "github", "email"],
+    }
+  },
+  head (){
+    return {
+      title: '网站配置'
     }
   },
   computed: {
@@ -220,9 +231,6 @@ export default {
     padding: 0.3rem 0.8rem;
     background: #54b361;
     box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.3);
-    &:not(.loading):hover{
-      background: #61d671;
-    }
     &.loading{
       background: gray;
       color: white;

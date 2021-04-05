@@ -58,9 +58,15 @@ import {closeOrDeleteComment, getPageCommentForBackend} from "~/utils/github_gra
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
 import {hljsAndInsertCopyBtn} from "~/utils/highlight";
 import md from '~/rebuild/json/md.json'
+import {mapState} from "vuex";
+import SingleButton from "@/components/single-button";
+import SvgIcon from "@/components/svg-icon";
+import Pagination from "@/components/pagination";
 
 export default {
   name: "Comment",
+  components: {Pagination, SvgIcon, SingleButton},
+  layout: 'backend',
   data (){
     return {
       searching: false,
@@ -80,13 +86,11 @@ export default {
     this.doSearch()
   },
   computed: {
-    token (){
-      return this._token()
-    },
+    ...mapState('backend', ['token'])
   },
-  inject: ['_token'],
   methods: {
     async doSearch(cursor) {
+      if (process.server) return;
       this.searching = true;
       const res = await getPageCommentForBackend({
         state: this.filter,

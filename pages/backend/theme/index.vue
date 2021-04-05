@@ -38,6 +38,8 @@ import testText from '!!raw-loader!~/assets/test.md';
 
 import Sass from 'sass.js';
 
+import 'codemirror/lib/codemirror.css';
+import '~/assets/style/code-mirror/codeMirror.scss';
 import '~/assets/style/code-mirror/light-code.scss';
 import '~/assets/style/code-mirror/dracula-code.scss';
 
@@ -45,9 +47,15 @@ import defaultMarkdownStyle from '!!raw-loader!~/assets/style/markdown-default.s
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
 import config from '~/rebuild/json/config.json'
 import md from '~/rebuild/json/md.json'
+import {mapState} from "vuex";
+import LoadingButton from "@/components/loading-button";
+import SvgIcon from "@/components/svg-icon";
+import Resizer from "@/components/resizer";
 
 export default {
   name: "Theme",
+  components: {Resizer, SvgIcon, LoadingButton},
+  layout: 'backend',
   data() {
     return {
       config,
@@ -65,70 +73,64 @@ export default {
       },
     }
   },
+  head (){
+    return {
+      style: [{
+        id: 'fake-markdown-style',
+      }],
+      title: '网站主题'
+    }
+  },
   computed: {
     ...mapState('backend', ['gitUtil']),
   },
-
+  async asyncData() {
+    try {
+      const res = await fetch((process.env.NODE_ENV==='development' ? 'http://localhost:3000':'')+'/markdown.scss');
+      return {
+        style: await res.text()
+      }
+    }catch (err){
+      return {
+        err: err
+      }
+    }
+  },
   mounted() {
     this.init()
     this.$nextTick(()=>{
       processMdHtml(this.$refs.html, true, md)
     })
   },
-  watch: {
-    $route() {
-      if (this.$route.name === 'backend.theme') {
-        this.init()
-      } else {
-        // 删除fake style
-        const style = document.head.querySelector('#fake-markdown-style');
-        if (style) {
-          style.remove()
-        }
-      }
-    }
-  },
   methods: {
     async init() {
-      if (!this.codeMirror) {
-        const CodeMirror = (await import('codemirror')).default;
-        await import('codemirror/addon/edit/matchtags')
-        await import('codemirror/addon/edit/matchbrackets')
-        await import('codemirror/mode/sass/sass.js')
-        this.codeMirror = new CodeMirror(this.$refs.textarea, {
-          indentUnit: 2,
-          tabSize: 2,
-          theme: 'light',
-          lineNumbers: true,
-          line: true,
-          mode: 'sass',
-          matchTags: {bothTags: true},
-          matchBrackets: true,
-        });
-        this.codeMirror.on('change', () => {
-          this.scss = this.codeMirror.getValue();
-          this.uploadStyle()
-        });
-      }
-      fetch(`/markdown.scss`).then(async res => {
-        this.scss = await res.text();
+      const CodeMirror = (await import('codemirror')).default;
+      await import('codemirror/addon/edit/matchtags')
+      await import('codemirror/addon/edit/matchbrackets')
+      await import('codemirror/mode/sass/sass.js')
+      this.codeMirror = new CodeMirror(this.$refs.textarea, {
+        indentUnit: 2,
+        tabSize: 2,
+        theme: 'light',
+        lineNumbers: true,
+        line: true,
+        mode: 'sass',
+        matchTags: {bothTags: true},
+        matchBrackets: true,
+      });
+      this.codeMirror.on('change', () => {
+        this.scss = this.codeMirror.getValue();
         this.uploadStyle()
+      });
+      if (this.style){
+        this.scss = this.style;
         this.codeMirror.setValue(this.scss)
-      }).catch(err => {
-        this.$message.error(`获取markdown.scss失败:${err}`)
-      })
-    },
-    mirrorChange (){
-      this.scss = this.codeMirror.getValue();
-      this.uploadStyle()
+      }else{
+        this.$message.error(`获取markdown.scss失败:${this.err}`)
+      }
     },
     uploadStyle() {
-      let style = document.head.querySelector('#fake-markdown-style');
-      if (!style) {
-        style = document.createElement('style');
-        style.id = 'fake-markdown-style';
-        document.head.appendChild(style);
-      }
+      const style = document.head.querySelector('#fake-markdown-style');
       Sass.compile(this.scss, (res) => {
         if (res)
           style.innerHTML = res.text

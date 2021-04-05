@@ -1,7 +1,7 @@
 <template>
   <div class="md-detail" flex>
     <div class="operate" flex>
-      <div class="back" @click="$router.push('/article')" flex="">
+      <div class="back" @click="$router.push('/backend/article')" flex="">
         <svg-icon name="back"/>
         <span>返回</span>
       </div>
@@ -107,23 +107,22 @@ import siteConfig from "~/assets/site-config";
 import {delCache, genRss, getCache, setCache} from "~/pages/backend/utils";
 import config from '~/rebuild/json/config.json'
 import md from '~/rebuild/json/md.json'
+import {mapState} from "vuex";
+import SingleButton from "@/components/single-button";
+import SvgIcon from "@/components/svg-icon";
+import LoadingButton from "@/components/loading-button";
+import FloatInput from "@/components/float-input";
+import LoadingImg from "@/components/loading-img";
+import Resizer from "@/components/resizer";
 
 export default {
   name: "ArticleDetail",
-  components: {MarkdownHelp},
-  props: {
-    md: {
-      type: Array,
-      default: ()=>[]
-    },
-    inited: {
-      type: Boolean,
-      default: false
-    }
-  },
+  components: {Resizer, LoadingImg, FloatInput, LoadingButton, SvgIcon, SingleButton, MarkdownHelp},
+  layout: 'backend',
   data() {
     return {
       config,
+      md,
       stamp: siteConfig.timeStamp,
       showGuide: false,
       showFrame: 0,
@@ -144,8 +143,11 @@ export default {
       hasCache: false,
       codeMirror: null,
       codeMirrorCache: null,
-      info: {},
-      newInfo: {
+    }
+  },
+  asyncData({params}) {
+    const id = params.detail;
+    const newInfo = {
         name: "编辑标题",
         file: "",
         cover: '/image/i.png',
@@ -153,82 +155,74 @@ export default {
         modifyTime: "",
         summary: "编辑简介",
         tags: []
-      },
+      }
+    return {
+      id,
+      info: JSON.parse(JSON.stringify(id === 'new' ?
+        newInfo : md.find(v => v.file === id) || newInfo))
+    }
+  },
+  head (){
+    return {
+      link: [{
+        rel: 'stylesheet',
+        href: '/markdown.css'
+      }],
+      title: this.id === 'new'?'新建':this.info.name
     }
   },
   computed: {
-    id() {
-      return this.$route.params.id
-    },
     htmlText() {
       return parseMarkdown(this.mdText)
     },
     ...mapState('backend', ['gitUtil']),
   },
-
   watch: {
-    '$props.inited' (){
-      this.init()
-    },
     htmlText (){
       this.$nextTick(async () => {
         processMdHtml(this.$refs.html, false, md)
       })
     }
   },
-  beforeRouteEnter (to, from, next){
-    next(vm=>{
-      if (vm.$props.inited) {
-        vm.init()
-      }
-    })
-  },
   created() {
     this.hasCache = getCache(`article-${this.id}`)!==null;
   },
-  methods: {
-    async init() {
-      this.info = JSON.parse(JSON.stringify(this.id === 'new' ? this.newInfo : this.md.find(v => v.file === this.id)||this.newInfo));
-      // 初始化信息
-      let mdText = '写点什么吧';
-      // 标题
-      if (this.id === 'new'){
-        document.title = '后台-文章-新建';
-      }else {
-        document.title = '后台-文章-' + this.id;
-        try{
-          const res = await import(`!!raw-loader!~/rebuild/md/${this.id}.md`);
-          mdText = res.default;
-        }catch (err){
-          this.$message.error(parseAjaxError(err))
-        }
+  async mounted() {
+    // 初始化信息
+    let mdText = '写点什么吧';
+    try {
+      const res = await import(`!!raw-loader!~/rebuild/md/${this.id}.md`);
+      mdText = res.default;
+    } catch (err) {
+      this.$message.error(parseAjaxError(err))
+    }
+    this.$nextTick(async () => {
+      const CodeMirror = (await import('codemirror')).default;
+      await import('codemirror/addon/edit/matchtags')
+      await import('codemirror/addon/edit/matchbrackets')
+      await import('codemirror/mode/sass/sass.js')
+      if (this.codeMirror === null) {
+        this.codeMirror = new CodeMirror(this.$refs.textarea, {
+          indentUnit: 2,
+          tabSize: 2,
+          theme: 'light',
+          lineNumbers: true,
+          line: true,
+          mode: 'markdown',
+          matchTags: {bothTags: true},
+          matchBrackets: true,
+        });
+        this.codeMirror.on('change', () => {
+          this.mdText = this.codeMirror.getValue()
+        });
+        this.codeMirror.on('blur', () => {
+          this.focusAt = this.codeMirror.getCursor();
+        });
       }
-      this.$nextTick(async ()=>{
-        const CodeMirror = (await import('codemirror')).default;
-        await import('codemirror/addon/edit/matchtags')
-        await import('codemirror/addon/edit/matchbrackets')
-        await import('codemirror/mode/sass/sass.js')
-        if (this.codeMirror === null) {
-          this.codeMirror = new CodeMirror(this.$refs.textarea, {
-            indentUnit: 2,
-            tabSize: 2,
-            theme: 'light',
-            lineNumbers: true,
-            line: true,
-            mode: 'markdown',
-            matchTags: {bothTags: true},
-            matchBrackets: true,
-          });
-          this.codeMirror.on('change', () => {
-            this.mdText = this.codeMirror.getValue()
-          });
-          this.codeMirror.on('blur', () => {
-            this.focusAt = this.codeMirror.getCursor();
-          });
-        }
-        this.codeMirror.setValue(this.codeMirrorCache||mdText);
-      })
-    },
+      this.codeMirror.setValue(this.codeMirrorCache || mdText);
+    })
+  },
+  methods: {
     mirrorChange (){
       this.mdText = this.codeMirror.getValue()
     },

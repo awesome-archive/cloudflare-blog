@@ -11,9 +11,11 @@ import {tokenKey} from "~/utils/github_graphql";
 import siteConfig from '~/assets/site-config'
 import axios from "axios";
 import {queryMap} from "~/utils/utils";
+import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "oauth",
+  components: {SvgIcon},
   data() {
     return {
       state: '处理中...',

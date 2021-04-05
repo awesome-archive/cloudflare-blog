@@ -20,10 +20,7 @@
       <a>{{deleting.state}}</a>
     </div>
     <div class="body">
-      <div class="init-load" v-if="!inited" flex>
-        <svg-icon name="loading"/>
-      </div>
-      <table v-else>
+      <table>
         <thead>
         <tr>
           <td>图</td>
@@ -33,7 +30,7 @@
         </thead>
         <tbody>
         <tr v-for="item in searchResult" :key="item.file">
-          <router-link class="link" tag="td" :to="'/record/'+item.file">
+          <router-link class="link" tag="td" :to="'/backend/record/'+item.file">
             <loading-img :src="item.images[0]" :size="[-1,-1]"/>
           </router-link>
           <td>
@@ -56,20 +53,18 @@ import {parseAjaxError, sortByTime} from "@/utils/utils";
 import jszip from "jszip";
 import * as fileSaver from "file-saver";
 
+import record from '~/rebuild/json/record.json'
+import SingleButton from "@/components/single-button";
+import LoadingImg from "@/components/loading-img";
+import LoadingButton from "@/components/loading-button";
+
 export default {
   name: "RecordList",
-  props: {
-    record: {
-      type: Array,
-      default: () => []
-    },
-    inited: {
-      type: Boolean,
-      default: false
-    }
-  },
+  components: {LoadingButton, LoadingImg, SingleButton},
+  layout: 'backend',
   data() {
     return {
+      record,
       search: '',
       deleting: {
         b: false,
@@ -93,11 +88,7 @@ export default {
     allSelected (){
       return this.selectList.length===this.searchResult.length;
     },
-    gitUtil() {
-      return this._gitUtil()
-    }
   },
-
   methods: {
     changeSelectAll (){
       if (!this.allSelected) {

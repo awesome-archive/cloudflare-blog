@@ -1,5 +1,5 @@
 <template>
-  <top-dialog class="login" @click.native.self="$emit('hide')">
+  <top-dialog class="login" v-show="showLogin" @click.native.self="hide">
     <div class="head" flex>
       <svg-icon name="backend"/>
       <b>后台管理账户</b>
@@ -15,32 +15,38 @@
         <a :class="{active: remember}" flex></a>
         <span>在本机上记住我</span>
       </label>
-      <label @click="withUpdate = !withUpdate" flex>
-        <a :class="{active: withUpdate}" flex></a>
-        <span>保存后立即更新配置</span>
-      </label>
     </div>
     <div class="btn" flex>
-      <single-button class="exit" @click.native="$emit('hide')">取消</single-button>
+      <single-button class="exit" @click.native="hide">取消</single-button>
       <single-button :class="{save: true, disabled: !token}" @click.native="save">保存</single-button>
     </div>
   </top-dialog>
 </template>
 
 <script>
+import {mapMutations, mapState} from "vuex";
+
 const siteConfig = require( '~/assets/site-config')
 import {GithubUtils} from "~/utils/github_api";
+import TopDialog from "@/components/top-dialog";
+import SvgIcon from "@/components/svg-icon";
+import FloatInput from "@/components/float-input";
+import SingleButton from "@/components/single-button";
 
 export default {
   name: "Login",
+  components: {SingleButton, FloatInput, SvgIcon, TopDialog},
   data() {
     return {
       token: '',
       remember: false,
-      withUpdate: false
     }
   },
+  computed: {
+    ...mapState('backend', ['showLogin'])
+  },
   created() {
+    if (process.server) return;
     // 获取localStorage中配置
     this.token = localStorage.getItem('login-token') || '';
     if (this.token) {
@@ -49,6 +55,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('backend', ['toggleLogin']),
     save() {
       if (!this.token) return;
       if (this.remember) {
@@ -59,7 +66,7 @@ export default {
         localStorage.removeItem('login-token');
       }
       this.commitUpdateGitutil();
-      this.$emit('save', this.withUpdate)
+      this.toggleLogin(false)
     },
     commitUpdateGitutil() {
       this.$emit('gitUtil', {
@@ -76,6 +83,9 @@ export default {
     },
     input(payload) {
       this.token = payload[1];
+    },
+    hide (){
+      this.toggleLogin(false)
     }
   }
 }
@@ -148,7 +158,7 @@ export default {
           }
           &.active{
             &:before{
-              background: #ffca2e;
+              background: #ff7c17;
             }
           }
         }

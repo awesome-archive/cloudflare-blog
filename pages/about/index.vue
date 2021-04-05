@@ -1,7 +1,7 @@
 <template>
   <div class="about" flex>
     <p>Hello there,Geeker.</p>
-    <span>Maybe you want to check <NuxtLink :to="siteConfig.aboutUrl">this</NuxtLink>.</span>
+    <span>Maybe you want to check <a :href="siteConfig.aboutUrl">this</a>.</span>
   </div>
 </template>
 
@@ -13,6 +13,14 @@ export default {
   data() {
     return{
       siteConfig
+    }
+  },
+  head () {
+    return {
+      meta: [
+        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 关于 about` }
+      ],
+      title: siteConfig.corner
     }
   },
   mounted() {

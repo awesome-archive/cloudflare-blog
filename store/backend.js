@@ -1,9 +1,15 @@
 export const state = ()=>({
-  gitUtil: null
+  gitUtil: null,
+  token: '',
+  showLogin: false,
 })
-
-export const mutation = {
-  setGitUtil (state, instance){
-    state.gitUtil = instance
-  }
+export const strict = false
+export const mutations = {
+  setGitUtil (state, payload){
+    state.gitUtil = payload[0]
+    state.token = payload[1]
+  },
+  toggleLogin (state, bool){
+    state.showLogin = bool
+  },
 }

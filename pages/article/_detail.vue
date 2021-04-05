@@ -77,10 +77,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import mdConfig from '~/rebuild/json/md.json'
+import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "article-detail",
-  components: {TheComment},
+  components: {SvgIcon, TheComment},
   head () {
     return {
       link: [{

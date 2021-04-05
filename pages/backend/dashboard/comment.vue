@@ -15,10 +15,12 @@ import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 import 'echarts/lib/chart/pie'
 import {getCommentNum} from "~/utils/github_graphql";
+import SvgIcon from "@/components/svg-icon";
 
 
 export default {
   name: "the-article",
+  components: {SvgIcon},
   data (){
     return {
       myChart: null,

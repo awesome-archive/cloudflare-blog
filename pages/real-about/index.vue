@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import SvgIcon from "@/components/svg-icon";
 const siteConfig = require( '~/assets/site-config');
 
 import AnimateRotate from "./AnimateRotate";
@@ -38,6 +39,7 @@ import config from '~/rebuild/json/config.json'
 
 export default {
   name: "index",
+  components: {SvgIcon},
   data (){
     return {
       comps,

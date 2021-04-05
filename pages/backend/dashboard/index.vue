@@ -13,16 +13,9 @@
 import Article from "./article";
 import Comment from "./comment";
 
-/**
- * @data
- * 1. 文章发布
- * 2. 记录发布
- * 3. 评论
- * 4. 访问
- * 5. 代码成就
- */
 export default {
   name: "Dashboard",
+  layout: 'backend',
   components: {TheArticle: Article, TheComment: Comment},
   data (){
     return {

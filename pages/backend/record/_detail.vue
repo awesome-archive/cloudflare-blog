@@ -1,7 +1,7 @@
 <template>
   <div class="record-detail" flex>
     <div class="operate" flex>
-      <div class="back" @click="$router.push('/record')" flex>
+      <div class="back" @click="$router.push('/backend/record')" flex>
         <svg-icon name="back"/>
         <span>返回</span>
       </div>
@@ -43,21 +43,20 @@
 <script>
 import {parseAjaxError, sortByTime} from "@/utils/utils";
 import {delCache, getCache, setCache} from "~/pages/backend/utils";
+import {mapState} from "vuex";
+import record from '~/rebuild/json/record.json'
+import SvgIcon from "@/components/svg-icon";
+import SingleButton from "@/components/single-button";
+import LoadingButton from "@/components/loading-button";
+import LoadingImg from "@/components/loading-img";
 
 export default {
   name: "RecordDetail",
-  props: {
-    record: {
-      type: Array,
-      default: ()=>[]
-    },
-    inited: {
-      type: Boolean,
-      default: false
-    }
-  },
+  components: {LoadingImg, LoadingButton, SingleButton, SvgIcon},
+  layout: 'backend',
   data() {
     return {
+      record,
       saving: {
         b: false,
         state: ''
@@ -65,51 +64,42 @@ export default {
       tempRecord: [],
       text: '',
       hasCache: false,
-      info: {},
-      newInfo: {
-        file: '',
-        time: 0,
-        modifyTime: 0,
-        summary: '',
-        images: []
-      },
     }
   },
   computed: {
-    id() {
-      return this.$route.params.id
-    },
     ...mapState('backend', ['gitUtil'])
   },
-
-  watch: {
-    '$props.inited' (){
-      this.init()
-    },
+  asyncData({params}) {
+    const id = params.detail;
+    const newInfo = {
+        "file": "",
+        "time": 0,
+        "modifyTime": 0,
+        "summary": "",
+        "images": []
+      }
+    return {
+      id,
+      info: JSON.parse(JSON.stringify(id === 'new' ?
+        newInfo : record.find(v => v.file === id) || newInfo))
+    }
   },
   created() {
     this.hasCache = getCache(`record-${this.id}`)!==null;
   },
-  beforeRouteEnter (to, from, next){
-    next(vm=>{
-      if (vm.$props.inited) {
-        vm.init()
+  async mounted() {
+    if (this.id !== 'new') {
+      try {
+        const res = await import(`!!raw-loader!~/rebuild/record/${this.id}.txt`);
+        this.text = res.default
+      } catch (err) {
+        this.$message.error(parseAjaxError(err))
       }
-    })
+    } else {
+      this.text = '';
+    }
   },
   methods: {
-    init() {
-      this.info = JSON.parse(JSON.stringify(this.id === 'new' ? this.newInfo : this.record.find(v => v.file === this.id) || this.newInfo));
-      if (this.id !== 'new') {
-        fetch(`/record/${this.id}.txt`).then(async res => {
-          this.text = await res.text();
-        }).catch(err=>{
-          this.$message.error(parseAjaxError(err))
-        })
-      }else{
-        this.text = '';
-      }
-    },
     delCache (){
       if (!this.hasCache) return ;
       delCache(`record-${this.id}`);
@@ -125,7 +115,7 @@ export default {
     },
     saveCache (){
       setCache(`record-${this.id}`, JSON.stringify(this.info));
-      setCache(`record-${this.id}-text`, this.mdText);
+      setCache(`record-${this.id}-text`, this.text);
       this.$message.success('草稿已保存');
       this.hasCache = true;
     },

@@ -7,7 +7,7 @@
       <div id="comet-bg"></div>
     </div>
     <the-head :class="{'show-bg': showBg}" @toggle="toggleShowBg"/>
-    <section class="body" :class="{'show-bg': showBg}" flex>
+    <section class="body show-head" :class="{'show-bg': showBg}" flex>
       <Nuxt />
       <the-footer/>
     </section>

@@ -1,23 +1,25 @@
 <template>
-    <top-dialog class="markdown-guide">
-      <p>本站markdown语法说明</p>
-      <ul>
-        <li>
-          <a href="https://guides.github.com/features/mastering-markdown/#syntax" target="_blank">
-            markdown基础语法+GFM
-          </a>
-        </li>
-        <li v-for="item in guide">
-          <b>{{ item[0] }}:</b>
-          <span v-html="item[1]"></span>
-        </li>
-      </ul>
-    </top-dialog>
+  <top-dialog class="markdown-guide">
+    <p>本站markdown语法说明</p>
+    <ul>
+      <li>
+        <a href="https://guides.github.com/features/mastering-markdown/#syntax" target="_blank">
+          markdown基础语法+GFM
+        </a>
+      </li>
+      <li v-for="item in guide">
+        <b>{{ item[0] }}:</b>
+        <span v-html="item[1]"></span>
+      </li>
+    </ul>
+  </top-dialog>
 </template>
 
 <script>
+import TopDialog from "@/components/top-dialog";
 export default {
   name: "MarkdownHelp",
+  components: {TopDialog},
   data (){
     return {
       guide: [

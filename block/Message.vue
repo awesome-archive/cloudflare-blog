@@ -11,8 +11,10 @@
 </template>
 
 <script>
+import SvgIcon from "@/components/svg-icon";
 export default {
   name: "Message",
+  components: {SvgIcon},
   data() {
     return {
       list: [],

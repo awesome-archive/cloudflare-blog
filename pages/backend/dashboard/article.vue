@@ -31,16 +31,19 @@ import 'echarts/lib/component/dataZoom'
 import 'echarts/lib/component/dataZoomInside'
 import 'echarts/lib/chart/line'
 
-import {getCommentNum, getFileContent} from "~/utils/github_graphql";
+import {getCommentNum} from "~/utils/github_graphql";
 
 const isPhone = process.server?false:(window.innerWidth < 768);
+import md from '~/rebuild/json/md.json'
+import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "the-article",
+  components: {SvgIcon},
   data (){
     return {
       myChart: null,
-      md: [],
+      md,
       inited: false,
       xBy: 'create',
       yBy: 'comment',
@@ -103,45 +106,38 @@ export default {
     }
   },
   mounted() {
-    getFileContent(`/json/md.json`).then(res => {
-      if (res[0]) {
-        this.md = JSON.parse(res[1]).reverse();
-        // 评论
-        const promises = [];
-        const echartsContainer = this.$el.querySelector('div.echarts');
-        let count = 0;
-        this.md.forEach(e => {
-          e.commentNum = 0;
-          promises.push(getCommentNum(e.file).then(res => {
-            e.commentNum = res[0] ? res[1].data.data.search.issueCount : 0;
-            this.changeXBy()
-            this.changeYBy()
-            this.doUpdate()
-          }).finally(()=>{
-            count ++;
-            if (count === promises.length){
-              this.inited = res[0]
-            }
-          }))
-        })
-        this.myChart = echarts.init(echartsContainer, null, {
-          renderer: 'svg',
-          width: 'auto',
-          height: 'auto'
-        });
-        const resize = () => {
-          this.myChart.resize({
-            width: echartsContainer.clientWidth,
-            height: echartsContainer.clientHeight
-          })
+    // 评论
+    const promises = [];
+    const echartsContainer = this.$el.querySelector('div.echarts');
+    let count = 0;
+    this.md.forEach(e => {
+      e.commentNum = 0;
+      promises.push(getCommentNum(e.file).then(res => {
+        e.commentNum = res[0] ? res[1].data.data.search.issueCount : 0;
+        this.changeXBy()
+        this.changeYBy()
+        this.doUpdate()
+      }).finally(()=>{
+        count ++;
+        if (count === promises.length){
+          this.inited = true
         }
-        resize()
-        window.addEventListener('resize', resize);
-        this.myChart.setOption(this.option);
-      }else {
-        this.inited = res[0]
-      }
+      }))
     })
+    this.myChart = echarts.init(echartsContainer, null, {
+      renderer: 'svg',
+      width: 'auto',
+      height: 'auto'
+    });
+    const resize = () => {
+      this.myChart.resize({
+        width: echartsContainer.clientWidth,
+        height: echartsContainer.clientHeight
+      })
+    }
+    resize()
+    window.addEventListener('resize', resize);
+    this.myChart.setOption(this.option);
   },
   methods: {
     doUpdate (){

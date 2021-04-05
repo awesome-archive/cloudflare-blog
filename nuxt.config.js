@@ -16,6 +16,7 @@ export default {
       }
     })
   },
+
   router: {
     extendRoutes(routes, resolve) {
       routes.push({
@@ -26,6 +27,7 @@ export default {
     }
   },
 
+  loading: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: siteConfig.captainTitle,
@@ -52,9 +54,6 @@ export default {
   plugins: [
     { src: '~/plugins/viewer.js' },
   ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [

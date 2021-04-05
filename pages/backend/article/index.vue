@@ -1,18 +1,24 @@
 <template>
   <div class="md" flex>
     <div class="head" flex>
-      <label class="search">
+      <label class="search" flex>
         <span>搜索</span>
         <input v-model="search"/>
+        <b v-if="searchTags.length">|</b>
+        <a v-for="tag in searchTags"
+           @click="toggleSearchTag(tag)"
+           :style="{background: $options.filters.color(tag)}">{{ tag }}</a>
       </label>
-      <single-button class="select-" :active="selecting"
-                     @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
-      <loading-button :icon="selecting?'download':'add'" class="new" :class="{white: !selecting}"
-                      @click.native="clickBtn">{{selecting?'导出':'新建'}}</loading-button>
+      <div flex>
+        <single-button class="select-" :active="selecting"
+                       @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
+        <loading-button :icon="selecting?'download':'add'" class="new" :class="{white: !selecting}"
+                        @click.native="clickBtn">{{selecting?'导出':'新建'}}</loading-button>
+      </div>
     </div>
     <div class="delete" v-if="selecting" flex>
       <a>{{deleting.state}}</a>
-      <single-button class="del-btn" :disabled="deleting.b" @click.native="deleteSome">删除</single-button>
+      <single-button class="del-btn" :disabled="deleting.b||selectList.length===0" @click.native="deleteSome">删除</single-button>
       <span class="check-box" :class="{active: allSelected}" @click="changeSelectAll"></span>
       <span class="txt">全选</span>
     </div>
@@ -20,10 +26,7 @@
       <a>{{deleting.state}}</a>
     </div>
     <div class="list" flex>
-      <div class="init-load" v-if="!inited" flex>
-        <svg-icon name="loading"/>
-      </div>
-      <table v-else>
+      <table>
         <thead>
         <tr>
           <td class="cover">封面</td>
@@ -36,9 +39,9 @@
         </thead>
         <tbody>
         <tr v-for="item in searchResult" :key="item.file">
-          <router-link tag="td" class="cover" :to="'/article/'+item.file">
+          <a tag="td" class="cover" :href="$route.path.replace(/\/$/, '')+'/'+item.file">
             <loading-img :src="item.cover || '/image/i.png'" :size="[-1, 8]"/>
-          </router-link>
+          </a>
           <td class="title"><span>{{ item.name }}</span></td>
           <td class="summary"><span>{{ item.summary }}</span></td>
           <td class="time">
@@ -52,8 +55,12 @@
             </div>
           </td>
           <td class="tags">
-            <div flex="">
-              <span :style="{background: $options.filters.color(tag)}" v-for="tag in item.tags">{{ tag }}</span>
+            <div flex>
+              <span v-for="tag in item.tags"
+                    :style="{background: $options.filters.color(tag)}"
+                    :title="`查询标签:${tag}`"
+                    @click="toggleSearchTag(tag)"
+              >{{ tag }}</span>
             </div>
           </td>
           <td class="operate">
@@ -72,38 +79,40 @@
 <script>
 import {parseAjaxError, sortByTime} from "@/utils/utils";
 import jszip from "jszip";
-import * as fileSaver from "file-saver";
 import {genRss} from "~/pages/backend/utils";
+import md from '~/rebuild/json/md.json'
+import SingleButton from "@/components/single-button";
+import LoadingImg from "@/components/loading-img";
+import LoadingButton from "@/components/loading-button";
 
 export default {
   name: "ArticleList",
-  props: {
-    md: {
-      type: Array,
-      default: () => []
-    },
-    inited: {
-      type: Boolean,
-      default: false
-    }
-  },
+  components: {LoadingButton, LoadingImg, SingleButton},
+  layout: 'backend',
   data() {
     return {
+      md,
       deleting: {
         b: false,
         state: ''
       },
       selecting: false,
+      searchTags: [],
       selectList: [],
       search: '',
     }
   },
+  head (){
+    return {
+      title: '文章列表'
+    }
+  },
   computed: {
     searchResult() {
-      if (this.search === '') return this.md;
+      if (this.search === ''&&this.searchTags.length===0) return this.md;
       const lis = [];
       this.md.forEach(e => {
-        if (e.name.search(this.search) !== -1) {
+        if (e.name.search(this.search) !== -1 && e.tags.find(v=>this.searchTags.indexOf(v)!==-1)) {
           lis.push(e)
         }
       })
@@ -112,12 +121,16 @@ export default {
     allSelected (){
       return this.selectList.length===this.searchResult.length;
     },
-    gitUtil() {
-      return this._gitUtil()
-    }
   },
-
   methods: {
+    toggleSearchTag (tag){
+      const idx = this.searchTags.indexOf(tag)
+      if (idx!==-1){
+        this.searchTags.splice(idx, 1)
+      }else{
+        this.searchTags.push(tag)
+      }
+    },
     changeSelectAll (){
       if (!this.allSelected) {
         this.selectList = [];
@@ -152,22 +165,8 @@ export default {
           b: true,
           state: '导出中...'
         }
-        const zip = new jszip(),
-            ranTime = new Date().getTime();
+        const zip = new jszip();
         try {
-          this.deleting.state = '下载:md.json';
-          let res = await fetch(`/json/md.json?ran=${ranTime}`);
-          let txt = await res.text();
-          zip.file('md.json', txt);
-          for (const file of this.selectList) {
-            this.deleting.state = `下载:${file}.md`;
-            res = await fetch(`/md/${file}.md?ran=${ranTime}`);
-            txt = await res.text();
-            zip.file(`${file}.md`, txt);
-          }
-          this.deleting.state = `正在压缩...`;
-          const content = await zip.generateAsync({type: "blob"});
-          fileSaver.saveAs(content, "md-export.zip");
         } catch (err) {
           this.$message.error(parseAjaxError(err));
         }
@@ -245,12 +244,16 @@ export default {
     padding-bottom: 0.5rem;
     border-bottom: 1px solid gray;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     > .search{
+      flex-wrap: wrap;
       margin-left: 1rem;
       > span{
         margin-right: 1rem;
         font-size: 0.95rem;
+      }
+      >b{
+        margin: 0 .3rem;
       }
       > input{
         padding: 0.2rem;
@@ -259,29 +262,44 @@ export default {
         border: 1px solid gray;
         width: 10rem;
       }
-    }
-    > ::v-deep .new{
-      margin: 0 1rem 0 0;
-      padding: 0.6rem 1.2rem;
-      background: linear-gradient(to right, #e02bd2, #4444ff);
-      &.white{
-        >svg{
-          fill: white;
+      >a{
+        margin: .4rem 1rem .4rem 0;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        border-radius: 0.2rem;
+        color: white;
+        cursor: pointer;
+        transition: all .15s linear;
+        &:hover{
+          box-shadow: 0 .1rem .3rem rgba(0, 0, 0, .7);
         }
       }
-      > svg{
-        width: 1.4rem;
-        height: 1.4rem;
-      }
-      > span{
-        margin-left: 0.5rem;
-        font-size: 0.95rem;
-        color: white;
-      }
     }
-    > .select-{
-      margin: 0 1rem 0 auto;
-      background: #00bb00;
+    >div{
+      flex-wrap: nowrap;
+      > ::v-deep .new{
+        margin: 0 1rem 0 0;
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(to right, #e02bd2, #4444ff);
+        &.white{
+          > svg{
+            fill: white;
+          }
+        }
+        > svg{
+          width: 1.4rem;
+          height: 1.4rem;
+        }
+        > span{
+          margin-left: 0.5rem;
+          font-size: 0.95rem;
+          color: white;
+        }
+      }
+      > .select-{
+        margin: 0 1rem 0 auto;
+        background: #00bb00;
+      }
     }
   }
   >.delete{
@@ -365,6 +383,11 @@ export default {
                   font-size: 0.8rem;
                   border-radius: 0.2rem;
                   color: white;
+                  cursor: pointer;
+                  transition: all .15s linear;
+                  &:hover{
+                    box-shadow: 0 .1rem .3rem rgba(0, 0, 0, .7);
+                  }
                 }
               }
             }

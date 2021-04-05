@@ -10,7 +10,7 @@ let headers = {
   repoId = '';
 
 const owner = siteConfig.owner,
-  repo = siteConfig.dataRepo,
+  repo = siteConfig.repo,
   // this token just can read public information
   publicHeaders = {
     Authorization: 'token ' + (['5', '66b4e73893d07b79dbcc3e36f86acc309e78b2d'].join(''))
@@ -33,33 +33,6 @@ const owner = siteConfig.owner,
       })
     })
   };
-
-/**
- * 获取单个文件
- */
-export async function getFileContent(path) {
-  return new Promise((resolve, reject) => {
-    http({
-      query:
-        `{
-        repository(owner: "${owner}", name: "${repo}") {
-          object(expression: "master:${path}") {
-          ... on Blob {
-              text
-            }
-          }
-        }
-      }
-      `
-    }, true).then(res=>{
-        try{
-          resolve(res[1].data.data.repository.object.text)
-        }catch (err) {
-          reject(reject(res[1].data.errors[0].message))
-        }
-    })
-  })
-}
 
 /**
  * 检查 token 是否正确

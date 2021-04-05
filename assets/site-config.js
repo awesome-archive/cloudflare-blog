@@ -3,8 +3,7 @@ const
     name = '云与原',
     githubName = 'yunyuyuan',
     githubEmail = '326178275@qq.com',
-    repo = 'yunyuyuan.github.io',
-    dataRepo = 'blog-data',
+    repo = 'cloudflare-blog',
     domain = 'https://blog.halberd.cn'
 // --------- change this ↑ ---------
 
@@ -24,11 +23,10 @@ module.exports = {
 
 // --------- change this ↑ ---------
 
-    name,
+    name: name+'('+githubName+')',
     owner: githubName,
     email: githubEmail,
     repo: repo,
-    dataRepo: dataRepo,
     cdn: `https://cdn.jsdelivr.net/gh/${githubName}/${repo}@latest`,
     corsServer: 'https://cors.bridged.cc/',
     timeStamp: new Date().getTime(),

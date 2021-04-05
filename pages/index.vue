@@ -1,21 +1,21 @@
 <template>
   <div class="home-page" flex>
     <div class="btns" flex>
-      <NuxtLink to="/article" flex>
+      <a href="/article" flex>
         <svg-icon name="article"/>
         <span class="name">文章</span>
         <span write-font class="tip">"技术"文章</span>
-      </NuxtLink>
-      <NuxtLink to="/record" flex>
+      </a>
+      <a href="/record" flex>
         <svg-icon name="record"/>
         <span class="name">记录</span>
         <span write-font class="tip">一框琐事</span>
-      </NuxtLink>
-      <NuxtLink  to="/msg-board" flex>
+      </a>
+      <a href="/msg-board" flex>
         <svg-icon name="comments"/>
         <span class="name">留言板</span>
         <span write-font class="tip">谁的话语</span>
-      </NuxtLink>
+      </a>
     </div>
     <div class="info" flex>
       <div class="head" flex>
@@ -32,9 +32,11 @@
 <script>
 import config from "~/rebuild/json/config.json";
 import siteConfig from "~/assets/site-config";
+import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "index",
+  components: {SvgIcon},
   data (){
     return {
       config
@@ -43,11 +45,17 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 博客 主页` }
+        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 博客 主页 home` }
       ],
+      link: [{
+        rel: 'stylesheet',
+        href: '/home.css'
+      }]
     }
   },
   computed: {
+  },
+  fetch() {
   },
   mounted() {
   }

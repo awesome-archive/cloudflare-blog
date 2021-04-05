@@ -25,10 +25,12 @@ import config from "~/rebuild/json/config.json";
 import ErrAvatar from "~/block/comment/errAvatar";
 import WriteComment from "~/block/comment/Write";
 import ListComment from "~/block/comment/List";
+import SingleButton from "@/components/single-button";
+import LoadingButton from "@/components/loading-button";
 
 export default {
   name: "TheComment",
-  components: {ListComment, WriteComment, ErrAvatar},
+  components: {LoadingButton, SingleButton, ListComment, WriteComment, ErrAvatar},
   props: {
     title: {
       type: String,

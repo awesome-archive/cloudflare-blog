@@ -8,8 +8,10 @@
 </template>
 
 <script>
+import SvgIcon from "@/components/svg-icon";
 export default {
   name: "LoadingImg",
+  components: {SvgIcon},
   props: {
     src: {
       type: String,

@@ -1,5 +1,5 @@
 <template>
-  <div id="loading" :class="theme" flex>
+  <div v-if="loading" id="loading" :class="theme" flex>
     <div :class="`loader-${theme}`" v-if="theme==='light'">
       <div class="css-square square1"></div>
       <div class="css-square square2"></div>
@@ -27,17 +27,20 @@
 
 export default {
   name: "Loading",
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    }
-  },
   data (){
     return {
+      loading: true,
       theme: Math.random()>0.5?'light':'dark'
     }
   },
+  methods: {
+    start (){
+      this.loading = true
+    },
+    finish (){
+      this.loading = false
+    },
+  }
 }
 </script>
 
@@ -67,7 +70,7 @@ export default {
       height: 0;
     }
   }
-  &[hide]{
+  &.hide{
     animation: hide-loading .4s ease-out forwards;
   }
   &.dark{

@@ -35,7 +35,7 @@
               <span class="line"></span>
               <span class="circle"></span>
             </div>
-            <NuxtLink class="info" :to="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
+            <a class="info" :href="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
               <loading-img :src="item.cover" :size="[-1, 10]"/>
               <div class="detail" flex>
                 <b>{{ item.name }}</b>
@@ -50,7 +50,7 @@
                   </span>
                 </div>
               </div>
-            </NuxtLink>
+            </a>
           </div>
           <pagination @turn="turnPage" :item-count="this.resultList.length" :page-now="pageNow" :per-count="perCount"/>
         </template>
@@ -62,7 +62,7 @@
               <div class="list" flex>
                 <div v-for="item in b[1]" class="simple-item" flex>
                   <time write-font>{{ simpleTime(item.time) }}</time>
-                  <NuxtLink :to="`/article/${item.file}`">{{ item.name }}</NuxtLink>
+                  <a :href="`/article/${item.file}`">{{ item.name }}</a>
                 </div>
               </div>
             </div>
@@ -78,9 +78,13 @@ import {queryMap} from "~/utils/utils";
 import mdConfig from '~/rebuild/json/md.json'
 import dayjs from "dayjs";
 import {getCommentNum} from "~/utils/github_graphql";
+import SvgIcon from "@/components/svg-icon";
+import Pagination from "@/components/pagination";
+import LoadingImg from "@/components/loading-img";
 
 export default {
   name: "index",
+  components: {LoadingImg, Pagination, SvgIcon},
   data (){
     const datedList = [];
     for (const e of mdConfig){

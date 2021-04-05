@@ -48,9 +48,10 @@
 <script>
 import {getUserCard} from "~/utils/github_graphql";
 import ErrAvatar from "~/block/comment/errAvatar";
+import SvgIcon from "@/components/svg-icon";
 
 export default {
-  components: {ErrAvatar},
+  components: {SvgIcon, ErrAvatar},
   props: ['login'],
   name: "userCard",
   data() {

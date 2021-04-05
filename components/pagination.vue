@@ -8,8 +8,10 @@
 </template>
 
 <script>
+import SvgIcon from "@/components/svg-icon";
 export default {
   name: "Pagination",
+  components: {SvgIcon},
   props: {
     itemCount: {
       type: Number,

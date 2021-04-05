@@ -1,7 +1,6 @@
 import Octokat from "octokat";
 import Sass from "sass.js";
 import {stringToB64} from "@/utils/utils";
-import {getFileContent} from "~/utils/github_graphql";
 
 // github
 export class GithubUtils {
@@ -139,7 +138,7 @@ export class GithubUtils {
         // 根据commit sha获取tree sha
         res = await repo.git.commits(res.object.sha).fetch();
         // 根据tree sha递归获取sha
-        const mdPath = [what];
+        const mdPath = ['rebuild', what];
 
         async function getMdSha(treeSha) {
           if (mdPath.length) {
@@ -169,83 +168,6 @@ export class GithubUtils {
         }
         resolve([true])
       } catch (err) {
-        resolve([false, err])
-      }
-    })
-  }
-
-  async getTag() {
-    return new Promise(async resolve => {
-      // 获取master的commit sha
-      try {
-        let res = await this.repos.git.refs('heads/master').fetch();
-        const last = res.object.sha;
-        res = await this.repos.git.refs.tags('').fetch();
-        res.items.forEach(v => v.last = v.object.sha === last)
-        resolve([true, res.items])
-      }catch (err){
-        resolve([false, err])
-      }
-    })
-  }
-
-  async createRelease(name, dict) {
-    return new Promise(async resolve => {
-      try {
-        dict.state = '获取404-temp.html';
-        let res = await getFileContent('404-temp.html');
-        if (!res[0]){
-          return resolve([false, res[1]])
-        }
-        const matcher = res[1].match(/^(\d+)([\s\S]*?)$/);
-        if (!matcher){
-          return resolve([false, '404-temp.html格式错误!'])
-        }
-        const timeStamp = matcher[1];
-        const temp = matcher[2];
-        dict.state = '检查time.stamp是否一致';
-        res = await getFileContent('dist/time.stamp');
-        if (!res[0]){
-          return resolve([false, res[1]])
-        }
-        if (res[1] !== timeStamp){
-          return resolve([false, 'time.stamp不一致!请重新build'])
-        }
-        dict.state = '获取404.html';
-        res = await getFileContent('404.html');
-        if (!res[0]){
-          return resolve([false, res[1]])
-        }
-        dict.state = '对比差异';
-        if (res[1] === temp){
-          return resolve([false, 'github还未更新,等会再发布哦'])
-        }
-        dict.state = '复制404-temp.html到404.html';
-        await this.updateSingleFile('404.html', temp);
-        dict.state = '获取master的commit sha';
-        res = await this.repos.git.refs('heads/master').fetch();
-        dict.state = '创建refs';
-        await this.repos.git.refs.create({
-          ref: 'refs/tags/' + name,
-          sha: res.object.sha
-        });
-        dict.state = '创建release成功!';
-        resolve([true])
-      }catch (err){
-        resolve([false, err])
-      }
-    })
-  }
-
-  async deleteTag(lis, dic) {
-    return new Promise(async resolve => {
-      try {
-        for (const tag of lis) {
-          dic.state = '删除:' + tag;
-          await this.repos.git(tag).remove();
-        }
-        resolve([true])
-      }catch (err){
         resolve([false, err])
       }
     })
