@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import {loadFinish} from "~/utils/utils";
 import config from "~/rebuild/json/config.json";
+import siteConfig from "~/assets/site-config";
 
 export default {
   name: "index",
@@ -40,10 +40,16 @@ export default {
       config
     }
   },
+  head () {
+    return {
+      meta: [
+        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 博客 主页` }
+      ],
+    }
+  },
   computed: {
   },
   mounted() {
-    loadFinish()
   }
 }
 </script>

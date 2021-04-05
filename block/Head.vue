@@ -1,10 +1,10 @@
 <template>
   <header class="the-head">
     <div class="body" flex>
-      <a class="favicon" href="/">
+      <NuxtLink class="favicon" to="/">
         <img src="/image/i.png" alt="favicon"/>
-      </a>
-      <a class="txt" :href="siteConfig.aboutUrl" flex :title="siteConfig.corner">{{siteConfig.corner}}</a>
+      </NuxtLink>
+      <NuxtLink class="txt" :to="siteConfig.aboutUrl" flex :title="siteConfig.corner">{{siteConfig.corner}}</NuxtLink>
       <span @mouseenter="toggle(true)" @mouseleave="toggle(false)"></span>
     </div>
   </header>

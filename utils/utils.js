@@ -52,10 +52,6 @@ export function sortByTime(lis) {
     })
 }
 
-export function loadFinish (){
-    document.querySelector('#loading').setAttribute('hide', '');
-}
-
 export function throttle(func, interval=100, type='timeout'){
     if (typeof func !== 'function') return;
     let isFirst = true;

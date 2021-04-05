@@ -1,6 +1,6 @@
 <template>
   <div class="article-detail">
-    <div v-if="notfound" class="not-found" flex>
+    <div v-if="!info.name" class="not-found" flex>
       <div flex>
         <svg-icon name="grass"/>
         <strong write-font>查无此文</strong>
@@ -59,8 +59,7 @@
         <div v-if="loading" class="loading" flex>
           <svg-icon name="loading"/>
         </div>
-        <span v-else :class="{'show-aside': asideActive}" ref="markdown" class="--markdown" v-html="html"
-              v-viewer></span>
+        <span :class="{'show-aside': asideActive}" ref="markdown" class="--markdown" v-html="html" v-viewer></span>
       </div>
       <the-comment v-if="this.info.file" :title="this.info.file"/>
     </div>
@@ -68,11 +67,10 @@
 </template>
 
 <script>
-import {loadFinish, throttle} from "@/utils/utils";
+import {throttle} from "@/utils/utils";
 import TheComment from "~/block/comment/index";
 
 import qrcode from "qrcode";
-import siteConfig from "~/assets/site-config";
 import {parseMarkdown, processMdHtml} from "@/utils/parseMd";
 
 import Vue from 'vue';
@@ -83,41 +81,45 @@ import mdConfig from '~/rebuild/json/md.json'
 export default {
   name: "article-detail",
   components: {TheComment},
+  head () {
+    return {
+      link: [{
+        rel: 'stylesheet',
+        href: '/markdown.css'
+      }],
+      title: this.info.name
+    }
+  },
   data() {
     return {
       md: mdConfig,
       loading: true,
-      html: '',
       anchors: [],
       asideActive: null,
       asideTop: 0,
       animationHandle: undefined,
       qrcode: '',
-      notfound: false
     }
   },
-  async asyncData({params, redirect}) {
-    return {id: params.detail}
+  router: new VueRouter({
+    mode: 'hash'
+  }),
+  async asyncData({params}) {
+    const id = params.detail;
+    const info = mdConfig.find(v=>v.file === id)||{tags:[]};
+    return {
+      id,
+      html: info?parseMarkdown((await import(`!!raw-loader!~/rebuild/md/${id}.md`)).default):'',
+      info,
+    }
   },
   computed: {
-    info() {
-      if (!process.client) return {};
-      if (!this.id) return {};
-      for (const i of this.md) {
-        if (i.file === this.id) {
-          document.title = '文章-' + i.name;
-          document.head.querySelector('meta[name=description]').setAttribute('description', `${siteConfig.owner}的博客文章-${i.name}`);
-          return i
-        }
-      }
-      return {}
-    },
     body() {
-      if (!process.client) return {};
+      if (process.server) return {};
       return document.querySelector('section.body')
     },
     url() {
-      if (!process.client) return '';
+      if (process.server) return '/';
       return encodeURI(location.hash.replace(/^#/, ''))
     },
   },
@@ -127,22 +129,9 @@ export default {
     }
   },
   async mounted() {
-    if (!process.client) return ;
-    loadFinish();
-    // 检查404
-    if (!this.md.find(e=>e.file===this.id)){
-      this.notfound = true
-      return;
-    }
     qrcode.toDataURL(location.href, (err, url) => {
       this.qrcode = url
     });
-    try{
-      const content = await (()=>import(`~/rebuild/md/${this.id}.md`))();
-      this.html = parseMarkdown(content.default);
-    }catch(err){
-      error(`获取文章失败: ${res[1]}`);
-    }
     this.body.addEventListener('scroll', this.moveAside);
     this.loading = false;
     this.$nextTick(() => {
@@ -214,7 +203,7 @@ export default {
       }
     },
     goAnchor (){
-      if (!process.client) return ;
+      if (process.server) return;
       const el = document.getElementById(this.$route.path.substr(1));
       const markdown = this.$refs.markdown;
       if (el) {

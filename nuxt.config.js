@@ -1,9 +1,30 @@
 const path = require('path');
+const fs = require('fs');
 const siteConfig = require('./assets/site-config.js');
+
+const mdDir = path.resolve(__dirname, 'rebuild/md')
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+
+  generate: {
+    routes: fs.readdirSync(mdDir).map(filename => {
+      return {
+        route: `/article/${path.basename(filename, '.md')}`,
+        // content: fs.readFileSync(path.resolve(mdDir, filename))
+      }
+    })
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'real-about',
+        path: siteConfig.aboutUrl,
+        component: resolve(__dirname, 'pages/real-about/index.vue')
+      })
+    }
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -18,21 +39,18 @@ export default {
     ],
     link: [
       { rel: 'shortcut icon', href: '/favicon.svg' },
-      { rel: 'stylesheet', href: '', id: 'markdown-stylesheet' }
-    ]
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/assets/style/source-code-pro.css',
-    '~/assets/style/write-font.css',
     '~/assets/style/main.scss',
     '~/assets/style/index.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/codemirror.js', ssr: false }
+    { src: '~/plugins/viewer.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -65,12 +83,6 @@ export default {
           options: {
             symbolId: 'icon-[name]'
           }
-        })
-      config.module
-        .rules.push({
-          test: /\.md$/,
-          loader: 'raw-loader',
-          include: [path.resolve(__dirname, 'rebuild/md')],
         })
     }
   },

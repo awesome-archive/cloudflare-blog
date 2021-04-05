@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div class="body-wrap" flex>
+    <div v-if="code===404" class="body-wrap" flex>
       <div class="show-wrap">
         <div class="wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
           <g class="Layer_12 yellow-back-fig" data-name="Layer 12">
@@ -121,18 +121,24 @@
         </div>
       </div>
     </div>
+    <div v-else style="color: white">
+      <p>Error Code:{{code}}</p>
+      <span>{{error.message}}</span>
+    </div>
   </div>
 </template>
 
 <script>
-import {loadFinish} from "@/utils/utils";
-
 export default {
   name: "index",
   props: ['error'],
   layout: 'error',
   mounted() {
-    loadFinish()
+  },
+  computed: {
+    code (){
+      return this.error.statusCode
+    }
   }
 }
 </script>

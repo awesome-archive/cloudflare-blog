@@ -53,7 +53,7 @@ export default {
     },
   },
   created() {
-    if (process.server) return ;
+    if (process.server) return;
     const fontSize = +localStorage.getItem('font-size');
     this.fontSize = fontSize || +getComputedStyle(document.documentElement).fontSize.replace('px', '');
   },

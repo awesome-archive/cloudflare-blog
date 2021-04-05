@@ -24,6 +24,7 @@ module.exports = {
 
 // --------- change this ↑ ---------
 
+    name,
     owner: githubName,
     email: githubEmail,
     repo: repo,

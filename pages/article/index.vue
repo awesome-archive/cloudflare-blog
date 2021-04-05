@@ -20,12 +20,9 @@
         </span>
       </span>
       </div>
-      <div class="loading" v-if="loading" flex>
-        <svg-icon name="loading"/>
-      </div>
-      <div class="blog" :class="activeView" v-else>
+      <div class="blog" :class="activeView">
         <template v-if="activeView==='list'">
-          <div v-for="(item, idx) in this.pagedList" :key="item.file" class="list-item"
+          <div v-for="item in this.pagedList" :key="item.file" class="list-item"
                :class="{active: activeItem===item.file}" flex>
             <div class="time" flex>
               <span>{{ item.time | time(true) }}</span>
@@ -38,7 +35,7 @@
               <span class="line"></span>
               <span class="circle"></span>
             </div>
-            <a class="info" :href="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
+            <NuxtLink class="info" :to="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
               <loading-img :src="item.cover" :size="[-1, 10]"/>
               <div class="detail" flex>
                 <b>{{ item.name }}</b>
@@ -53,7 +50,7 @@
                   </span>
                 </div>
               </div>
-            </a>
+            </NuxtLink>
           </div>
           <pagination @turn="turnPage" :item-count="this.resultList.length" :page-now="pageNow" :per-count="perCount"/>
         </template>
@@ -65,7 +62,7 @@
               <div class="list" flex>
                 <div v-for="item in b[1]" class="simple-item" flex>
                   <time write-font>{{ simpleTime(item.time) }}</time>
-                  <a :href="`/article/${item.file}`">{{ item.name }}</a>
+                  <NuxtLink :to="`/article/${item.file}`">{{ item.name }}</NuxtLink>
                 </div>
               </div>
             </div>
@@ -77,7 +74,7 @@
 </template>
 
 <script>
-import {loadFinish, queryMap} from "~/utils/utils";
+import {queryMap} from "~/utils/utils";
 import mdConfig from '~/rebuild/json/md.json'
 import dayjs from "dayjs";
 import {getCommentNum} from "~/utils/github_graphql";
@@ -85,9 +82,27 @@ import {getCommentNum} from "~/utils/github_graphql";
 export default {
   name: "index",
   data (){
+    const datedList = [];
+    for (const e of mdConfig){
+      const time = dayjs(e.time);
+      const year = time.year();
+      const month = time.format('MM');
+      let find_year = datedList.find(e=>e[0]===year);
+      if (!find_year){
+        find_year = [year, []];
+        datedList.push(find_year);
+      }
+      const month_list = find_year[1];
+      let find_month = month_list.find(e=>e[0]===month);
+      if (!find_month){
+        find_month = [month, []];
+        month_list.push(find_month);
+      }
+      find_month[1].push(e);
+    }
     return {
       md: mdConfig,
-      loading: true,
+      datedList,
       search: '',
       cacheSearch: '',
       searchFocus: false,
@@ -104,27 +119,6 @@ export default {
     pagedList() {
       const start = (this.pageNow - 1) * this.perCount;
       return this.resultList.slice(start, start + this.perCount)
-    },
-    datedList() {
-      const res = [];
-      for (const e of this.md){
-        const time = dayjs(e.time);
-        const year = time.year();
-        const month = time.format('MM');
-        let find_year = res.find(e=>e[0]===year);
-        if (!find_year){
-          find_year = [year, []];
-          res.push(find_year);
-        }
-        const month_list = find_year[1];
-        let find_month = month_list.find(e=>e[0]===month);
-        if (!find_month){
-          find_month = [month, []];
-          month_list.push(find_month);
-        }
-        find_month[1].push(e);
-      }
-      return res
     },
     resultList() {
       if (!this.search && !this.searchTags.length) return this.md;
@@ -162,7 +156,6 @@ export default {
     }
   },
   async mounted() {
-    loadFinish();
     let tag = queryMap()['search-tag'];
     if (tag) {
       tag = decodeURIComponent(tag);
@@ -170,7 +163,6 @@ export default {
         this.searchTags = [tag]
       }
     }
-    this.loading = false;
   },
   methods: {
     toggleInputFocus(b) {

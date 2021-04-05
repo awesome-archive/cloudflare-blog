@@ -26,7 +26,7 @@ export class GithubUtils {
   }
 
   async updateJsonFile(path, json) {
-    path = `json/${path}`;
+    path = `rebuild/json/${path}`;
     return this.updateSingleFile(path, JSON.stringify(json, null, 4));
   }
 
@@ -52,7 +52,7 @@ export class GithubUtils {
   async updateMd(payload, dict) {
     return await this.createCommit([
       {
-        folder: `md/${payload.file}.md`,
+        folder: `rebuild/md/${payload.file}.md`,
         content: payload.md
       }
     ], `更新 md-${payload.file}`, dict)
@@ -61,7 +61,7 @@ export class GithubUtils {
   async updateRecord(payload, dict) {
     return await this.createCommit([
       {
-        folder: `record/${payload.file}.txt`,
+        folder: `rebuild/record/${payload.file}.txt`,
         content: payload.txt
       }
     ], `更新 record-${payload.file}`, dict)

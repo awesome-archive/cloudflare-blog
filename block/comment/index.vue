@@ -56,6 +56,7 @@ export default {
     }
   },
   async created() {
+    if (process.server) return;
     this.token = localStorage.getItem(tokenKey);
     if (this.token) {
       await this.doLogin(false);
@@ -78,6 +79,7 @@ export default {
       }
     },
     async doLogin(remind) {
+      if (process.server) return;
       if (this.loging || !this.token) return;
       this.loging = true;
       const res = await getLoginInfo(this.token);

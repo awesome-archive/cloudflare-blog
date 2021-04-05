@@ -1,11 +1,7 @@
 <template>
   <div class="write" flex>
     <div class="inner" flex>
-      <codemirror class="textarea" ref="codeMirror" :style="{height: textareaHeight}"
-        :options="codeMirrorOptions"
-        @changes="codeMirrorInput"
-        @blur="codeMirrorBlur"
-      />
+      <div class="textarea" ref="textarea" :style="{height: textareaHeight}"></div>
       <div class="utils" ref="utils" flex>
         <div class="sticker" data-id="sticker" ref="sticker" :class="{active: showSticker}"
              :style="{top: stickerPos[0]||'unset', left: stickerPos[1], width: stickerPos[2], bottom: stickerPos[3]||'unset'}"
@@ -72,10 +68,13 @@
 import MarkdownHelp from "~/block/MarkdownHelp";
 
 import 'codemirror/lib/codemirror.css';
-import '@/assets/style/code-mirror/codeMirror.scss';
-
-import '@/assets/style/code-mirror/light-markdown.scss';
-import '@/assets/style/code-mirror/dracula-markdown.scss';
+import '~/assets/style/code-mirror/codeMirror.scss';
+import 'codemirror/lib/codemirror.css';
+import '~/assets/style/code-mirror/codeMirror.scss';
+import '~/assets/style/code-mirror/light-markdown.scss';
+import '~/assets/style/code-mirror/dracula-markdown.scss';
+import '~/assets/style/code-mirror/light-markdown.scss';
+import '~/assets/style/code-mirror/dracula-markdown.scss';
 import {parseMarkdown, processMdHtml} from "@/utils/parseMd";
 import siteConfig from "~/assets/site-config";
 import config from "~/rebuild/json/config.json";
@@ -117,16 +116,7 @@ export default {
         pos: false,
         size: false
       },
-
-      codeMirrorOptions:{
-        indentUnit: 2,
-        tabSize: 2,
-        theme: 'light',
-        line: true,
-        mode: 'markdown',
-        matchTags: {bothTags: true},
-        matchBrackets: true,
-      }
+      codeMirror: null,
     }
   },
   computed: {
@@ -136,14 +126,31 @@ export default {
       })
       return parseMarkdown(this.comment, true);
     },
-    codeMirror (){
-      return this.$refs.codeMirror.codemirror
-    }
   },
   created() {
     this.textareaHeight = this.$props.initHeight;
   },
-  mounted() {
+  async mounted() {
+    if (process.server) return ;
+    await import('codemirror/addon/edit/matchbrackets')
+    await import('codemirror/addon/edit/matchtags')
+
+    await import('codemirror/mode/markdown/markdown')
+    this.codeMirror = new ((await import('codemirror')).default)(this.$refs.textarea, {
+      indentUnit: 2,
+      tabSize: 2,
+      theme: 'light',
+      line: true,
+      mode: 'markdown',
+      matchTags: {bothTags: true},
+      matchBrackets: true,
+    });
+    this.codeMirror.on('change', () => {
+      this.comment = this.codeMirror.getValue()
+    });
+    this.codeMirror.on('blur', () => {
+      this.focusAt = this.codeMirror.getCursor();
+    })
   },
   methods: {
     codeMirrorInput (e){

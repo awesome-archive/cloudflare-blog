@@ -1,14 +1,13 @@
 <template>
   <div id="index">
-    <loading />
     <del v-if="noBg"></del>
     <img class="bg" v-else-if="isBgImg" :src="routeInfo.bg" alt="bg"/>
     <div class="bg" v-else>
       <div id="particles-bg"></div>
       <div id="comet-bg"></div>
     </div>
-    <the-head :class="{'show-bg': showBg}" v-if="showHead" @toggle="toggleShowBg"/>
-    <section class="body" :class="{'show-head': showHead, 'show-bg': showBg}" flex>
+    <the-head :class="{'show-bg': showBg}" @toggle="toggleShowBg"/>
+    <section class="body" :class="{'show-bg': showBg}" flex>
       <Nuxt />
       <the-footer/>
     </section>
@@ -20,36 +19,26 @@
 import Message from "~/block/Message";
 import Head from "~/block/Head";
 import Footer from "~/block/Footer";
-import Loading from "~/block/Loading";
 import siteConfig from "~/assets/site-config";
-import Vue from 'vue'
-import '~/utils/filter'
+import Vue from 'vue';
+import '~/utils/filter';
 import config from "~/rebuild/json/config.json";
+const routes = {
+  '^/?$': {name: 'home', bg: '/image/home.png'},
+  '^/about/?$': {name: 'about', bg: '/image/about.png'},
+  '^/article/?$': {name: 'article', bg: '/image/article.png'},
+  '^/article/\\d+/?$': {name: 'article-detail', bg: '/image/articleDetail.png'},
+  '^/record/?$': {name: 'record', bg: '/image/record.png'},
+  '^/msg-board/?$': {name: 'msg-board', bg: '/image/msgBoard.png'},
+}
 
-import Viewer from 'v-viewer'
-import {parseMarkdown} from "~/utils/parseMd";
-Vue.use(Viewer)
+routes[`^${siteConfig.aboutUrl}/?$`] = {name: 'realAbout', bg: '/image/about.png'}
 
-Viewer.setDefaults({
-  filter(img) {
-    return img.hasAttribute('data-viewer')
-  }
-})
 export default {
-  components: {Message, TheHead: Head, TheFooter: Footer, Loading},
+  components: {Message, TheHead: Head, TheFooter: Footer},
   data (){
     return {
-      showHead: true,
       showBg: false,
-      routes: {
-        '^/?$': {name: 'home', bg: '/image/home.png'},
-        '^/about/?$': {name: 'about', bg: '/image/about.png'},
-        '^/article/?$': {name: 'article', bg: '/image/article.png'},
-        '^/article/\\d+/?$': {name: 'article-detail', bg: '/image/articleDetail.png'},
-        '^/record/?$': {name: 'record', bg: '/image/record.png'},
-        '^/backend/.+/?$': {name: 'backend', bg: '/image/home.png'},
-        '^/msg-board/?$': {name: 'msg-board', bg: '/image/msgBoard.png'},
-      }
     }
   },
   mounted() {
@@ -59,15 +48,6 @@ export default {
       document.documentElement.style.fontSize = fontSize + 'px';
     }
     Vue.prototype.$message = this.$refs.message;
-
-    if (['article-detail', 'msg-board', 'backend'].indexOf(this.routeInfo.name) !== -1) {
-      // 加载markdown.css
-      (()=>import(`~/rebuild/markdown.css`))().then(res=>{
-        document.head.querySelector('#markdown-stylesheet').innerHTML = res.default;
-      }).catch(err=>{
-        this.$message.error(`加载css失败: ${err}`);
-      });
-    }
 
     const container = document.getElementById('comet-bg');
     if (!this.isBgImg && !this.noBg && container) {
@@ -123,7 +103,7 @@ export default {
   },
   computed: {
     routeNow (){
-      if (process.server) return ''
+      if (process.server) return '/'
       return location.pathname
     },
     noBg (){
@@ -138,12 +118,12 @@ export default {
       return Math.floor(Math.random() * 10) % 2 === 0
     },
     routeInfo (){
-      for (const key of Object.keys(this.routes)){
+      for (const key of Object.keys(routes)){
         if (this.routeNow.match(new RegExp(key))){
-          return this.routes[key]
+          return routes[key]
         }
       }
-      return ''
+      return {bg: '/image/home.png'}
     }
   },
   methods: {

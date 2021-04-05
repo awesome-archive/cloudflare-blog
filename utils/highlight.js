@@ -3,7 +3,7 @@ import hljs from "highlight.js";
 export function hljsAndInsertCopyBtn (el){
     const head = document.createElement('div');
     const img = document.createElement('img');
-    img.src = '/image/code.jpg';
+    img.src = '/image/code.png';
     const btn = document.createElement('span');
     addCopyEvent(el.parentElement, btn, el.classList[0], el.innerText);
     head.appendChild(img);
