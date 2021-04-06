@@ -74,6 +74,11 @@ export default {
       selectList: []
     }
   },
+  head (){
+    return {
+      title: '记录列表'
+    }
+  },
   computed: {
     searchResult() {
       if (this.search === '') return this.record;
@@ -143,7 +148,7 @@ export default {
           state: ''
         }
       } else {
-        await this.$router.push('/record/new')
+        await this.$router.push('/backend/record/new')
       }
     },
     async deleteSome() {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" id="loading" :class="theme" flex>
+  <div v-show="!finished" id="loading" :class="[theme, {hide: hide}]" flex>
     <div :class="`loader-${theme}`" v-if="theme==='light'">
       <div class="css-square square1"></div>
       <div class="css-square square2"></div>
@@ -29,17 +29,24 @@ export default {
   name: "Loading",
   data (){
     return {
-      loading: true,
+      finished: true,
+      hide: false,
       theme: Math.random()>0.5?'light':'dark'
     }
   },
+  mounted() {
+  },
   methods: {
     start (){
-      this.loading = true
+      this.theme = Math.random()>0.5?'light':'dark'
+      this.finished = false
     },
     finish (){
-      this.loading = false
-    },
+      this.$el.addEventListener('animationend', ()=>{
+        this.finished = true
+      })
+      this.hide = true;
+    }
   }
 }
 </script>
@@ -71,7 +78,7 @@ export default {
     }
   }
   &.hide{
-    animation: hide-loading .4s ease-out forwards;
+    animation: hide-loading .6s ease-out forwards;
   }
   &.dark{
     background: rgba(0, 0, 0, 0.9);

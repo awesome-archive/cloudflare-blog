@@ -97,7 +97,7 @@ const
     }
 
 
-import showdown from 'showdown';
+import showdown from 'yunyuyuans-showdown';
 const options = {
     prefixHeaderId: '__markdown_header_id_',
     tables: true,
@@ -117,7 +117,7 @@ const commentConverter = new showdown.Converter({
 });
 
 export function parseMarkdown(text, isComment) {
-    return isComment?commentConverter.makeHtml(text):converter.makeHtml(text)
+  return isComment?commentConverter.makeHtml(text):converter.makeHtml(text)
 }
 
 // 二次处理html

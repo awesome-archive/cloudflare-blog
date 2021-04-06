@@ -1,5 +1,4 @@
 import Octokat from "octokat";
-import Sass from "sass.js";
 import {stringToB64} from "@/utils/utils";
 
 // github
@@ -14,7 +13,7 @@ export class GithubUtils {
     this.login = user
   }
 
-  async verifyToken() {
+  verifyToken() {
     return new Promise(resolve => {
       this.octo.user.fetch().then(res => {
         resolve([true, res])
@@ -24,12 +23,12 @@ export class GithubUtils {
     })
   }
 
-  async updateJsonFile(path, json) {
+  updateJsonFile(path, json) {
     path = `rebuild/json/${path}`;
     return this.updateSingleFile(path, JSON.stringify(json, null, 4));
   }
 
-  async updateSingleFile(path, content) {
+  updateSingleFile(path, content) {
     return new Promise(resolve => {
       this.repos.contents(path).fetch().then(res => {
         return this.repos.contents(path).add({
@@ -48,8 +47,8 @@ export class GithubUtils {
     })
   }
 
-  async updateMd(payload, dict) {
-    return await this.createCommit([
+  updateMd(payload, dict) {
+    return this.createCommit([
       {
         folder: `rebuild/md/${payload.file}.md`,
         content: payload.md
@@ -57,8 +56,8 @@ export class GithubUtils {
     ], `更新 md-${payload.file}`, dict)
   };
 
-  async updateRecord(payload, dict) {
-    return await this.createCommit([
+  updateRecord(payload, dict) {
+    return this.createCommit([
       {
         folder: `rebuild/record/${payload.file}.txt`,
         content: payload.txt
@@ -66,26 +65,17 @@ export class GithubUtils {
     ], `更新 record-${payload.file}`, dict)
   };
 
-  async updateTheme(scss, dict) {
-    return new Promise(resolve => {
-      Sass.compile(scss, async res => {
-        resolve(await this.createCommit([
-          {
-            folder: `markdown.scss`,
-            content: scss
-          },
-          {
-            folder: `markdown.css`,
-            content: res.text
-          }
-        ], `更新 theme`, dict))
-
-      });
-    })
+  updateTheme(scss, dict) {
+    return this.createCommit([
+        {
+          folder: `rebuild/markdown.scss`,
+          content: scss
+        }
+      ], `更新 theme`, dict)
   }
 
   // create commit
-  async createCommit(files, message, dict) {
+  createCommit(files, message, dict) {
     return new Promise(async resolve => {
       try {
         dict.state = '获取master的SHA';
@@ -127,7 +117,7 @@ export class GithubUtils {
     })
   }
 
-  async removeSome(folders, dic, what) {
+  removeSome(folders, dic, what) {
     return new Promise(async resolve => {
       try {
         const repo = this.repos;

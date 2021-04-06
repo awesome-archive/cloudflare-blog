@@ -27,7 +27,8 @@ export default {
     }
   },
 
-  loading: false,
+  loading: '~/block/Loading',
+  components: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: siteConfig.captainTitle,
@@ -42,6 +43,9 @@ export default {
     link: [
       { rel: 'shortcut icon', href: '/favicon.svg' },
     ],
+    style: [
+      {cssText: "", type: "text/css", id: "home-style"}
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -61,7 +65,11 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/sitemap'
   ],
+  sitemap: {
+    hostname: siteConfig.domain
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

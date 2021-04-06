@@ -114,6 +114,7 @@ import LoadingButton from "@/components/loading-button";
 import FloatInput from "@/components/float-input";
 import LoadingImg from "@/components/loading-img";
 import Resizer from "@/components/resizer";
+import '~/rebuild/markdown.scss'
 
 export default {
   name: "ArticleDetail",
@@ -164,10 +165,6 @@ export default {
   },
   head (){
     return {
-      link: [{
-        rel: 'stylesheet',
-        href: '/markdown.css'
-      }],
       title: this.id === 'new'?'新建':this.info.name
     }
   },
@@ -190,11 +187,13 @@ export default {
   async mounted() {
     // 初始化信息
     let mdText = '写点什么吧';
-    try {
-      const res = await import(`!!raw-loader!~/rebuild/md/${this.id}.md`);
-      mdText = res.default;
-    } catch (err) {
-      this.$message.error(parseAjaxError(err))
+    if (this.id !== 'new') {
+      try {
+        const res = await import(`!!raw-loader!~/rebuild/md/${this.id}.md`);
+        mdText = res.default;
+      } catch (err) {
+        this.$message.error(parseAjaxError(err))
+      }
     }
     this.$nextTick(async () => {
       const CodeMirror = (await import('codemirror')).default;

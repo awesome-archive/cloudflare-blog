@@ -1,8 +1,8 @@
 <template>
   <footer flex>
-    <a href="/backend" class="favicon" flex title="后台管理">
+    <NuxtLink to="/backend" class="favicon" flex title="后台管理">
       <img :src="`${originPrefix}/${siteConfig.avatar}?stamp=${siteConfig.timeStamp}`" alt="icon"/>
-    </a>
+    </NuxtLink>
     <div class="link" flex>
       <a v-for="k in Object.keys(links)" :key="k" target="_blank" :href="config[k]" :title="links[k]" flex>
         <svg-icon :name="k"/>

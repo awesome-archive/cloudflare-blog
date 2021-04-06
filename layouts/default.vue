@@ -23,6 +23,7 @@ import siteConfig from "~/assets/site-config";
 import Vue from 'vue';
 import '~/utils/filter';
 import config from "~/rebuild/json/config.json";
+import Loading from "~/block/Loading";
 const routes = {
   '^/?$': {name: 'home', bg: '/image/home.png'},
   '^/about/?$': {name: 'about', bg: '/image/about.png'},
@@ -35,8 +36,8 @@ const routes = {
 routes[`^${siteConfig.aboutUrl}/?$`] = {name: 'realAbout', bg: '/image/about.png'}
 
 export default {
-  components: {Message, TheHead: Head, TheFooter: Footer},
-  data (){
+  components: {Loading, Message, TheHead: Head, TheFooter: Footer},
+  data() {
     return {
       showBg: false,
     }
@@ -103,8 +104,15 @@ export default {
   },
   computed: {
     routeNow (){
-      if (process.server) return '/'
-      return location.pathname
+      if (process.server) return "";
+      const route = this.$route.path;
+      const header = document.querySelector("header");
+      if (route === "/") {
+        header.setAttribute("home", "t")
+      }else{
+        header.removeAttribute("home")
+      }
+      return route
     },
     noBg (){
       return this.routeNow === '/oauth'
@@ -133,6 +141,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

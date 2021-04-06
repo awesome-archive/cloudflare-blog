@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Article from "./article";
-import Comment from "./comment";
+import Article from "./fragments/article";
+import Comment from "./fragments/comment";
 
 export default {
   name: "Dashboard",
@@ -24,6 +24,11 @@ export default {
       record: [],
       recordInited: '',
       option: {},
+    }
+  },
+  head (){
+    return {
+      title: '统计面板'
     }
   },
   computed: {

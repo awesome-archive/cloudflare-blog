@@ -82,6 +82,11 @@ export default {
       pageNow: 1
     }
   },
+  head (){
+    return {
+      title: '评论管理'
+    }
+  },
   created() {
     this.doSearch()
   },

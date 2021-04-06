@@ -12,13 +12,13 @@
       </span>
     </div>
     <div class="link-list" flex>
-      <a v-for="item in menu" :key="item.name" :href="'/backend/'+item.pathName"
+      <NuxtLink v-for="item in menu" :key="item.name" :to="'/backend/'+item.pathName"
                    :class="{active: $route.path.replace(/^\/?backend\/?/, '').split('/')[0]===item.pathName}" class="list-item" flex>
         <span class="icon">
           <svg-icon :name="item.icon"/>
         </span>
         <span class="name">{{ item.name }}</span>
-      </a>
+      </NuxtLink>
     </div>
     <a class="home" href="/" flex="" title="回到主页">
       <img src="/image/i.png" alt="favicon"/>
@@ -98,9 +98,6 @@ export default {
     showLogin (){
       this.toggleLogin(true)
     }
-  },
-  fetch(ctx) {
-    console.log(ctx)
   }
 }
 </script>
@@ -123,7 +120,7 @@ export default {
   &.hide {
     transform: translateX(-100%);
 
-    ~ .body {
+    ::v-deep ~ .body {
       width: 100%;
     }
   }

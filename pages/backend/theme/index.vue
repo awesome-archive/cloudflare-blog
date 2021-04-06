@@ -43,10 +43,11 @@ import '~/assets/style/code-mirror/codeMirror.scss';
 import '~/assets/style/code-mirror/light-code.scss';
 import '~/assets/style/code-mirror/dracula-code.scss';
 
-import defaultMarkdownStyle from '!!raw-loader!~/assets/style/markdown-default.scss'
+import style from '!!raw-loader!~/rebuild/markdown.scss';
+import defaultMarkdownStyle from '!!raw-loader!~/assets/style/markdown-default.scss';
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
-import config from '~/rebuild/json/config.json'
-import md from '~/rebuild/json/md.json'
+import config from '~/rebuild/json/config.json';
+import md from '~/rebuild/json/md.json';
 import {mapState} from "vuex";
 import LoadingButton from "@/components/loading-button";
 import SvgIcon from "@/components/svg-icon";
@@ -84,51 +85,31 @@ export default {
   computed: {
     ...mapState('backend', ['gitUtil']),
   },
-  async asyncData() {
-    try {
-      const res = await fetch((process.env.NODE_ENV==='development' ? 'http://localhost:3000':'')+'/markdown.scss');
-      return {
-        style: await res.text()
-      }
-    }catch (err){
-      return {
-        err: err
-      }
-    }
-  },
-  mounted() {
-    this.init()
+  async mounted() {
+    const CodeMirror = (await import('codemirror')).default;
+    await import('codemirror/addon/edit/matchtags')
+    await import('codemirror/addon/edit/matchbrackets')
+    await import('codemirror/mode/sass/sass.js')
+    this.codeMirror = new CodeMirror(this.$refs.textarea, {
+      indentUnit: 2,
+      tabSize: 2,
+      theme: 'light',
+      lineNumbers: true,
+      line: true,
+      mode: 'sass',
+      matchTags: {bothTags: true},
+      matchBrackets: true,
+    });
+    this.codeMirror.on('change', () => {
+      this.scss = this.codeMirror.getValue();
+      this.uploadStyle()
+    });
+    this.codeMirror.setValue(style);
     this.$nextTick(()=>{
       processMdHtml(this.$refs.html, true, md)
     })
   },
   methods: {
-    async init() {
-      const CodeMirror = (await import('codemirror')).default;
-      await import('codemirror/addon/edit/matchtags')
-      await import('codemirror/addon/edit/matchbrackets')
-      await import('codemirror/mode/sass/sass.js')
-      this.codeMirror = new CodeMirror(this.$refs.textarea, {
-        indentUnit: 2,
-        tabSize: 2,
-        theme: 'light',
-        lineNumbers: true,
-        line: true,
-        mode: 'sass',
-        matchTags: {bothTags: true},
-        matchBrackets: true,
-      });
-      this.codeMirror.on('change', () => {
-        this.scss = this.codeMirror.getValue();
-        this.uploadStyle()
-      });
-      if (this.style){
-        this.scss = this.style;
-        this.codeMirror.setValue(this.scss)
-      }else{
-        this.$message.error(`获取markdown.scss失败:${this.err}`)
-      }
-    },
     uploadStyle() {
       const style = document.head.querySelector('#fake-markdown-style');
       Sass.compile(this.scss, (res) => {

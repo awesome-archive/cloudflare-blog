@@ -1,10 +1,10 @@
 <template>
   <header class="the-head">
     <div class="body" flex>
-      <a class="favicon" href="/">
+      <NuxtLink class="favicon" to="/">
         <img src="/image/i.png" alt="favicon"/>
-      </a>
-      <a class="txt" :href="siteConfig.aboutUrl" flex :title="siteConfig.corner">{{siteConfig.corner}}</a>
+      </NuxtLink>
+      <NuxtLink class="txt" :to="siteConfig.aboutUrl" flex :title="siteConfig.corner">{{siteConfig.corner}}</NuxtLink>
       <span @mouseenter="toggle(true)" @mouseleave="toggle(false)"></span>
     </div>
   </header>
@@ -55,6 +55,24 @@ export default {
   &.show-bg{
     background: transparent !important;
   }
+  &[home]{
+    background: transparent;
+    width: unset;
+    left: unset;
+    right: 0;
+    > .body {
+      width: unset;
+      right: 0;
+      left: unset;
+      .favicon {
+        display: none;
+      }
+    }
+    ::v-deep ~ .body.show-bg {
+      opacity: 1;
+    }
+  }
+
   > .body{
     width: 100%;
     height: 100%;

@@ -35,7 +35,7 @@
               <span class="line"></span>
               <span class="circle"></span>
             </div>
-            <a class="info" :href="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
+            <NuxtLink class="info" :to="`/article/${item.file}`" flex @mouseenter="activeItem=item.file" @mouseleave="activeItem=null">
               <loading-img :src="item.cover" :size="[-1, 10]"/>
               <div class="detail" flex>
                 <b>{{ item.name }}</b>
@@ -50,7 +50,7 @@
                   </span>
                 </div>
               </div>
-            </a>
+            </NuxtLink>
           </div>
           <pagination @turn="turnPage" :item-count="this.resultList.length" :page-now="pageNow" :per-count="perCount"/>
         </template>
@@ -62,7 +62,7 @@
               <div class="list" flex>
                 <div v-for="item in b[1]" class="simple-item" flex>
                   <time write-font>{{ simpleTime(item.time) }}</time>
-                  <a :href="`/article/${item.file}`">{{ item.name }}</a>
+                  <NuxtLink :to="`/article/${item.file}`">{{ item.name }}</NuxtLink>
                 </div>
               </div>
             </div>
@@ -81,6 +81,7 @@ import {getCommentNum} from "~/utils/github_graphql";
 import SvgIcon from "@/components/svg-icon";
 import Pagination from "@/components/pagination";
 import LoadingImg from "@/components/loading-img";
+import siteConfig from "assets/site-config";
 
 export default {
   name: "index",
@@ -117,6 +118,14 @@ export default {
       pageNow: 1,
       perCount: 8,
       commentNumDict: {}
+    }
+  },
+  head () {
+    return {
+      meta: [
+        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 文章列表` }
+      ],
+      title: '文章列表'
     }
   },
   computed: {

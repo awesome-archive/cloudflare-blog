@@ -1,21 +1,21 @@
 <template>
   <div class="home-page" flex>
     <div class="btns" flex>
-      <a href="/article" flex>
+      <NuxtLink to="/article" flex>
         <svg-icon name="article"/>
         <span class="name">文章</span>
         <span write-font class="tip">"技术"文章</span>
-      </a>
-      <a href="/record" flex>
+      </NuxtLink>
+      <NuxtLink to="/record" flex>
         <svg-icon name="record"/>
         <span class="name">记录</span>
         <span write-font class="tip">一框琐事</span>
-      </a>
-      <a href="/msg-board" flex>
+      </NuxtLink>
+      <NuxtLink to="/msg-board" flex>
         <svg-icon name="comments"/>
         <span class="name">留言板</span>
         <span write-font class="tip">谁的话语</span>
-      </a>
+      </NuxtLink>
     </div>
     <div class="info" flex>
       <div class="head" flex>
@@ -47,18 +47,8 @@ export default {
       meta: [
         { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 博客 主页 home` }
       ],
-      link: [{
-        rel: 'stylesheet',
-        href: '/home.css'
-      }]
     }
   },
-  computed: {
-  },
-  fetch() {
-  },
-  mounted() {
-  }
 }
 </script>
 

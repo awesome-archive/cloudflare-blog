@@ -66,17 +66,22 @@ export default {
       hasCache: false,
     }
   },
+  head (){
+    return {
+      title: this.id === 'new'?'新建':this.info.summary
+    }
+  },
   computed: {
     ...mapState('backend', ['gitUtil'])
   },
   asyncData({params}) {
     const id = params.detail;
     const newInfo = {
-        "file": "",
-        "time": 0,
-        "modifyTime": 0,
-        "summary": "",
-        "images": []
+        file: "",
+        time: 0,
+        modifyTime: 0,
+        summary: "",
+        images: []
       }
     return {
       id,

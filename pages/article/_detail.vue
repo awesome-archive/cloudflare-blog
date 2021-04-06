@@ -78,16 +78,17 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import mdConfig from '~/rebuild/json/md.json'
 import SvgIcon from "@/components/svg-icon";
+import siteConfig from "assets/site-config";
+import '~/rebuild/markdown.scss'
 
 export default {
   name: "article-detail",
   components: {SvgIcon, TheComment},
   head () {
     return {
-      link: [{
-        rel: 'stylesheet',
-        href: '/markdown.css'
-      }],
+      meta: [
+        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 文章详情` }
+      ],
       title: this.info.name
     }
   },

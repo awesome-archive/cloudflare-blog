@@ -39,9 +39,9 @@
         </thead>
         <tbody>
         <tr v-for="item in searchResult" :key="item.file">
-          <a tag="td" class="cover" :href="$route.path.replace(/\/$/, '')+'/'+item.file">
+          <NuxtLink tag="td" class="cover" :to="$route.path.replace(/\/$/, '')+'/'+item.file">
             <loading-img :src="item.cover || '/image/i.png'" :size="[-1, 8]"/>
-          </a>
+          </NuxtLink>
           <td class="title"><span>{{ item.name }}</span></td>
           <td class="summary"><span>{{ item.summary }}</span></td>
           <td class="time">
@@ -175,7 +175,7 @@ export default {
           state: ''
         }
       } else {
-        await this.$router.push('/article/new')
+        await this.$router.push('/backend/article/new')
       }
     },
     async removeMd(files) {
