@@ -74,7 +74,7 @@ export default {
   data (){
     return {
       menu,
-      showMenu: process.server?true:(localStorage.getItem('show-menu')||'true')==='true',
+      showMenu: process.server?true:((localStorage.getItem('show-menu')||'true')==='true'),
     }
   },
   computed: {

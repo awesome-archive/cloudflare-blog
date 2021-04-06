@@ -378,37 +378,15 @@ export default {
         }
         this.saving.state = '更新:md.json';
         sortByTime(this.md);
-        const res = await this.gitUtil.updateJsonFile('md.json', this.md);
-        if (res[0]) {
-          // 更新 md 和 html文件
-          const res = await this.gitUtil.updateMd({
-            file: fileId,
-            md: this.mdText
-          }, this.saving);
-          if (res[0]) {
-            // 更新rss
-            this.saving.state = '更新 RSS';
-            let rss = '';
-            try {
-              rss = genRss(this.md);
-            }catch (e){
-              this.$message.error('你的浏览器处理rss貌似出了问题：'+e);
-              return
-            }
-            const res = await this.gitUtil.updateSingleFile('dynamic/rss.xml', rss);
-            if (res[1]){
-              this.$message.success('上传成功!');
-              window.location.reload()
-            } else {
-              err = res[1];
-            }
-          } else {
-            err = res[1];
-          }
-        } else {
-          err = res[1];
-        }
-        if (err){
+        const res = await this.gitUtil.updateMd({
+          file: fileId,
+          content: this.mdText,
+          md: this.md
+        }, this.saving);
+        if (res[0]){
+          this.$message.success('上传成功!');
+          window.location.reload();
+        }else{
           this.$message.error(parseAjaxError(err))
         }
         this.saving = {

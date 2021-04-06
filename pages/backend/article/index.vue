@@ -195,21 +195,14 @@ export default {
             }
           }
           sortByTime(newMdList);
-          let res = await this.gitUtil.updateJsonFile('md.json', newMdList);
+          let res = await this.gitUtil.updateMdList({mdList: newMdList});
           this.deleting.state = '准备删除';
           if (res[0]) {
             // 删除文件夹
             res = await this.gitUtil.removeSome(files, this.deleting, 'md');
-            if (res[0]) {
-              // 更新rss
-              this.deleting.state = '更新 RSS';
-              const res = await this.gitUtil.updateSingleFile('dynamic/rss.xml', genRss(newMdList));
-              if (res[1]){
-                this.$message.success('删除成功!');
-                this.$emit('refresh')
-              } else {
-                err = res[1];
-              }
+            if (res[1]){
+              this.$message.success('删除成功!');
+              this.$emit('refresh')
             } else {
               err = res[1];
             }

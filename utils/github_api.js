@@ -1,5 +1,6 @@
 import Octokat from "octokat";
 import {stringToB64} from "@/utils/utils";
+import {genRss} from "@/pages/backend/utils";
 
 // github
 export class GithubUtils {
@@ -25,15 +26,11 @@ export class GithubUtils {
 
   updateJsonFile(path, json) {
     path = `rebuild/json/${path}`;
-    return this.updateSingleFile(path, JSON.stringify(json, null, 4));
-  }
-
-  updateSingleFile(path, content) {
     return new Promise(resolve => {
       this.repos.contents(path).fetch().then(res => {
         return this.repos.contents(path).add({
           message: `更新:${path}`,
-          content: stringToB64(content),
+          content: stringToB64(JSON.stringify(json, null, 4)),
           sha: res.sha,
           committer: this.committer
         }).then(res => {
@@ -47,22 +44,47 @@ export class GithubUtils {
     })
   }
 
-  updateMd(payload, dict) {
+  updateMd({file, content, mdList}, dict) {
     return this.createCommit([
       {
-        folder: `rebuild/md/${payload.file}.md`,
-        content: payload.md
-      }
-    ], `更新 md-${payload.file}`, dict)
+        folder: `rebuild/json/md.json`,
+        content: JSON.stringify(mdList, null, 4)
+      },
+      {
+        folder: `rebuild/md/${file}.md`,
+        content: content
+      },
+      {
+        folder: `static/rss.xml`,
+        content: genRss(mdList)
+      },
+    ], `更新 md-${file}`, dict)
   };
 
-  updateRecord(payload, dict) {
+  updateMdList({mdList}, dict) {
     return this.createCommit([
       {
-        folder: `rebuild/record/${payload.file}.txt`,
-        content: payload.txt
+        folder: `rebuild/json/md.json`,
+        content: JSON.stringify(mdList, null, 4)
+      },
+      {
+        folder: `static/rss.xml`,
+        content: genRss(mdList)
+      },
+    ], `更新 mdList}`, dict)
+  };
+
+  updateRecord({file, content, recordList}, dict) {
+    return this.createCommit([
+      {
+        folder: `rebuild/json/record.json`,
+        content: JSON.stringify(recordList, null, 4)
+      },
+      {
+        folder: `rebuild/record/${file}.txt`,
+        content: content
       }
-    ], `更新 record-${payload.file}`, dict)
+    ], `更新 record-${file}`, dict)
   };
 
   updateTheme(scss, dict) {

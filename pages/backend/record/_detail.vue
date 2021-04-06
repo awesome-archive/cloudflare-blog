@@ -169,19 +169,15 @@ export default {
         }
         this.saving.state = '更新:record.json'
         sortByTime(this.record)
-        const res = await this.gitUtil.updateJsonFile('record.json', this.record);
+        // 更新
+        const res = await this.gitUtil.updateRecord({
+          file: file,
+          content: this.text,
+          recordList: this.record
+        }, this.saving);
         if (res[0]) {
-          // 更新 txt 文件
-          const res = await this.gitUtil.updateRecord({
-            file: file,
-            txt: this.text
-          }, this.saving);
-          if (res[0]) {
-            this.$message.success('上传成功!');
-            window.location.reload()
-          } else {
-            this.$message.error(parseAjaxError(res[1]))
-          }
+          this.$message.success('上传成功!');
+          window.location.reload()
         } else {
           this.$message.error(parseAjaxError(res[1]))
         }
