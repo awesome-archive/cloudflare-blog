@@ -45,7 +45,10 @@ export default {
     ],
     style: [
       {cssText: "", type: "text/css", id: "home-style"}
-    ]
+    ],
+    script: [
+      { src: 'https://static.cloudflareinsights.com/beacon.min.js', async: false, defer: true ,'data-cf-beacon': '{"token": "92cdf13c9c964ad1ab71c638c6fde0fc"}'}
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

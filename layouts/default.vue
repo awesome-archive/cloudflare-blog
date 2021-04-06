@@ -101,18 +101,16 @@ export default {
         container.appendChild(div);
       }
     }
+    const header = document.querySelector("header");
+    if (this.routeNow === "/") {
+      header.setAttribute("home", "t")
+    }else{
+      header.removeAttribute("home")
+    }
   },
   computed: {
     routeNow (){
-      if (process.server) return "";
-      const route = this.$route.path;
-      const header = document.querySelector("header");
-      if (route === "/") {
-        header.setAttribute("home", "t")
-      }else{
-        header.removeAttribute("home")
-      }
-      return route
+      return this.$route.path
     },
     noBg (){
       return this.routeNow === '/oauth'
