@@ -11,6 +11,7 @@
 <script>
 import TheComment from "~/block/comment/index";
 import SvgIcon from "~/components/svg-icon";
+import '~/rebuild/markdown.scss'
 
 export default {
   name: "index",

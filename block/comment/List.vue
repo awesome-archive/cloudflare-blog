@@ -99,6 +99,7 @@ import {
 import WriteComment from "~/block/comment/Write";
 import {parseAjaxError} from "~/utils/utils";
 import config from '~/rebuild/json/config.json'
+import md from '~/rebuild/json/md.json'
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
 import {hljsAndInsertCopyBtn} from "~/utils/highlight";
 import UserCard from "~/block/comment/userCard";
@@ -215,9 +216,7 @@ export default {
             el.innerText = el.innerText.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
             hljsAndInsertCopyBtn(el);
           })
-          this.getMdList.then(res=>{
-            processMdHtml(el, true, res)
-          });
+          processMdHtml(el, true, md)
         })
       })
     },

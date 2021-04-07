@@ -30,13 +30,14 @@
 import SvgIcon from "@/components/svg-icon";
 import SingleButton from "@/components/single-button";
 import {timeStamp} from '~/utils/utils'
+import config from '~/rebuild/json/config.json'
 
 export default {
   name: "Footer",
   components: {SingleButton, SvgIcon},
   data() {
     return {
-      config: {},
+      config,
       timeStamp,
       isDev: process.env.NODE_ENV==='development',
       links: {
