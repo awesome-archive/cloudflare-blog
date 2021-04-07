@@ -62,6 +62,7 @@ import {mapState} from "vuex";
 import SingleButton from "@/components/single-button";
 import SvgIcon from "@/components/svg-icon";
 import Pagination from "@/components/pagination";
+import '~/rebuild/markdown.scss'
 
 export default {
   name: "Comment",
