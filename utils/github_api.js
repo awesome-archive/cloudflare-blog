@@ -71,7 +71,7 @@ export class GithubUtils {
         folder: `static/rss.xml`,
         content: genRss(mdList)
       },
-    ], `更新 mdList}`, dict)
+    ], `更新 mdList`, dict)
   };
 
   updateRecord({file, content, recordList}, dict) {
