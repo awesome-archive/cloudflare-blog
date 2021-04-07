@@ -1,5 +1,16 @@
 [
     {
+        "name": "使用Nuxtjs+cloudflare page部署高可用的半静态博客",
+        "file": "1617788956615",
+        "cover": "/image/i.png",
+        "time": 1617788956615,
+        "modifyTime": 1617788956615,
+        "summary": "标题辣末长，还要甚么简介",
+        "tags": [
+            "前端"
+        ]
+    },
+    {
         "name": "树莓派初次使用小记",
         "file": "1613797166312",
         "cover": "https://s3.ax1x.com/2021/02/19/yhMAfg.jpg",
