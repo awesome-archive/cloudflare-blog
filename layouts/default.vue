@@ -19,11 +19,9 @@
 import Message from "~/block/Message";
 import Head from "~/block/Head";
 import Footer from "~/block/Footer";
-import siteConfig from "~/assets/site-config";
 import Vue from 'vue';
 import '~/utils/filter';
 import config from "~/rebuild/json/config.json";
-import Loading from "~/block/Loading";
 const routes = {
   '^/?$': {name: 'home', bg: '/image/home.png'},
   '^/about/?$': {name: 'about', bg: '/image/about.png'},
@@ -33,17 +31,16 @@ const routes = {
   '^/msg-board/?$': {name: 'msg-board', bg: '/image/msgBoard.png'},
 }
 
-routes[`^${siteConfig.aboutUrl}/?$`] = {name: 'realAbout', bg: '/image/about.png'}
+routes[`^${config.aboutUrl}/?$`] = {name: 'realAbout', bg: '/image/about.png'}
 
 export default {
-  components: {Loading, Message, TheHead: Head, TheFooter: Footer},
+  components: {Message, TheHead: Head, TheFooter: Footer},
   data() {
     return {
       showBg: false,
     }
   },
   mounted() {
-    console.log('%c'+siteConfig.tip, 'text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);font-size: 20px;')
     const fontSize = localStorage.getItem('font-size');
     if (fontSize) {
       document.documentElement.style.fontSize = fontSize + 'px';
@@ -100,12 +97,6 @@ export default {
         `)
         container.appendChild(div);
       }
-    }
-    const header = document.querySelector("header");
-    if (this.routeNow === "/") {
-      header.setAttribute("home", "t")
-    }else{
-      header.removeAttribute("home")
     }
   },
   computed: {

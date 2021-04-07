@@ -25,7 +25,7 @@ export function delCache (key){
 
 // ************************************
 
-const siteConfig = require( '~/assets/site-config')
+import config from "~/rebuild/json/config.json";
 
 function escapeXml (s){
     return s
@@ -37,14 +37,14 @@ function escapeXml (s){
 }
 
 export function genRss (items){
-    if (siteConfig.rss.timeBy==='update'){
+    if (config.rss.timeBy==='update'){
         const temp = items.slice();
         temp.sort((a, b)=>{
             return a.modifyTime>b.modifyTime?-1:1
         });
         items = temp
     }
-    items = items.slice(0, siteConfig.rss.count)
+    items = items.slice(0, parseInt(config.rss.count))
     const origin = location.origin;
     function createEl (tag, html, notEscape){
         const el = xml.createElement(tag);
@@ -59,17 +59,17 @@ export function genRss (items){
     const rss = xml.getElementsByTagName('rss')[0];
 
     const channel = createEl('channel', '');
-    channel.appendChild(createEl('title', siteConfig.rss.title))
+    channel.appendChild(createEl('title', config.rss.title))
     channel.appendChild(createEl('link', origin))
-    channel.appendChild(createEl('description', siteConfig.rss.description))
-    channel.appendChild(createEl('ttl', siteConfig.rss.ttl))
-    channel.appendChild(createEl('category', siteConfig.rss.categories))
+    channel.appendChild(createEl('description', config.rss.description))
+    channel.appendChild(createEl('ttl', config.rss.ttl))
+    channel.appendChild(createEl('category', config.rss.categories))
     channel.appendChild(createEl('lastBuildDate', parseDate(new Date().getTime(), false)));
     channel.appendChild(createEl('language', 'zh-cn'))
 
     for (const i of items){
         const item = createEl('item');
-        item.appendChild(createEl('author', siteConfig.owner));
+        item.appendChild(createEl('author', config.githubName));
         item.appendChild(createEl('title', i.name));
         item.appendChild(createEl('link', origin+'/article/'+i.file));
         item.appendChild(createEl('description', `
@@ -78,7 +78,7 @@ export function genRss (items){
             <img src="${i.cover}" alt=""/>
         `, true));
         item.appendChild(createEl('category', i.tags.join('/')))
-        item.appendChild(createEl('pubDate', parseDate((siteConfig.rss.timeBy==='create'?i.time:i.modifyTime), false)));
+        item.appendChild(createEl('pubDate', parseDate((config.rss.timeBy==='create'?i.time:i.modifyTime), false)));
         item.appendChild(createEl('guid', i.time));
 
         channel.appendChild(item);

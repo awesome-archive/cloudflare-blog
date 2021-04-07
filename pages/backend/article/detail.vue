@@ -1,10 +1,10 @@
 <template>
   <div class="md-detail" flex>
     <div class="operate" flex>
-      <div class="back" @click="$router.push('/backend/article')" flex="">
+      <NuxtLink class="back" to="/backend/article" flex>
         <svg-icon name="back"/>
         <span>返回</span>
-      </div>
+      </NuxtLink>
       <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">删除草稿</single-button>
       <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">使用草稿</single-button>
       <single-button class="save-cache" :size="0.9" @click.native="saveCache">保存草稿</single-button>
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import {parseAjaxError, sortByTime} from "@/utils/utils";
+import {parseAjaxError, sortByTime, timeStamp} from "@/utils/utils";
 
 import 'codemirror/lib/codemirror.css';
 import '~/assets/style/code-mirror/codeMirror.scss';
@@ -103,8 +103,7 @@ import '~/assets/style/code-mirror/dracula-markdown.scss';
 
 import MarkdownHelp from "~/block/MarkdownHelp";
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
-import siteConfig from "~/assets/site-config";
-import {delCache, genRss, getCache, setCache} from "~/pages/backend/utils";
+import {delCache, getCache, setCache} from "~/pages/backend/utils";
 import config from '~/rebuild/json/config.json'
 import md from '~/rebuild/json/md.json'
 import {mapState} from "vuex";
@@ -116,6 +115,16 @@ import LoadingImg from "@/components/loading-img";
 import Resizer from "@/components/resizer";
 import '~/rebuild/markdown.scss'
 
+const newInfo = {
+  name: "编辑标题",
+  file: "",
+  cover: '/image/i.png',
+  time: "",
+  modifyTime: "",
+  summary: "编辑简介",
+  tags: []
+}
+
 export default {
   name: "ArticleDetail",
   components: {Resizer, LoadingImg, FloatInput, LoadingButton, SvgIcon, SingleButton, MarkdownHelp},
@@ -124,7 +133,9 @@ export default {
     return {
       config,
       md,
-      stamp: siteConfig.timeStamp,
+      id: '',
+      info: {},
+      stamp: timeStamp,
       showGuide: false,
       showFrame: 0,
       showSticker: false,
@@ -146,23 +157,6 @@ export default {
       codeMirrorCache: null,
     }
   },
-  asyncData({params}) {
-    const id = params.detail;
-    const newInfo = {
-        name: "编辑标题",
-        file: "",
-        cover: '/image/i.png',
-        time: "",
-        modifyTime: "",
-        summary: "编辑简介",
-        tags: []
-      }
-    return {
-      id,
-      info: JSON.parse(JSON.stringify(id === 'new' ?
-        newInfo : md.find(v => v.file === id) || newInfo))
-    }
-  },
   head (){
     return {
       title: this.id === 'new'?'新建':this.info.name
@@ -174,12 +168,26 @@ export default {
     },
     ...mapState('backend', ['gitUtil']),
   },
+  beforeRouteEnter (to, from, next){
+    next(vm=>{
+      const id = to.query.id;
+      const info = JSON.parse(JSON.stringify(id === 'new' ?
+        newInfo : md.find(v => v.file === id) || null));
+      if (info === null){
+        vm.$message.error(`未找到id为{${id}}的文章!`);
+        vm.$router.replace('/backend/article')
+      }else{
+        vm.id = id;
+        vm.info = info;
+      }
+    })
+  },
   watch: {
     htmlText (){
       this.$nextTick(async () => {
         processMdHtml(this.$refs.html, false, md)
       })
-    }
+    },
   },
   created() {
     this.hasCache = getCache(`article-${this.id}`)!==null;
@@ -196,11 +204,11 @@ export default {
       }
     }
     this.$nextTick(async () => {
-      const CodeMirror = (await import('codemirror')).default;
-      await import('codemirror/addon/edit/matchtags')
-      await import('codemirror/addon/edit/matchbrackets')
-      await import('codemirror/mode/sass/sass.js')
       if (this.codeMirror === null) {
+        const CodeMirror = (await import('codemirror')).default;
+        await import('codemirror/addon/edit/matchtags')
+        await import('codemirror/addon/edit/matchbrackets')
+        await import('codemirror/mode/sass/sass.js')
         this.codeMirror = new CodeMirror(this.$refs.textarea, {
           indentUnit: 2,
           tabSize: 2,
@@ -378,10 +386,11 @@ export default {
         }
         this.saving.state = '更新:md.json';
         sortByTime(this.md);
+        console.log(this.mdText)
         const res = await this.gitUtil.updateMd({
           file: fileId,
           content: this.mdText,
-          md: this.md
+          mdList: this.md
         }, this.saving);
         if (res[0]){
           this.$message.success('上传成功!');
@@ -423,6 +432,8 @@ export default {
       justify-content: center;
       background: #ff8595;
       transition: all .15s linear;
+      text-decoration: none;
+      color: black;
 
       &:hover {
         box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);

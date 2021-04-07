@@ -19,22 +19,20 @@ import Message from "~/block/Message";
 import Vue from 'vue';
 import '~/utils/filter';
 import Menu from "~/pages/backend/menu";
-import siteConfig from "assets/site-config";
-import {mapMutations, mapState} from "vuex";
+import config from "~/rebuild/json/config.json";
+import {mapMutations} from "vuex";
 import Login from "~/pages/backend/login";
 
 export default {
   components: {Login, Menu, Message},
   data (){
     return {
-      needPwd: true,
-      showMenu: process.server?true:(localStorage.getItem('show-menu')||'true')==='true',
       loginState: 'none', // none | doing | ok
     }
   },
   head: {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 后台管理 backends` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 后台管理 backends` }
       ],
       title: 'manage'
   },
@@ -52,7 +50,7 @@ export default {
       // verify
       this.loginState = 'doing';
       instance.verifyToken().then(res=>{
-        if (res[0] && res[1].login === siteConfig.owner) {
+        if (res[0] && res[1].login === config.githubName) {
           this.setGitUtil([instance, token]);
           this.$message.success('登录成功!');
           this.loginState = 'ok';

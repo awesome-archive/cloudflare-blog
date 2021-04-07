@@ -1,7 +1,7 @@
 <template>
   <footer flex>
     <NuxtLink to="/backend" class="favicon" flex title="后台管理">
-      <img :src="`${originPrefix}/${siteConfig.avatar}?stamp=${siteConfig.timeStamp}`" alt="icon"/>
+      <img :src="`/favicon.svg?stamp=${timeStamp}`" alt="icon"/>
     </NuxtLink>
     <div class="link" flex>
       <a v-for="k in Object.keys(links)" :key="k" target="_blank" :href="config[k]" :title="links[k]" flex>
@@ -27,10 +27,9 @@
 </template>
 
 <script>
-import siteConfig from '~/assets/site-config'
-import { mapState } from 'vuex'
 import SvgIcon from "@/components/svg-icon";
 import SingleButton from "@/components/single-button";
+import {timeStamp} from '~/utils/utils'
 
 export default {
   name: "Footer",
@@ -38,8 +37,7 @@ export default {
   data() {
     return {
       config: {},
-      originPrefix: '',
-      siteConfig,
+      timeStamp,
       isDev: process.env.NODE_ENV==='development',
       links: {
         aboutthis: '本站介绍',

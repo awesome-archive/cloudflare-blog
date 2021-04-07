@@ -5,7 +5,6 @@
 
 <script>
 import record from '~/rebuild/json/record.json'
-import siteConfig from "assets/site-config";
 
 export default {
   name: "index",

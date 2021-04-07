@@ -10,7 +10,7 @@
 
 <script>
 import record from '~/rebuild/json/record.json'
-import siteConfig from "assets/site-config";
+import config from "~/rebuild/json/config.json";
 
 export default {
   name: "index",
@@ -22,7 +22,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 记录 record` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 记录 record` }
       ],
       title: '记录'
     }

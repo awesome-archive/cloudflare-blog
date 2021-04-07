@@ -20,7 +20,6 @@
 <script>
 import {createComment, getLoginInfo, getRepoId, logError, removeToken, tokenKey} from "~/utils/github_graphql";
 import {parseAjaxError} from "~/utils/utils";
-import siteConfig from "~/assets/site-config";
 import config from "~/rebuild/json/config.json";
 import ErrAvatar from "~/block/comment/errAvatar";
 import WriteComment from "~/block/comment/Write";
@@ -52,8 +51,8 @@ export default {
     },
     oauthUrl (){
       return `https://github.com/login/oauth/authorize?`+
-              `client_id=${siteConfig.oauth.client_id}&`+
-              `redirect_uri=${siteConfig.oauth.redirect_uri}&`+
+              `client_id=${config.oauth.client_id}&`+
+              `redirect_uri=${config.oauth.redirect_uri}&`+
               `scope=public_repo`
     }
   },

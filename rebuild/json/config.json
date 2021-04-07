@@ -2,10 +2,36 @@
     "name": "云与原",
     "describe": "\"别否认自己\"",
     "aboutme": "<del>我是一个无趣的人</del>",
-    "aboutthis": "https://github.com/yunyuyuan/yunyuyuan.github.io/wiki/%E4%BB%8B%E7%BB%8D",
+    "captainTitle": "清予生 淡予时",
+    "tip": "代码改变世界(๑ˉ∀ˉ๑)",
+    "backgroundImg": "random",
+
+    "githubName": "yunyuyuan",
+    "githubEmail": "yun_yu_yuan@163.com",
+    "repo": "blog-data",
+    "domain": "https://blog.halberd.cn",
+    "oauth": {
+      "client_id": "81ee614d8099242a1bce",
+      "client_secret": "b05e85014297d9a3c34f8763f27dfeb6d19b392a",
+      "redirect_uri": "https://blog.halberd.cn/oauth"
+    },
+    "corsServer": "https://cors.bridged.cc/",
+    "rss": {
+      "title": "yunyuyuan的博客",
+      "description": "yunyuyuan的博文Rss",
+      "categories": "Blog/Web development",
+      "ttl": "3600",
+      "count": "10",
+      "timeBy": "create"
+    },
+
+    "aboutthis": "https://github.com/yunyuyuan/cloudflare-blog",
     "copyright": "2019-2021",
     "github": "https://github.com/yunyuyuan",
     "email": "mailto:yun-yu-yuan@qq.com",
+    "corner": "Simple code,Simple life",
+    "aboutUrl": "/simple-code-simple-life",
+
     "sticker": [
         {
             "name": "阿鲁",
@@ -18,7 +44,6 @@
             "count": 71
         }
     ],
-    "backgroundImg": "random",
     "friends": [
         {
             "summary": "我自己",

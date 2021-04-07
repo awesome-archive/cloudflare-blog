@@ -26,8 +26,6 @@
 
 <script>
 import SvgIcon from "@/components/svg-icon";
-const siteConfig = require( '~/assets/site-config');
-
 import AnimateRotate from "./AnimateRotate";
 import AnimateGlitch from "./AnimateGlitch";
 import AnimateRainbow from "./AnimateRainbow";
@@ -44,16 +42,16 @@ export default {
     return {
       comps,
       config,
-      text: siteConfig.corner,
+      text: config.corner,
       idx: Math.floor(Math.random()*comps.length)
     }
   },
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 关于 about` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 关于 about` }
       ],
-      title: siteConfig.corner
+      title: config.corner
     }
   },
   computed: {

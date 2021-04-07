@@ -7,8 +7,9 @@
       </label>
       <single-button class="select-" :active="selecting"
                      @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
-      <loading-button :icon="selecting?'download':'add'" class="new" :class="{white: !selecting}"
-                      @click.native="clickBtn">{{ selecting ? '导出' : '新建' }}</loading-button>
+      <NuxtLink to="/backend/record/detail?id=new">
+        <loading-button icon="add" class="new">新建</loading-button>
+      </NuxtLink>
     </div>
     <div class="delete" v-if="selecting" flex>
       <a>{{deleting.state}}</a>
@@ -30,9 +31,9 @@
         </thead>
         <tbody>
         <tr v-for="item in searchResult" :key="item.file">
-          <router-link class="link" tag="td" :to="'/backend/record/'+item.file">
+          <NuxtLink class="link" tag="td" :to="'/backend/record/detail?id='+item.file">
             <loading-img :src="item.images[0]" :size="[-1,-1]"/>
-          </router-link>
+          </NuxtLink>
           <td>
             <span>{{ item.summary }}</span>
           </td>
@@ -50,13 +51,12 @@
 
 <script>
 import {parseAjaxError, sortByTime} from "@/utils/utils";
-import jszip from "jszip";
-import * as fileSaver from "file-saver";
 
 import record from '~/rebuild/json/record.json'
 import SingleButton from "@/components/single-button";
 import LoadingImg from "@/components/loading-img";
 import LoadingButton from "@/components/loading-button";
+import {mapState} from "vuex";
 
 export default {
   name: "RecordList",
@@ -80,6 +80,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('backend', ['gitUtil']),
     searchResult() {
       if (this.search === '') return this.record;
       const lis = [];
@@ -111,44 +112,6 @@ export default {
         this.selectList.push(item)
       } else {
         this.selectList.splice(idx, 1);
-      }
-    },
-    async clickBtn() {
-      if (this.selecting) {
-        if (this.deleting.b) return;
-        if (!this.selectList.length) {
-          this.$message.warning('请选择需要导出的项目!');
-          return
-        }
-        this.deleting = {
-          b: true,
-          state: '导出中...'
-        }
-        const zip = new jszip(),
-            ranTime = new Date().getTime();
-        try {
-          this.deleting.state = '下载:record.json';
-          let res = await fetch(`/json/record.json?ran=${ranTime}`);
-          let txt = await res.text();
-          zip.file('record.json', txt);
-          for (const item of this.selectList) {
-            this.deleting.state = `下载:${item}.txt`;
-            res = await fetch(`/record/${item}.txt?ran=${ranTime}`);
-            txt = await res.text();
-            zip.file(`${item}.txt`, txt);
-          }
-          this.deleting.state = `正在压缩...`;
-          const content = await zip.generateAsync({type: "blob"});
-          fileSaver.saveAs(content, "record-export.zip");
-        } catch (err) {
-          this.$message.error(parseAjaxError(err));
-        }
-        this.deleting = {
-          b: false,
-          state: ''
-        }
-      } else {
-        await this.$router.push('/backend/record/new')
       }
     },
     async deleteSome() {
@@ -230,23 +193,24 @@ export default {
         width: 10rem;
       }
     }
-    > ::v-deep .new{
-      margin: 0 1rem 0 0;
-      padding: 0.6rem 1.2rem;
-      background: linear-gradient(to right, #e02bd2, #4444ff);
-      &.white{
-        > svg{
+    > a {
+      text-decoration: none;
+      ::v-deep .new {
+        margin: 0 1rem 0 0;
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(to right, #e02bd2, #4444ff);
+
+        > svg {
+          width: 1.4rem;
+          height: 1.4rem;
           fill: white;
         }
-      }
-      > svg{
-        width: 1.4rem;
-        height: 1.4rem;
-      }
-      > span{
-        margin-left: 0.5rem;
-        font-size: 0.95rem;
-        color: white;
+
+        > span {
+          margin-left: 0.5rem;
+          font-size: 0.95rem;
+          color: white;
+        }
       }
     }
     > .select-{

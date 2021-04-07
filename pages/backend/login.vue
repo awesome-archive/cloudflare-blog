@@ -26,7 +26,7 @@
 <script>
 import {mapMutations, mapState} from "vuex";
 
-const siteConfig = require( '~/assets/site-config')
+import config from "~/rebuild/json/config.json";
 import {GithubUtils} from "~/utils/github_api";
 import TopDialog from "@/components/top-dialog";
 import SvgIcon from "@/components/svg-icon";
@@ -72,11 +72,11 @@ export default {
       this.$emit('gitUtil', {
         instance: new GithubUtils(
             this.token,
-            siteConfig.owner,
-            siteConfig.repo,
+            config.githubName,
+            config.repo,
             {
-              name: siteConfig.owner,
-              email: siteConfig.email
+              name: config.githubName,
+              email: config.githubEmail
             }),
         token: this.token
       });

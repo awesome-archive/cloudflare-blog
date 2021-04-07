@@ -15,9 +15,9 @@
         <div class="right" flex>
           <div class="body" flex>
             <div class="head" flex>
-              <span class="nick-name" :class="{owner: item.nick===siteConfig.owner,self: item.nick===login}" flex>
+              <span class="nick-name" :class="{owner: item.nick===config.githubName,self: item.nick===login}" flex>
                 <a :href="item.site" target="_blank">{{ item.nick }}</a>
-                <span title="大boss" v-if="item.nick===siteConfig.owner"><svg-icon name="cmt-owner"/></span>
+                <span title="大boss" v-if="item.nick===config.githubName"><svg-icon name="cmt-owner"/></span>
                 <span title="我自己" v-if="item.nick===login"><svg-icon name="cmt-self"/></span>
               </span>
             </div>
@@ -27,7 +27,7 @@
             <div class="foot" flex>
               <a class="time">{{ item.time | time(false) }}</a>
               <span class="reply" @click="clickReply(item, null)">回复</span>
-              <span v-if="login===item.nick||login===siteConfig.owner" class="delete"
+              <span v-if="login===item.nick||login===config.owner" class="delete"
                     @click="closeComment(item.id)">删除</span>
               <span v-for="emoji in ['+1','-1']" class="react" :down="emoji==='-1'" :class="{active: item.reactions[emoji].has && login}" :title="emoji" @click="doReact(emoji, item, item.reactions[emoji].has && login)" flex>
                 <svg-icon :name="item.doing===emoji?'loading':'thumb'"/>
@@ -50,9 +50,9 @@
                 </div>
                 <div class="right" flex>
                   <div class="text">
-                    <span class="nick-name" :class="{owner: child.nick===siteConfig.owner,self: child.nick===login}" flex>
+                    <span class="nick-name" :class="{owner: child.nick===config.githubName,self: child.nick===login}" flex>
                       <a :href="item.site" target="_blank">{{ child.nick }}</a>
-                      <span title="大boss" v-if="child.nick===siteConfig.owner"><svg-icon name="cmt-owner"/></span>
+                      <span title="大boss" v-if="child.nick===config.githubName"><svg-icon name="cmt-owner"/></span>
                       <span title="我自己" v-if="child.nick===login"><svg-icon name="cmt-self"/></span>
                     </span>
                     <span class="--markdown" v-html="calcMdToHtml(child.content, true)" v-viewer></span>
@@ -60,7 +60,7 @@
                   <div class="foot" flex>
                     <a class="time">{{ child.time | time(false) }}</a>
                     <span class="reply" @click="clickReply(item, child)">回复</span>
-                    <span v-if="login===child.nick||login===siteConfig.owner" class="delete"
+                    <span v-if="login===child.nick||login===config.githubName" class="delete"
                           @click="deleteReply(child.id, item)">删除</span>
                     <span v-for="emoji in ['+1','-1']" class="react" :down="emoji==='-1'" :class="{active: child.reactions[emoji].has && login}" :title="emoji" @click="doReact(emoji, child, child.reactions[emoji].has && login)" flex>
                       <svg-icon :name="child.doing===emoji?'loading':'thumb'"/>
@@ -98,7 +98,7 @@ import {
 } from "~/utils/github_graphql";
 import WriteComment from "~/block/comment/Write";
 import {parseAjaxError} from "~/utils/utils";
-import siteConfig from '~/assets/site-config'
+import config from '~/rebuild/json/config.json'
 import {parseMarkdown, processMdHtml} from "~/utils/parseMd";
 import {hljsAndInsertCopyBtn} from "~/utils/highlight";
 import UserCard from "~/block/comment/userCard";
@@ -123,7 +123,7 @@ export default {
   },
   data() {
     return {
-      siteConfig,
+      config,
       onePageItemsCount: 8,
       pageNow: 1,
       itemCount: 0,

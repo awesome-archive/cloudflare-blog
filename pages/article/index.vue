@@ -81,7 +81,7 @@ import {getCommentNum} from "~/utils/github_graphql";
 import SvgIcon from "@/components/svg-icon";
 import Pagination from "@/components/pagination";
 import LoadingImg from "@/components/loading-img";
-import siteConfig from "assets/site-config";
+import config from "~/rebuild/json/config.json";
 
 export default {
   name: "index",
@@ -123,7 +123,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 文章列表` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 文章列表` }
       ],
       title: '文章列表'
     }

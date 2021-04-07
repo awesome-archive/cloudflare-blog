@@ -8,7 +8,7 @@
 <script>
 import {tokenKey} from "~/utils/github_graphql";
 
-import siteConfig from '~/assets/site-config'
+import config from '~/rebuild/json/config.json'
 import axios from "axios";
 import {queryMap} from "~/utils/utils";
 import SvgIcon from "@/components/svg-icon";
@@ -27,11 +27,11 @@ export default {
     if (query.code) {
       // 获取token
       axios({
-        url: siteConfig.corsServer+'https://github.com/login/oauth/access_token',
+        url: config.corsServer+'https://github.com/login/oauth/access_token',
         method: 'post',
         data: {
-          client_id: siteConfig.oauth.client_id,
-          client_secret: siteConfig.oauth.client_secret,
+          client_id: config.oauth.client_id,
+          client_secret: config.oauth.client_secret,
           code: query.code,
         }
       }).then(res => {
@@ -73,11 +73,5 @@ export default {
   >strong{
     font-size: 1.2rem;
   }
-}
-</style>
-
-<style>
-#loading{
-  display: none !important;
 }
 </style>

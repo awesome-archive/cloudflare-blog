@@ -76,7 +76,6 @@ import '~/assets/style/code-mirror/dracula-markdown.scss';
 import '~/assets/style/code-mirror/light-markdown.scss';
 import '~/assets/style/code-mirror/dracula-markdown.scss';
 import {parseMarkdown, processMdHtml} from "@/utils/parseMd";
-import siteConfig from "~/assets/site-config";
 import config from "~/rebuild/json/config.json";
 import md from "~/rebuild/json/md.json";
 import SvgIcon from "@/components/svg-icon";
@@ -86,6 +85,7 @@ import LoadingButton from "@/components/loading-button";
 import TopDialog from "@/components/top-dialog";
 import LoadingImg from "@/components/loading-img";
 import FloatInput from "@/components/float-input";
+import {timeStamp} from "@/utils/utils";
 
 export default {
   name: "WriteComment",
@@ -108,7 +108,7 @@ export default {
     return {
       md,
       config,
-      stamp: siteConfig.timeStamp,
+      stamp: timeStamp,
       comment: '',
       showGuide: false,
       showSticker: false,

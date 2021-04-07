@@ -78,7 +78,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import mdConfig from '~/rebuild/json/md.json'
 import SvgIcon from "@/components/svg-icon";
-import siteConfig from "assets/site-config";
+import config from "~/rebuild/json/config.json";
 import '~/rebuild/markdown.scss'
 
 export default {
@@ -87,7 +87,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 文章详情` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 文章详情` }
       ],
       title: this.info.name
     }

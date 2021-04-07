@@ -1,10 +1,10 @@
 <template>
   <div class="record-detail" flex>
     <div class="operate" flex>
-      <div class="back" @click="$router.push('/backend/record')" flex>
+      <NuxtLink class="back" to="/backend/record" flex>
         <svg-icon name="back"/>
         <span>返回</span>
-      </div>
+      </NuxtLink>
       <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">删除草稿</single-button>
       <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">使用草稿</single-button>
       <single-button class="save-cache" :size="0.9" @click.native="saveCache">保存草稿</single-button>
@@ -49,6 +49,15 @@ import SvgIcon from "@/components/svg-icon";
 import SingleButton from "@/components/single-button";
 import LoadingButton from "@/components/loading-button";
 import LoadingImg from "@/components/loading-img";
+import md from "@/rebuild/json/md.json";
+
+const newInfo = {
+  file: "",
+  time: 0,
+  modifyTime: 0,
+  summary: "",
+  images: []
+}
 
 export default {
   name: "RecordDetail",
@@ -57,6 +66,8 @@ export default {
   data() {
     return {
       record,
+      id: '',
+      info: {},
       saving: {
         b: false,
         state: ''
@@ -74,20 +85,19 @@ export default {
   computed: {
     ...mapState('backend', ['gitUtil'])
   },
-  asyncData({params}) {
-    const id = params.detail;
-    const newInfo = {
-        file: "",
-        time: 0,
-        modifyTime: 0,
-        summary: "",
-        images: []
+  beforeRouteEnter (to, from, next){
+    next(vm=>{
+      const id = to.query.id;
+      const info = JSON.parse(JSON.stringify(id === 'new' ?
+        newInfo : record.find(v => v.file === id) || null));
+      if (info === null){
+        vm.$message.error(`未找到id为{${id}}的文章!`);
+        vm.$router.replace('/backend/record')
+      }else{
+        vm.id = id;
+        vm.info = info;
       }
-    return {
-      id,
-      info: JSON.parse(JSON.stringify(id === 'new' ?
-        newInfo : record.find(v => v.file === id) || newInfo))
-    }
+    })
   },
   created() {
     this.hasCache = getCache(`record-${this.id}`)!==null;
@@ -211,6 +221,8 @@ export default {
       justify-content: center;
       background: #ff8595;
       transition: all .15s linear;
+      text-decoration: none;
+      color: black;
 
       &:hover {
         box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);

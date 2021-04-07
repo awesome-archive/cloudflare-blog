@@ -31,11 +31,11 @@
 
 <script>
 import config from "~/rebuild/json/config.json";
-import siteConfig from "~/assets/site-config";
 import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "index",
+  layout: 'home',
   components: {SvgIcon},
   data (){
     return {
@@ -45,7 +45,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 博客 主页 home` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 博客 主页 home` }
       ],
     }
   },

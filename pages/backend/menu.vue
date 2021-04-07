@@ -74,7 +74,7 @@ export default {
   data (){
     return {
       menu,
-      showMenu: process.server?true:((localStorage.getItem('show-menu')||'true')==='true'),
+      showMenu: true,
     }
   },
   computed: {
@@ -88,6 +88,9 @@ export default {
           return '已登录'
       }
     }
+  },
+  mounted() {
+    this.showMenu = process.server?true:((localStorage.getItem('show-menu')||'true')==='true')
   },
   methods: {
     ...mapMutations('backend', ['toggleLogin']),

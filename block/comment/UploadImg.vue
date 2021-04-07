@@ -7,7 +7,7 @@
 
 <script>
 import axios from "axios";
-import siteConfig from '~/assets/site-config'
+import config from '~/rebuild/json/config.json'
 import SingleButton from "@/components/single-button";
 import TopDialog from "@/components/top-dialog";
 
@@ -31,7 +31,7 @@ export default {
       const form = new FormData();
       form.append('smfile', this.file)
       axios({
-        url: siteConfig.corsServer+'https://sm.ms/api/v2/upload',
+        url: config.corsServer+'https://sm.ms/api/v2/upload',
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data',

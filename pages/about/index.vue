@@ -1,26 +1,26 @@
 <template>
   <div class="about" flex>
     <p>Hello there,Geeker.</p>
-    <span>Maybe you want to check <a :href="siteConfig.aboutUrl">this</a>.</span>
+    <span>Maybe you want to check <a :href="config.aboutUrl">this</a>.</span>
   </div>
 </template>
 
 <script>
-import siteConfig from '~/assets/site-config'
+import config from '~/rebuild/json/config.json'
 
 export default {
   name: "realAbout",
   data() {
     return{
-      siteConfig
+      config
     }
   },
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${siteConfig.name}的博客 关于 about` }
+        { hid: 'description', name: 'description', content: `${config.name}的博客 关于 about` }
       ],
-      title: siteConfig.corner
+      title: config.corner
     }
   },
   mounted() {

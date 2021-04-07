@@ -4,7 +4,6 @@ import checkImg from '!!file-loader!~/assets/svg/checked.svg'
 import uncheckImg from '!!file-loader!~/assets/svg/unchecked.svg'
 import markerImg from '!!file-loader!~/assets/svg/marker.svg'
 import toggleArrow from '!!file-loader!~/assets/svg/toggle-arrow.svg'
-import siteConfig from '~/assets/site-config'
 import pangu from 'pangu'
 
 const
@@ -98,6 +97,7 @@ const
 
 
 import showdown from 'yunyuyuans-showdown';
+import {timeStamp} from "@/utils/utils";
 const options = {
     prefixHeaderId: '__markdown_header_id_',
     tables: true,
@@ -126,7 +126,7 @@ export function processMdHtml(el, isComment, mdList) {
     el.querySelectorAll('img[alt=sticker]:not([parsed])').forEach(el => {
         el.setAttribute('parsed', '');
         const src = el.getAttribute('src');
-        el.src = `/sticker/${src.replace(/^(.*?)\/\d*$/, '$1')}/${src.replace(/.*?\/(\d*)$/, '$1')}.png?ran=${siteConfig.timeStamp}`
+        el.src = `/sticker/${src.replace(/^(.*?)\/\d*$/, '$1')}/${src.replace(/.*?\/(\d*)$/, '$1')}.png?ran=${timeStamp}`
     })
     // hljs
     el.querySelectorAll('pre>code:not(.hljs)').forEach(el => {

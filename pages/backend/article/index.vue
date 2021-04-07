@@ -12,8 +12,9 @@
       <div flex>
         <single-button class="select-" :active="selecting"
                        @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
-        <loading-button :icon="selecting?'download':'add'" class="new" :class="{white: !selecting}"
-                        @click.native="clickBtn">{{selecting?'导出':'新建'}}</loading-button>
+        <NuxtLink to="/backend/article/detail?id=new">
+          <loading-button icon="add" class="new">新建</loading-button>
+        </NuxtLink>
       </div>
     </div>
     <div class="delete" v-if="selecting" flex>
@@ -39,7 +40,7 @@
         </thead>
         <tbody>
         <tr v-for="item in searchResult" :key="item.file">
-          <NuxtLink tag="td" class="cover" :to="$route.path.replace(/\/$/, '')+'/'+item.file">
+          <NuxtLink tag="td" class="cover" :to="'/backend/article/detail?id='+item.file">
             <loading-img :src="item.cover || '/image/i.png'" :size="[-1, 8]"/>
           </NuxtLink>
           <td class="title"><span>{{ item.name }}</span></td>
@@ -78,12 +79,11 @@
 
 <script>
 import {parseAjaxError, sortByTime} from "@/utils/utils";
-import jszip from "jszip";
-import {genRss} from "~/pages/backend/utils";
 import md from '~/rebuild/json/md.json'
 import SingleButton from "@/components/single-button";
 import LoadingImg from "@/components/loading-img";
 import LoadingButton from "@/components/loading-button";
+import {mapState} from "vuex";
 
 export default {
   name: "ArticleList",
@@ -108,8 +108,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('backend', ['gitUtil']),
     searchResult() {
-      if (this.search === ''&&this.searchTags.length===0) return this.md;
+      if (this.search === ''&& this.searchTags.length===0) return this.md
       const lis = [];
       this.md.forEach(e => {
         if (e.name.search(this.search) !== -1 && e.tags.find(v=>this.searchTags.indexOf(v)!==-1)) {
@@ -154,30 +155,6 @@ export default {
         await this.removeMd(this.selectList);
       }
     },
-    async clickBtn() {
-      if (this.selecting) {
-        if (this.deleting.b) return;
-        if (!this.selectList.length) {
-          this.$message.warning('请选择需要导出的项目!');
-          return
-        }
-        this.deleting = {
-          b: true,
-          state: '导出中...'
-        }
-        const zip = new jszip();
-        try {
-        } catch (err) {
-          this.$message.error(parseAjaxError(err));
-        }
-        this.deleting = {
-          b: false,
-          state: ''
-        }
-      } else {
-        await this.$router.push('/backend/article/new')
-      }
-    },
     async removeMd(files) {
       if (this.deleting.b) return;
       if (this.gitUtil) {
@@ -195,12 +172,12 @@ export default {
             }
           }
           sortByTime(newMdList);
-          let res = await this.gitUtil.updateMdList({mdList: newMdList});
+          let res = await this.gitUtil.updateMdList({mdList: newMdList}, this.deleting);
           this.deleting.state = '准备删除';
           if (res[0]) {
             // 删除文件夹
             res = await this.gitUtil.removeSome(files, this.deleting, 'md');
-            if (res[1]){
+            if (res[0]){
               this.$message.success('删除成功!');
               this.$emit('refresh')
             } else {
@@ -270,23 +247,24 @@ export default {
     }
     >div{
       flex-wrap: nowrap;
-      > ::v-deep .new{
-        margin: 0 1rem 0 0;
-        padding: 0.6rem 1.2rem;
-        background: linear-gradient(to right, #e02bd2, #4444ff);
-        &.white{
-          > svg{
+      > a {
+        text-decoration: none;
+        ::v-deep .new {
+          margin: 0 1rem 0 0;
+          padding: 0.6rem 1.2rem;
+          background: linear-gradient(to right, #e02bd2, #4444ff);
+
+          > svg {
+            width: 1.4rem;
+            height: 1.4rem;
             fill: white;
           }
-        }
-        > svg{
-          width: 1.4rem;
-          height: 1.4rem;
-        }
-        > span{
-          margin-left: 0.5rem;
-          font-size: 0.95rem;
-          color: white;
+
+          > span {
+            margin-left: 0.5rem;
+            font-size: 0.95rem;
+            color: white;
+          }
         }
       }
       > .select-{

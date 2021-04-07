@@ -20,6 +20,8 @@ export function queryMap (){
   return map
 }
 
+export const timeStamp = new Date().getTime()
+
 export function parseAjaxError(err) {
     if (err.response) {
         const status = err.response.status;

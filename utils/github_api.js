@@ -150,6 +150,7 @@ export class GithubUtils {
         // 根据commit sha获取tree sha
         res = await repo.git.commits(res.object.sha).fetch();
         // 根据tree sha递归获取sha
+        const originPath = ['rebuild', what];
         const mdPath = ['rebuild', what];
 
         async function getMdSha(treeSha) {
@@ -172,7 +173,7 @@ export class GithubUtils {
         for (const i of res.tree) {
           if (folders.indexOf(i.path.replace('.txt', '').replace('.md', '')) !== -1) {
             dic.state = `删除 ${i.path}`;
-            await repo.contents(`${what}/${i.path}`).remove({
+            await repo.contents(`${originPath.join('/')}/${i.path}`).remove({
               sha: i.sha,
               message: '删除'
             });

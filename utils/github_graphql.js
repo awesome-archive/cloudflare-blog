@@ -1,16 +1,15 @@
 import axios from 'axios';
 import {parseAjaxError} from "~/utils/utils";
 export const tokenKey = 'comment-token';
-
-const siteConfig = require('~/assets/site-config');
+import config from "~/rebuild/json/config.json";
 
 let headers = {
     Authorization: 'token'
   },
   repoId = '';
 
-const owner = siteConfig.owner,
-  repo = siteConfig.repo,
+const owner = config.githubName,
+  repo = config.repo,
   // this token just can read public information
   publicHeaders = {
     Authorization: 'token ' + (['5', '66b4e73893d07b79dbcc3e36f86acc309e78b2d'].join(''))

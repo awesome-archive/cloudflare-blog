@@ -4,7 +4,7 @@
       <NuxtLink class="favicon" to="/">
         <img src="/image/i.png" alt="favicon"/>
       </NuxtLink>
-      <NuxtLink class="txt" :to="siteConfig.aboutUrl" flex :title="siteConfig.corner">{{siteConfig.corner}}</NuxtLink>
+      <NuxtLink class="txt" :to="config.aboutUrl" flex :title="config.corner">{{config.corner}}</NuxtLink>
       <span @mouseenter="toggle(true)" @mouseleave="toggle(false)"></span>
     </div>
   </header>
@@ -12,13 +12,13 @@
 
 <script>
 import Headroom from "headroom.js";
-const siteConfig = require( '~/assets/site-config');
+import config from '~/rebuild/json/config.json'
 
 export default {
   name: "TheHead",
   data() {
     return {
-      siteConfig
+      config
     }
   },
   mounted() {
@@ -55,7 +55,7 @@ export default {
   &.show-bg{
     background: transparent !important;
   }
-  &[home]{
+  &.in-home{
     background: transparent;
     width: unset;
     left: unset;
