@@ -297,23 +297,25 @@ export default {
       if (doingReact) return;
       doingReact = true;
       item.doing = emoji;
-      item.reactions[emoji] = {
-        has: !has,
-        count: item.reactions[emoji].count + (has ? -1 : 1)
-      };
+      this.$forceUpdate();
       const res = await doReaction({
         content: `THUMBS_${emoji === '-1' ? 'DOWN' : 'UP'}`,
         id: item.id,
         has: has
       });
-      item.doing = '';
       if (!res[0] || res[1].data.errors) {
         item.reactions[emoji] = {
           has: has,
           count: item.reactions[emoji].count + (has ? 1 : -1)
         };
         this.$message.error('出错了:' + (res[0] ? res[1].data.errors[0].message : parseAjaxError(res[1])))
+      }else{
+        item.reactions[emoji] = {
+          has: !has,
+          count: item.reactions[emoji].count + (has ? -1 : 1)
+        };
       }
+      item.doing = '';
       doingReact = false;
     }
   }

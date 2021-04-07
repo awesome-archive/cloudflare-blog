@@ -23,6 +23,7 @@ export default {
     }
   },
   created() {
+    if (process.server) return ;
     const query = queryMap();
     if (query.code) {
       // 获取token
