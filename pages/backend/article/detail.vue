@@ -354,7 +354,7 @@ export default {
     },
     async save() {
       if (this.saving.b) return;
-      if (this.gitUtil||true) {
+      if (this.gitUtil) {
         let err = null;
         const info = this.info;
         if (!info.name || !info.summary || !info.tags.length || !info.cover) {
@@ -386,7 +386,6 @@ export default {
         }
         this.saving.state = '更新:md.json';
         sortByTime(this.md);
-        console.log(this.mdText)
         const res = await this.gitUtil.updateMd({
           file: fileId,
           content: this.mdText,
