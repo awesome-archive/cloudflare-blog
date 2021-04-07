@@ -158,14 +158,17 @@ export default {
       // 重置pageNow
       this.pageNow = 1;
     },
-    pagedList (){
-      // 评论数
-      this.commentNumDict = {};
-      this.pagedList.forEach((e, idx)=>{
-        getCommentNum(e.file).then(res=>{
-          this.$set(this.commentNumDict, e.file, res[0]?res[1].data.data.search.issueCount:0)
+    pagedList:{
+      immediate: true,
+      handler () {
+        // 评论数
+        this.commentNumDict = {};
+        this.pagedList.forEach((e, idx) => {
+          getCommentNum(e.file).then(res => {
+            this.$set(this.commentNumDict, e.file, res[0] ? res[1].data.data.search.issueCount : 0)
+          })
         })
-      })
+      }
     }
   },
   async mounted() {

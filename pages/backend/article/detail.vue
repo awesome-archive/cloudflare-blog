@@ -169,16 +169,31 @@ export default {
     ...mapState('backend', ['gitUtil']),
   },
   beforeRouteEnter (to, from, next){
-    next(vm=>{
+    next(async vm=>{
       const id = to.query.id;
       const info = JSON.parse(JSON.stringify(id === 'new' ?
         newInfo : md.find(v => v.file === id) || null));
       if (info === null){
         vm.$message.error(`未找到id为{${id}}的文章!`);
-        vm.$router.replace('/backend/article')
+        vm.$router.replace('/backend/article').then();
       }else{
         vm.id = id;
         vm.info = info;
+        let mdText = '写点什么吧!'
+        if (id !== 'new') {
+          try {
+            const res = await import(`!!raw-loader!~/rebuild/md/${id}.md`);
+            mdText = res.default;
+          } catch (err) {
+            vm.$message.error(parseAjaxError(err))
+          }
+        }
+        if (vm.codeMirror){
+          vm.codeMirror.setValue(mdText);
+          vm.$forceUpdate();
+        }else{
+          vm.mdText = mdText;
+        }
       }
     })
   },
@@ -194,40 +209,29 @@ export default {
   },
   async mounted() {
     // 初始化信息
-    let mdText = '写点什么吧';
-    if (this.id !== 'new') {
-      try {
-        const res = await import(`!!raw-loader!~/rebuild/md/${this.id}.md`);
-        mdText = res.default;
-      } catch (err) {
-        this.$message.error(parseAjaxError(err))
-      }
+    if (this.codeMirror === null) {
+      const CodeMirror = (await import('codemirror')).default;
+      await import('codemirror/addon/edit/matchtags')
+      await import('codemirror/addon/edit/matchbrackets')
+      await import('codemirror/mode/sass/sass.js')
+      this.codeMirror = new CodeMirror(this.$refs.textarea, {
+        indentUnit: 2,
+        tabSize: 2,
+        theme: 'light',
+        lineNumbers: true,
+        line: true,
+        mode: 'markdown',
+        matchTags: {bothTags: true},
+        matchBrackets: true,
+      });
+      this.codeMirror.on('change', () => {
+        this.mdText = this.codeMirror.getValue()
+      });
+      this.codeMirror.on('blur', () => {
+        this.focusAt = this.codeMirror.getCursor();
+      });
     }
-    this.$nextTick(async () => {
-      if (this.codeMirror === null) {
-        const CodeMirror = (await import('codemirror')).default;
-        await import('codemirror/addon/edit/matchtags')
-        await import('codemirror/addon/edit/matchbrackets')
-        await import('codemirror/mode/sass/sass.js')
-        this.codeMirror = new CodeMirror(this.$refs.textarea, {
-          indentUnit: 2,
-          tabSize: 2,
-          theme: 'light',
-          lineNumbers: true,
-          line: true,
-          mode: 'markdown',
-          matchTags: {bothTags: true},
-          matchBrackets: true,
-        });
-        this.codeMirror.on('change', () => {
-          this.mdText = this.codeMirror.getValue()
-        });
-        this.codeMirror.on('blur', () => {
-          this.focusAt = this.codeMirror.getCursor();
-        });
-      }
-      this.codeMirror.setValue(this.codeMirrorCache || mdText);
-    })
+    this.codeMirror.setValue(this.codeMirrorCache || this.mdText);
   },
   methods: {
     mirrorChange (){
