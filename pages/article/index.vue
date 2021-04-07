@@ -459,6 +459,7 @@ export default {
             align-items: center;
             border-right: 1px solid gray;
             overflow: hidden;
+            flex-grow: 1;
 
             img {
               object-fit: cover;
