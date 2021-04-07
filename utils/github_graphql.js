@@ -36,8 +36,8 @@ const owner = config.githubName,
 /**
  * 检查 token 是否正确
  */
-export async function verifyToken() {
-  return await http({
+export function verifyToken() {
+  return http({
     query:
     `{
         viewer {
@@ -123,8 +123,8 @@ export function removeToken() {
 
 const commentPrefix = 'COMMENT-'
 
-export async function getPageComment({title, count, cursor}) {
-  return await http({
+export function getPageComment({title, count, cursor}) {
+  return http({
     query:
       `{
   search(query: "${commentPrefix}${title}+in:title repo:${owner}/${repo} is:open", type: ISSUE, ${((cursor && (cursor.search(',after') === 0)) || !cursor) ? 'first' : 'last'}: ${count}${cursor || ''}) {
@@ -182,9 +182,9 @@ export async function getPageComment({title, count, cursor}) {
   }, true)
 }
 
-export async function getCommentNum(title, state) {
+export function getCommentNum(title, state) {
   state = state||'open'
-  return await http({
+  return http({
     query:
       `{
   search(query: "${commentPrefix}${title}+in:title repo:${owner}/${repo} is:${state}", type: ISSUE, first: 0) {
@@ -195,8 +195,8 @@ export async function getCommentNum(title, state) {
   }, true)
 }
 
-export async function getPageCommentForBackend({state, title, count, cursor}) {
-  return await http({
+export function getPageCommentForBackend({state, title, count, cursor}) {
+  return http({
     query:
       `{
   search(query: "${commentPrefix}${title}+in:title repo:${owner}/${repo}${state?` is:${state}`:''}", type: ISSUE, ${((cursor && (cursor.search(',after') === 0)) || !cursor) ? 'first' : 'last'}: ${count}${cursor || ''}) {
@@ -221,8 +221,8 @@ export async function getPageCommentForBackend({state, title, count, cursor}) {
   }, true)
 }
 
-export async function getCommentChildren({id, count, cursor}) {
-  return await http({
+export function getCommentChildren({id, count, cursor}) {
+  return http({
     query:
       `query {
   node(id: "${id}") {
@@ -261,8 +261,8 @@ export async function getCommentChildren({id, count, cursor}) {
   }, true)
 }
 
-export async function createComment({title, body}) {
-  return await http({
+export function createComment({title, body}) {
+  return http({
     query:
       `mutation {
   createIssue(input: {repositoryId: "${repoId}", title: "${commentPrefix}${title}", body: "${body}"}) {
@@ -274,8 +274,8 @@ export async function createComment({title, body}) {
   }, false)
 }
 
-export async function closeOrDeleteComment(type, id, token) {
-  return await http({
+export function closeOrDeleteComment(type, id, token) {
+  return http({
     query:
       `mutation {
   ${type}Issue(input: {issueId: "${id}"}) {
@@ -286,8 +286,8 @@ export async function closeOrDeleteComment(type, id, token) {
   }, false, token)
 }
 
-export async function createReply({body, id}) {
-  return await http({
+export function createReply({body, id}) {
+  return http({
     query:
       `mutation {
   addComment(input: {body: "${body}", subjectId: "${id}"}) {
@@ -298,8 +298,8 @@ export async function createReply({body, id}) {
   }, false)
 }
 
-export async function deleteReply(id) {
-  return await http({
+export function deleteReply(id) {
+  return http({
     query:
       `mutation {
   deleteIssueComment(input: {id: "${id}"}) {
@@ -310,8 +310,8 @@ export async function deleteReply(id) {
   }, false)
 }
 
-export async function doReaction({content, id, has}) {
-  return await http({
+export function doReaction({content, id, has}) {
+  return http({
     query:
       `mutation {
   ${has?'remove':'add'}Reaction(input: {content: ${content}, subjectId: "${id}="}) {
@@ -324,8 +324,8 @@ export async function doReaction({content, id, has}) {
   }, false)
 }
 
-export async function getUserCard(name) {
-  return await http({
+export function getUserCard(name) {
+  return http({
     query:
       `{
   user(login: "${name}") {

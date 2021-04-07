@@ -306,6 +306,7 @@ export default {
         id: item.id,
         has: has
       });
+      item.doing = '';
       if (!res[0] || res[1].data.errors) {
         item.reactions[emoji] = {
           has: has,
@@ -314,7 +315,6 @@ export default {
         this.$message.error('出错了:' + (res[0] ? res[1].data.errors[0].message : parseAjaxError(res[1])))
       }
       doingReact = false;
-      item.doing = '';
     }
   }
 }
