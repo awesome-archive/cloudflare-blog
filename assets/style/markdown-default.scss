@@ -66,6 +66,7 @@
     }
     &[data-self-site]{
       width: 80%;
+      max-width: 27rem;
       margin-left: auto;
       margin-right: auto;
       text-decoration: none;
@@ -385,7 +386,7 @@
     margin-left: auto;
     margin-right: auto;
     border-radius: .3rem;
-    background: rgb(245, 245, 245);
+    background: white;
     border: 1px solid #a0a0a0;
     &[data-hidden]{
       border-color: transparent;
