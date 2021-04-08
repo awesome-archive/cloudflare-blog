@@ -96,7 +96,7 @@ export default {
     }
 
     &.active{
-      border-radius: 40%;
+      border-radius: 15%;
       background: #69ffd0;
       color: black;
       font-weight: bold;

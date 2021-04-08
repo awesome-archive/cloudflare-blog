@@ -109,6 +109,7 @@ export default {
       > b{
         margin-left: 2rem;
         font-size: 1.08rem;
+        word-break: keep-all;
       }
     }
     > .body{

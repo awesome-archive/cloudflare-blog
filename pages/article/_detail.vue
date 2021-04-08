@@ -280,7 +280,7 @@ export default {
         position: relative;
         min-width: 60%;
         text-align: center;
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         >time{
           content: attr(data-time);
           position: absolute;

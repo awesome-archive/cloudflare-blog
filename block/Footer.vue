@@ -1,24 +1,24 @@
 <template>
   <footer flex>
-    <NuxtLink to="/backend" class="favicon" flex title="后台管理">
+    <NuxtLink to="/backend" class="favicon" flex v-tips="'后台管理'">
       <img :src="`/favicon.svg?stamp=${timeStamp}`" alt="icon"/>
     </NuxtLink>
     <div class="link" flex>
-      <a v-for="k in Object.keys(links)" :key="k" target="_blank" :href="config[k]" :title="links[k]" flex>
+      <a v-for="k in Object.keys(links)" :key="k" target="_blank" :href="config[k]" v-tips="links[k]" flex>
         <svg-icon :name="k"/>
       </a>
     </div>
     <div class="adjust">
       <div class="font-size" flex>
-        <single-button title="字体减小" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
+        <single-button v-tips="'字体减小'" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
         <span>{{fontSize}}</span>
-        <single-button title="字体增大" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
+        <single-button v-tips="'字体增大'" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
       </div>
     </div>
     <div class="copyright" flex>
       <span>Copyright (c) {{ config.copyright }} <b write-font>{{ config.name }}</b><b> | {{ domain }}</b></span>
       <span flex>All right reserved
-        <a :href="`${isDev?'':'/dynamic'}/rss.xml`" target="_blank" title="rss订阅">
+        <a :href="`${isDev?'':'/dynamic'}/rss.xml`" target="_blank"  v-tips="'rss订阅'">
           <svg-icon name="rss"/>
         </a>
       </span>
@@ -33,7 +33,7 @@ import {timeStamp} from '~/utils/utils'
 import config from '~/rebuild/json/config.json'
 
 export default {
-  name: "Footer",
+  name: "TheFooter",
   components: {SingleButton, SvgIcon},
   data() {
     return {

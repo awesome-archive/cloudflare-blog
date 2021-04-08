@@ -1,6 +1,6 @@
 <template>
   <svg aria-hidden="true">
-    <use :fill="calcFill" :xlink:href="getName"></use>
+    <use :fill="calcFill" :xlink:href="icon"></use>
   </svg>
 </template>
 
@@ -17,11 +17,22 @@ export default {
       default: ''
     }
   },
+  data (){
+    return {
+      icon: ''
+    }
+  },
+  watch: {
+    name:{
+      handler() {
+        import(`~/assets/svg/${this.name}.svg`).then(res => {
+          this.icon = `#icon-${this.name}`;
+        })
+      },
+      immediate: true
+    }
+  },
   computed: {
-    getName() {
-      import(`~/assets/svg/${this.name}.svg`)
-      return `#icon-${this.name}`
-    },
     calcFill() {
       if (this.$props.fill) {
         return this.$props.fill

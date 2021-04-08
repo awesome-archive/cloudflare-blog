@@ -107,8 +107,6 @@ export default {
       return this.routeNow === '/oauth'
     },
     isBgImg() {
-      // 首页肯定是图片
-      if (this.routeNow === '/') return true;
       return config.backgroundImg === 'img' || (config.backgroundImg === 'random' && this.rand)
     },
     rand() {

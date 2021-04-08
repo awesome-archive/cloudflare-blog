@@ -15,6 +15,7 @@ import SvgIcon from "@/components/svg-icon";
 
 export default {
   name: "oauth",
+  layout: "oauth",
   components: {SvgIcon},
   data() {
     return {

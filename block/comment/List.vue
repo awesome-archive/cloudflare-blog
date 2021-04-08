@@ -297,7 +297,6 @@ export default {
       if (doingReact) return;
       doingReact = true;
       item.doing = emoji;
-      this.$forceUpdate();
       const res = await doReaction({
         content: `THUMBS_${emoji === '-1' ? 'DOWN' : 'UP'}`,
         id: item.id,

@@ -190,7 +190,6 @@ export default {
         }
         if (vm.codeMirror){
           vm.codeMirror.setValue(mdText);
-          vm.$forceUpdate();
         }else{
           vm.mdText = mdText;
         }

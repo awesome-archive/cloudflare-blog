@@ -1,8 +1,7 @@
 <template>
   <div id="index">
-    <img class="bg" src="/image/home.png" alt="bg"/>
-    <the-head class="in-home"/>
-    <section class="body show-head" flex>
+    <the-head :class="{'show-bg': showBg}"/>
+    <section class="body show-head" :class="{'show-bg': showBg}" flex>
       <Nuxt />
       <the-footer/>
     </section>
@@ -12,13 +11,13 @@
 <script>
 import Head from "~/block/Head";
 import Footer from "~/block/Footer";
-import Vue from 'vue';
 import '~/utils/filter';
 
 export default {
   components: {TheHead: Head, TheFooter: Footer},
   data() {
     return {
+      showBg: false,
     }
   },
   mounted() {
@@ -26,13 +25,6 @@ export default {
     if (fontSize) {
       document.documentElement.style.fontSize = fontSize + 'px';
     }
-    Vue.prototype.$message = this.$refs.message;
   },
 }
 </script>
-<style>
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-</style>

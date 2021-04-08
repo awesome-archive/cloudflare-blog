@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       defaultCardInfo: {
-        avatar: errImg,
+        avatar: '/image/error.jpg',
         ghUrl: 'https://github.com/',
         name: 'Unknown',
         bio: '暂无',
@@ -131,7 +131,7 @@ export default {
   border: 1px solid #cecece;
   box-shadow: 0 0 1rem rgba(0, 0, 0, .4);
   border-radius: .2rem;
-  z-index: $z-comment-card;
+  z-index: $z-index-comment-card;
   animation: fade-in .2s ease-out forwards;
   opacity: 0;
   @keyframes fade-in {

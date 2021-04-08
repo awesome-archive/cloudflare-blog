@@ -8,14 +8,14 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
-  generate: {
-    routes: fs.readdirSync(mdDir).map(filename => {
-      return {
-        route: `/article/${path.basename(filename, '.md')}`,
-        // content: fs.readFileSync(path.resolve(mdDir, filename))
-      }
-    })
-  },
+  // generate: {
+  //   routes: fs.readdirSync(mdDir).map(filename => {
+  //     return {
+  //       route: `/article/${path.basename(filename, '.md')}`,
+  //       content: fs.readFileSync(path.resolve(mdDir, filename))
+  //     }
+  //   })
+  // },
 
   router: {
     extendRoutes(routes, resolve) {
@@ -58,6 +58,7 @@ export default {
   plugins: [
     { src: '~/plugins/viewer.js' },
     { src: '~/plugins/logme.js' },
+    { src: '~/plugins/v-tips.js' },
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules

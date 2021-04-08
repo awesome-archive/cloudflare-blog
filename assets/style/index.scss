@@ -31,7 +31,7 @@
       display: block;
       transform: rotateZ(45deg);
       transform-origin: center center;
-      ::v-deep > .comet {
+      > .comet {
         position: absolute;
         height: 2px;
         background: linear-gradient(-45deg, rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
