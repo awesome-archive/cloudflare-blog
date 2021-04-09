@@ -8,8 +8,8 @@
     <template v-else>
       <label class="select" flex>
         <select v-model="xBy" @change="selectX">
-          <option selected value="create">创建时间</option>
-          <option value="modify">修改时间</option>
+          <option selected value="create">{{ $i18n('create') }}</option>
+          <option value="modify">{{ $i18n('update') }}</option>
         </select>
         <select v-model="yBy" @change="selectY">
           <option selected value="comment">评论数</option>

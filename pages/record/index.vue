@@ -17,6 +17,7 @@
 import record from '~/rebuild/json/record.json'
 import LoadingImg from "@/components/loading-img";
 import SvgIcon from "@/components/svg-icon";
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "index",
@@ -24,6 +25,13 @@ export default {
   data() {
     return {
       record,
+    }
+  },
+  head () {
+    return {
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,个人记录,records` },
+      ],
     }
   },
 }

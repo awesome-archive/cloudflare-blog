@@ -3,24 +3,24 @@
     <div class="operate" flex>
       <NuxtLink class="back" to="/backend/article" flex>
         <svg-icon name="back"/>
-        <span>返回</span>
+        <span>{{ $i18n('back') }}</span>
       </NuxtLink>
-      <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">删除草稿</single-button>
-      <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">使用草稿</single-button>
-      <single-button class="save-cache" :size="0.9" @click.native="saveCache">保存草稿</single-button>
-      <loading-button :loading="saving.b" icon="save" @click.native="save">上传</loading-button>
+      <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">{{ $i18n('del') +' '+ $i18n('draft') }}</single-button>
+      <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">{{ $i18n('use') +' '+ $i18n('draft') }}</single-button>
+      <single-button class="save-cache" :size="0.9" @click.native="saveCache">{{ $i18n('save') +' '+ $i18n('draft') }}</single-button>
+      <loading-button :loading="saving.b" icon="save" @click.native="save">{{ $i18n('upload') }}</loading-button>
       <span class="state">{{ saving.state }}</span>
     </div>
     <div class="head" flex>
-      <float-input @input="inputTitle" name="标题" :size="1.3" :value="info.name"/>
-      <float-input class="summary" @input="inputSummary" name="简介" :size="1"
+      <float-input @input="inputTitle" :name="$i18n('title')" :size="1.3" :value="info.name"/>
+      <float-input class="summary" @input="inputSummary" :name="$i18n('describe')" :size="1"
                    :value="info.summary"/>
     </div>
     <div class="info" flex>
       <div class="cover">
         <loading-img :src="info.cover" :size="[20, 15]" :data-viewer="true" v-viewer/>
         <label flex>
-          <span>封面链接:</span>
+          <span>{{ $i18n('coverLink') }}:</span>
           <input :value="info.cover" @focusout="changeCover"/>
         </label>
       </div>
@@ -32,34 +32,34 @@
           <div v-for="(tag, idx) in info.tags" :class="{editing: tagEditIndex===idx}" :key="tag">
             <input :disabled="tagEditIndex!==idx" @focusout="editTag" :data-old="tag" :data-idx="idx" :value="tag"/>
             <div flex="">
-              <span @click="clickTrash(idx)" title="删除">
+              <span @click="clickTrash(idx)" :title="$i18n('del')">
                 <svg-icon name="trash"/>
               </span>
-              <span @click="clickEdit" :data-idx="idx" title="编辑">
+              <span @click="clickEdit" :data-idx="idx" :title="$i18n('edit')">
                 <svg-icon name="edit"/>
               </span>
             </div>
           </div>
-          <span class="add" @click="addTag" title="添加标签" flex>
+          <span class="add" @click="addTag" :title="$i18n('add')+' '+$i18n('tag')" flex>
             <svg-icon name="add"/>
           </span>
         </div>
         <div class="time" flex>
-          <span><span>创建:</span>{{ (info ? info.time : 0) | time(false) }}</span>
-          <span><span>修改:</span>{{ (info ? info.modifyTime : 0) | time(false) }}</span>
+          <span><span>{{ $i18n('create') }}:</span>{{ (info ? info.time : 0) | time(false) }}</span>
+          <span><span>{{ $i18n('update') }}:</span>{{ (info ? info.modifyTime : 0) | time(false) }}</span>
         </div>
       </div>
     </div>
     <div class="text" flex ref="text">
       <div class="head" flex>
-        <span @click="enableSticker" title="表情" :class="{active: showSticker}" flex>
+        <span @click="enableSticker" :title="$i18n('sticker')" :class="{active: showSticker}" flex>
           <svg-icon name="cmt-sticker"/>
         </span>
-        <div @click="changeFrame" class="toggle-show-frame" title="切换视图" flex>
+        <div @click="changeFrame" class="toggle-show-frame" :title="$i18n('toggleView')" flex>
           <span :class="{active: showFrame===0||showFrame===-1}"></span>
           <span :class="{active: showFrame===0||showFrame===1}"></span>
         </div>
-        <span class="markdown-guide" @click="showGuide=true" title="markdown语法指南" flex>
+        <span class="markdown-guide" @click="showGuide=true" :title="$i18n('markdownGuide')" flex>
           <svg-icon name="markdown"/>
         </span>
         <div class="sticker" ref="sticker" :class="{active: showSticker}" flex v-if="config.sticker">
@@ -159,7 +159,10 @@ export default {
   },
   head (){
     return {
-      title: this.id === 'new'?'新建':this.info.name
+      title: this.id === 'new'?'新建':this.info.name,
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   computed: {
@@ -405,7 +408,7 @@ export default {
           state: ''
         }
       } else {
-        this.$message.warning('请先登录!');
+        this.$message.warning(this.$i18n('needLogin'));
         this.$emit('login')
       }
     }

@@ -12,15 +12,15 @@
       </span>
     </div>
     <div class="link-list" flex>
-      <NuxtLink v-for="item in menu" :key="item.name" :to="'/backend/'+item.pathName"
+      <NuxtLink v-for="item in menu" :key="item.pathName" :to="'/backend/'+item.pathName"
                    :class="{active: $route.path.replace(/^\/?backend\/?/, '').split('/')[0]===item.pathName}" class="list-item" flex>
         <span class="icon">
           <svg-icon :name="item.icon"/>
         </span>
-        <span class="name">{{ item.name }}</span>
+        <span class="name">{{$i18n(item.pathName)}}</span>
       </NuxtLink>
     </div>
-    <a class="home" href="/" flex="" title="回到主页">
+    <a class="home" href="/" flex="" :title="$i18n('backHome')">
       <img src="/image/i.png" alt="favicon"/>
     </a>
     <loading-button icon="account" :loading="loginState==='doing'" :class="loginState" @click.native="showLogin">
@@ -36,32 +36,26 @@ import LoadingButton from "@/components/loading-button";
 
 const menu = [
   {
-    name: '配置',
     pathName: 'config',
     icon: 'config'
   },
   {
-    name: '文章',
     pathName: 'article',
     icon: 'article'
   },
   {
-    name: '记录',
     pathName: 'record',
     icon: 'record'
   },
   {
-    name: '主题',
     pathName: 'theme',
     icon: 'brash'
   },
   {
-    name: '面板',
     pathName: 'dashboard',
     icon: 'dashboard'
   },
   {
-    name: '评论',
     pathName: 'comment',
     icon: 'comments'
   },
@@ -81,11 +75,11 @@ export default {
     loginStateText (){
       switch (this.loginState){
         case "none":
-          return '未登录'
+          return this.$i18n('noLogin')
         case "doing":
-          return '登录中'
+          return this.$i18n('logining')
         case "ok":
-          return '已登录'
+          return this.$i18n('logined')
       }
     }
   },
@@ -207,6 +201,8 @@ export default {
 
       > .name {
         margin-left: 1rem;
+        width: 4rem;
+        text-align: center;
         color: white;
       }
     }

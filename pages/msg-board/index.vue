@@ -2,9 +2,9 @@
   <div class="msg-board" flex>
     <div class="head" flex>
       <svg-icon name="comments"/>
-      <h1>留言板</h1>
+      <h1>{{ $i18n('msgBoard') }}</h1>
     </div>
-    <the-comment :title="'msg-board'"/>
+    <the-comment title="msg-board"/>
   </div>
 </template>
 
@@ -12,12 +12,18 @@
 import TheComment from "~/block/comment/index";
 import SvgIcon from "~/components/svg-icon";
 import '~/rebuild/markdown.scss'
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "index",
   components: {SvgIcon, TheComment},
-  mounted() {
-  }
+  head () {
+    return {
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,留言板,msg-board` },
+      ],
+    }
+  },
 }
 </script>
 

@@ -2,37 +2,37 @@
   <div class="config" flex>
     <div class="head" flex>
       <svg-icon name="config"/>
-      <b>修改配置信息</b>
+      <b>{{$i18n('changeConfig')}}</b>
     </div>
     <div class="list" flex>
       <the-fragment v-for="item in keys" :key="item.name" :name="item.name" :icon="item.icon">
-        <template v-for="(v,k) in item.data">
-          <float-input v-if="typeof v === typeof ''" :key="k"
-                       :name="v"
+        <template v-for="k in item.data">
+          <float-input v-if="typeof k === typeof ''" :key="k"
+                       :name="$i18n(k)"
                        :value="item.sub?config[item.sub][k]:config[k]"
                        :id="k"
                        :size="0.85"
                        @input="input($event, item.sub)"
           />
-          <label v-else-if="typeof v === typeof {}&&v.hasOwnProperty('choose')" :key="k" flex>
-            <b>{{ v.name }}:</b>
-            <span v-for="(value, option) in v.choose"
-                  :class="{active: (item.sub?config[item.sub][k]:config[k])===option}"
-                  @click="input([k, option], item.sub)">{{ value }}</span>
+          <label v-else-if="typeof k === typeof []" :key="k[0]" flex>
+            <b>{{ $i18n(k[0]) }}:</b>
+            <span v-for="key in k[1]"
+                  :class="{active: (item.sub?config[item.sub][k[0]]:config[k[0]])===key}"
+                  @click="input([k[0], key], item.sub)">{{ $i18n(key) }}</span>
           </label>
         </template>
       </the-fragment>
-      <the-fragment name="友情链接" icon="friends" class="friends">
+      <the-fragment :name="$i18n('friends')" icon="friends" class="friends">
         <div v-for="item in config.friends" :key="item.id" class="list-item" flex>
-          <float-input :name="'简介'" :value="item.summary" :id="item.id" :size="0.85" @input="friendsSummary"/>
+          <float-input :name="$i18n('describe')" :value="item.summary" :id="item.id" :size="0.85" @input="friendsSummary"/>
           <float-input :name="'github'" :value="item.github" :id="item.id" :size="0.85" @input="friendsGithub"/>
-          <float-input :name="'网站'" :value="item.site" :id="item.id" :size="0.85" @input="friendsSite"/>
-          <single-button class="del-btn" @click.native="friendsDel(item)">删除</single-button>
+          <float-input :name="$i18n('site')" :value="item.site" :id="item.id" :size="0.85" @input="friendsSite"/>
+          <single-button class="del-btn" @click.native="friendsDel(item)">{{ $i18n('del') }}</single-button>
         </div>
-        <loading-button :loading="false" icon="add" :size="0.9" @click.native="friendsNew">添加</loading-button>
+        <loading-button :loading="false" icon="add" :size="0.9" @click.native="friendsNew">{{ $i18n('add') }}</loading-button>
       </the-fragment>
     </div>
-    <loading-button :loading="updating" icon="save" @click.native="commitConfig">上传</loading-button>
+    <loading-button :loading="updating" icon="save" @click.native="commitConfig">{{ $i18n('upload') }}</loading-button>
   </div>
 </template>
 
@@ -60,82 +60,45 @@ export default {
       updating: false,
       keys: [
         {
-          name: '展示外观',
+          name: 'appearance',
           icon: 'brash',
-          data: {
-            name: '名称',
-            describe: '简介',
-            aboutme: '关于我',
-            captainTitle: '主页标题',
-            tip: '控制台打印',
-            backgroundImg: {
-              name: '背景',
-              choose: {
-                random: '随机',
-                img: '图片',
-                color: '流星',
-              }
-            }
-          }
+          data: ['name', 'describe', 'headDescribe', 'aboutme', 'captainTitle', 'tip',
+            ['backgroundImg', ['random', 'img', 'comet']]
+          ]
         },
         {
-          name: '编译配置',
+          name: 'buildConfig',
           icon: 'config',
-          data: {
-            githubName: 'github帐号',
-            githubEmail: 'github邮箱',
-            repo: '代码仓库',
-            domain: '网站域名',
-            corsServer: 'cors域名',
-          }
+          data: ['githubName', 'githubEmail', 'repo', 'domain', 'corsServer',
+          ]
         },
         {
           name: 'rss',
           icon: 'rss',
           sub: 'rss',
-          data: {
-            title: '标题',
-            description: '描述',
-            categories: '分类',
-            ttl: 'ttl',
-            count: '数量',
-            timeBy: {
-              name: '时间',
-              choose: {
-                create: '创建时间',
-                update: '更新时间',
-              }
-            }
-          }
+          data: ['title', 'description', 'categories', 'ttl', 'count', ['timeBy', ['create', 'update']]]
         },
         {
           name: 'oauth',
           icon: 'oauth',
           sub: 'oauth',
-          data: {
-            client_id: 'client_id',
-            client_secret: 'client_secret',
-            redirect_uri: 'redirect_uri',
-          }
+          data: ['client_id', 'client_secret', 'redirect_uri',]
         },
         {
-          name: '其他',
+          name: 'another',
           icon: 'more',
-          data: {
-            aboutthis: '关于本站',
-            copyright: 'copyright',
-            github: '我的github',
-            email: '我的邮箱',
-            corner: '网站右上角',
-            aboutUrl: '自定义关于页',
-          }
+          data: ['aboutthis', 'copyright', 'github', 'email', 'corner', 'aboutUrl',
+          ]
         },
       ]
     }
   },
   head() {
     return {
-      title: '网站配置'
+      title: '网站配置',
+      meta: [
+        {hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理`},
+      ],
     }
   },
   computed: {
@@ -143,7 +106,7 @@ export default {
   },
   methods: {
     input(payload, sub) {
-      if (sub){
+      if (sub) {
         return this.config[sub][payload[0]] = payload[1];
       }
       this.config[payload[0]] = payload[1];
@@ -185,12 +148,12 @@ export default {
         const res = await this.gitUtil.updateJsonFile('config.json', this.config);
         this.updating = false;
         if (res[0]) {
-          this.$message.success('更新成功!')
+          this.$message.success(this.$i18n('updateOk'))
         } else {
           this.$message.error(parseAjaxError(res[1]))
         }
       } else {
-        this.$message.warning('请先登录!');
+        this.$message.warning(this.$i18n('needLogin'));
         this.$emit('login')
       }
     }

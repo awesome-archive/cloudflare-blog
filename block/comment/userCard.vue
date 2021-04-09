@@ -15,29 +15,29 @@
       <div class="detail" flex>
         <div>
           <svg-icon name="card-website"/>
-          <b>个人网站</b>
+          <b>{{ $i18n('site') }}</b>
           <span>
             <a :href="href" target="_blank">{{ cardInfo.website }}</a>
           </span>
         </div>
         <div>
           <svg-icon name="card-location"/>
-          <b>地址</b>
+          <b>{{ $i18n('address') }}</b>
           <span>{{ cardInfo.location || defaultCardInfo.location }}</span>
         </div>
         <div>
           <svg-icon name="card-followers"/>
-          <b>粉丝数</b>
+          <b>{{ $i18n('followers') }}</b>
           <span>{{ cardInfo.followers || defaultCardInfo.followers }}</span>
         </div>
         <div>
           <svg-icon name="card-repositories"/>
-          <b>仓库数</b>
+          <b>{{ $i18n('repos') }}</b>
           <span>{{ cardInfo.repoCount || defaultCardInfo.repoCount }}</span>
         </div>
         <div>
           <svg-icon name="card-disk"/>
-          <b>仓库大小</b>
+          <b>{{ $i18n('reposSize') }}</b>
           <span>{{ cardInfo.repoSize || defaultCardInfo.repoSize }}</span>
         </div>
       </div>

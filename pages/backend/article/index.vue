@@ -2,7 +2,7 @@
   <div class="md" flex>
     <div class="head" flex>
       <label class="search" flex>
-        <span>搜索</span>
+        <span>{{ $i18n('search') }}</span>
         <input v-model="search"/>
         <b v-if="searchTags.length">|</b>
         <a v-for="tag in searchTags"
@@ -11,17 +11,17 @@
       </label>
       <div flex>
         <single-button class="select-" :active="selecting"
-                       @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
+                       @click.native="selecting=!selecting">{{selecting?$i18n('cancel'):$i18n('choose')}}</single-button>
         <NuxtLink to="/backend/article/detail?id=new">
-          <loading-button icon="add" class="new">新建</loading-button>
+          <loading-button icon="add" class="new">{{ $i18n('new') }}</loading-button>
         </NuxtLink>
       </div>
     </div>
     <div class="delete" v-if="selecting" flex>
       <a>{{deleting.state}}</a>
-      <single-button class="del-btn" :disabled="deleting.b||selectList.length===0" @click.native="deleteSome">删除</single-button>
+      <single-button class="del-btn" :disabled="deleting.b||selectList.length===0" @click.native="deleteSome">{{ $i18n('del') }}</single-button>
       <span class="check-box" :class="{active: allSelected}" @click="changeSelectAll"></span>
-      <span class="txt">全选</span>
+      <span class="txt">{{ $i18n('chooseAll') }}</span>
     </div>
     <div class="delete" v-else-if="deleting.b" flex>
       <a>{{deleting.state}}</a>
@@ -30,12 +30,12 @@
       <table>
         <thead>
         <tr>
-          <td class="cover">封面</td>
-          <td class="title">标题</td>
-          <td class="summary">简介</td>
-          <td class="time">时间</td>
-          <td class="tags">标签</td>
-          <td class="operate">操作</td>
+          <td class="cover">{{ $i18n('cover') }}</td>
+          <td class="title">{{ $i18n('title') }}</td>
+          <td class="summary">{{ $i18n('describe') }}</td>
+          <td class="time">{{ $i18n('time') }}</td>
+          <td class="tags">{{ $i18n('tag') }}</td>
+          <td class="operate">{{ $i18n('operate') }}</td>
         </tr>
         </thead>
         <tbody>
@@ -47,11 +47,11 @@
           <td class="summary"><span>{{ item.summary }}</span></td>
           <td class="time">
             <div flex>
-              <span>创建:</span>
+              <span>{{ $i18n('create') }}:</span>
               <a>{{ item.time | time(true) }}</a>
             </div>
             <div flex>
-              <span>修改:</span>
+              <span>{{ $i18n('update') }}:</span>
               <a>{{ item.modifyTime | time(true) }}</a>
             </div>
           </td>
@@ -59,7 +59,7 @@
             <div flex>
               <span v-for="tag in item.tags"
                     :style="{background: $options.filters.color(tag)}"
-                    :title="`查询标签:${tag}`"
+                    :title="`${$i18n('search')}:${tag}`"
                     @click="toggleSearchTag(tag)"
               >{{ tag }}</span>
             </div>
@@ -68,7 +68,7 @@
             <span v-if="selecting" :class="{active: selectList.indexOf(item.file)!==-1}" class="check-box"
                   @click="toggleSelect(item)"></span>
             <single-button v-else class="del-btn" @click.native="removeMd([item.file])"
-                           :disabled="deleting.b">删除</single-button>
+                           :disabled="deleting.b">{{ $i18n('del') }}</single-button>
           </td>
         </tr>
         </tbody>
@@ -84,6 +84,7 @@ import SingleButton from "@/components/single-button";
 import LoadingImg from "@/components/loading-img";
 import LoadingButton from "@/components/loading-button";
 import {mapState} from "vuex";
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "ArticleList",
@@ -104,7 +105,10 @@ export default {
   },
   head (){
     return {
-      title: '文章列表'
+      title: '文章列表',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   computed: {
@@ -158,11 +162,11 @@ export default {
     async removeMd(files) {
       if (this.deleting.b) return;
       if (this.gitUtil) {
-        if (confirm('确认删除?')) {
+        if (confirm(this.$i18n('configDelete'))) {
           let err = null;
           this.deleting = {
             b: true,
-            state: '更新md.json'
+            state: this.$i18n('_update')+'md.json'
           };
           // 更新md
           const newMdList = [];
@@ -173,12 +177,11 @@ export default {
           }
           sortByTime(newMdList);
           let res = await this.gitUtil.updateMdList({mdList: newMdList}, this.deleting);
-          this.deleting.state = '准备删除';
           if (res[0]) {
             // 删除文件夹
             res = await this.gitUtil.removeSome(files, this.deleting, 'md');
             if (res[0]){
-              this.$message.success('删除成功!');
+              this.$message.success(this.$i18n('deleteOk'));
               this.$emit('refresh')
             } else {
               err = res[1];
@@ -195,7 +198,7 @@ export default {
           };
         }
       } else {
-        this.$message.warning('请先登录!');
+        this.$message.warning(this.$i18n('needLogin'));
         this.$emit('login')
       }
     }

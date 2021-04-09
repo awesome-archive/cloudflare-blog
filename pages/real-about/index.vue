@@ -8,7 +8,7 @@
         <div class="friends">
           <p flex>
             <svg-icon name="friends"/>
-            友情链接
+            {{ $i18n('friends') }}
           </p>
           <div v-for="i in config.friends" flex>
             <span>{{i.summary}}</span>
@@ -49,7 +49,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${config.name}的博客 关于 about` }
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,关于,about` }
       ],
       title: config.corner
     }

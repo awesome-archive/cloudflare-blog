@@ -26,9 +26,9 @@
             </div>
             <div class="foot" flex>
               <a class="time">{{ item.time | time(false) }}</a>
-              <span class="reply" @click="clickReply(item, null)">回复</span>
+              <span class="reply" @click="clickReply(item, null)">{{ $i18n('reply') }}</span>
               <span v-if="login===item.nick||login===config.owner" class="delete"
-                    @click="closeComment(item.id)">删除</span>
+                    @click="closeComment(item.id)">{{ $i18n('del') }}</span>
               <span v-for="emoji in ['+1','-1']" class="react" :down="emoji==='-1'" :class="{active: item.reactions[emoji].has && login}" :title="emoji" @click="doReact(emoji, item, item.reactions[emoji].has && login)" flex>
                 <svg-icon :name="item.doing===emoji?'loading':'thumb'"/>
                 <span v-if="item.reactions[emoji].count>0">{{item.reactions[emoji].count}}</span>
@@ -59,9 +59,9 @@
                   </div>
                   <div class="foot" flex>
                     <a class="time">{{ child.time | time(false) }}</a>
-                    <span class="reply" @click="clickReply(item, child)">回复</span>
+                    <span class="reply" @click="clickReply(item, child)">{{ $i18n('reply') }}</span>
                     <span v-if="login===child.nick||login===config.githubName" class="delete"
-                          @click="deleteReply(child.id, item)">删除</span>
+                          @click="deleteReply(child.id, item)">{{ $i18n('del') }}</span>
                     <span v-for="emoji in ['+1','-1']" class="react" :down="emoji==='-1'" :class="{active: child.reactions[emoji].has && login}" :title="emoji" @click="doReact(emoji, child, child.reactions[emoji].has && login)" flex>
                       <svg-icon :name="child.doing===emoji?'loading':'thumb'"/>
                       <span v-if="child.reactions[emoji].count>0">{{child.reactions[emoji].count}}</span>

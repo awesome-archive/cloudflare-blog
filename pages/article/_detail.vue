@@ -3,9 +3,9 @@
     <div v-if="!info.name" class="not-found" flex>
       <div flex>
         <svg-icon name="grass"/>
-        <strong write-font>查无此文</strong>
+        <strong write-font>{{ $i18n('noSuchArticle') }}</strong>
       </div>
-      <a href="/article">返回列表</a>
+      <a href="/article">{{ $i18n('backArticleList') }}</a>
     </div>
     <div v-else class="detail">
       <div class="head" flex>
@@ -21,7 +21,7 @@
                     @click="toAnchor(item.el)" flex><span></span>{{ item.text }}</span>
             </div>
             <div class="tail" flex>
-              <div class="share" flex title="二维码">
+              <div class="share" flex :title="$i18n('qrcide')">
                 <div class="qr" tabindex="1" onfocus="this.classList.add('click')"
                      onblur="this.classList.remove('click')">
                   <span flex>
@@ -35,7 +35,7 @@
                   </div>
                 </div>
               </div>
-              <a class="back" href="/article" title="返回文章列表">
+              <a class="back" href="/article" :title="$i18n('backArticleList')">
                 <svg-icon name="back"/>
               </a>
             </div>
@@ -43,16 +43,16 @@
               <div class="tags" flex>
                 <svg-icon name="tag"/>
                 <a v-for="tag in info.tags||[]" :style="{background: $options.filters.color(tag)}"
-                   :href="`/article?search-tag=${tag}`" :title="`查看标签-${tag}`">{{ tag }}</a>
+                   :href="`/article?search-tag=${tag}`" :title="`${$i18n('search')}-${tag}`">{{ tag }}</a>
               </div>
               <div class="time" flex>
-                <span>最后修改</span>
+                <span>{{ $i18n('lastModify') }}</span>
                 <time>{{ info.modifyTime|time(false) }}</time>
               </div>
             </div>
           </div>
           <span class="toggle-aside" :class="{active: asideActive}" @click="asideActive = !asideActive" flex
-                :title="`${asideActive?'关闭':'展开'}侧栏`">
+                :title="$i18n(`${asideActive?'close':'open'}Sidebar`)">
             <svg-icon name="arrow"/>
           </span>
         </aside>
@@ -87,7 +87,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${config.name}的博客 文章详情` }
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,文章详情` }
       ],
       title: this.info.name
     }

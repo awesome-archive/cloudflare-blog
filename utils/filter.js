@@ -5,7 +5,7 @@ import md5 from 'md5';
 Vue.filter('time', parseDate)
 
 export function parseDate (value, isShort){
-    return new dayjs(value).format(`YYYY-MM-DD${!isShort ? ' HH:mm:ss' : ''}`)
+    return new dayjs(value).format(`YYYY-M-DD${!isShort ? ' HH:mm:ss' : ''}`)
 }
 
 const colorList = [

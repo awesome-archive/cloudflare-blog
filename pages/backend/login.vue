@@ -2,23 +2,23 @@
   <top-dialog class="login" v-show="showLogin" @click.native.self="hide">
     <div class="head" flex>
       <svg-icon name="backend"/>
-      <b>后台管理账户</b>
+      <b>{{ $i18n('managerAccount') }}</b>
     </div>
     <div class="body" flex>
       <float-input :name="'token'" @input="input" :id="'token'" :size="1" :value="token"/>
-      <span :class="{err: true, show: !token}" title="请填写此字段">
+      <span :class="{err: true, show: !token}" :title="$i18n('required')">
               <svg-icon name="warning"/>
             </span>
     </div>
     <div class="option">
       <label @click="remember = !remember" flex>
         <a :class="{active: remember}" flex></a>
-        <span>在本机上记住我</span>
+        <span>{{ $i18n('rememberMe') }}</span>
       </label>
     </div>
     <div class="btn" flex>
-      <single-button class="exit" @click.native="hide">取消</single-button>
-      <single-button :class="{save: true, disabled: !token}" @click.native="save">保存</single-button>
+      <single-button class="exit" @click.native="hide">{{ $i18n('cancel') }}</single-button>
+      <single-button :class="{save: true, disabled: !token}" @click.native="save">{{ $i18n('save') }}</single-button>
     </div>
   </top-dialog>
 </template>

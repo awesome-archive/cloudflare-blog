@@ -38,7 +38,8 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no' },
-      { hid: 'description', name: 'description', content: config.rss.title }
+      { hid: 'description', name: 'description', content: config.headDescribe },
+      { hid: 'keywords', name: 'keywords', content: config.rss.title }
     ],
     link: [
       { rel: 'shortcut icon', href: '/favicon.svg' },
@@ -59,6 +60,7 @@ export default {
     { src: '~/plugins/viewer.js' },
     { src: '~/plugins/logme.js' },
     { src: '~/plugins/v-tips.js' },
+    { src: '~/plugins/i18n.js' },
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -67,7 +69,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
   ],
   sitemap: {
     hostname: config.domain

@@ -14,6 +14,7 @@ import Head from "~/block/Head";
 import Footer from "~/block/Footer";
 import Vue from 'vue';
 import '~/utils/filter';
+import mixins from "@/utils/mixins";
 
 export default {
   components: {TheHead: Head, TheFooter: Footer},
@@ -21,6 +22,7 @@ export default {
     return {
     }
   },
+  mixins: [mixins],
   mounted() {
     const fontSize = localStorage.getItem('font-size');
     if (fontSize) {
@@ -30,7 +32,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 ::-webkit-scrollbar {
   width: 0;
   height: 0;

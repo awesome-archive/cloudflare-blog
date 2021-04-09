@@ -3,29 +3,29 @@
     <div class="operate" flex>
       <NuxtLink class="back" to="/backend/record" flex>
         <svg-icon name="back"/>
-        <span>返回</span>
+        <span>{{ $i18n('back') }}</span>
       </NuxtLink>
-      <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">删除草稿</single-button>
-      <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">使用草稿</single-button>
-      <single-button class="save-cache" :size="0.9" @click.native="saveCache">保存草稿</single-button>
-      <loading-button :loading="saving.b" icon="save" @click.native="save">上传</loading-button>
+      <single-button class="del-cache" :disabled="!hasCache" :size="0.9" @click.native="delCache">{{ $i18n('del') +' '+ $i18n('draft') }}</single-button>
+      <single-button class="use-cache" :disabled="!hasCache" :size="0.9" @click.native="useCache">{{ $i18n('use') +' '+ $i18n('draft') }}</single-button>
+      <single-button class="save-cache" :size="0.9" @click.native="saveCache">{{ $i18n('save') +' '+ $i18n('draft') }}</single-button>
+      <loading-button :loading="saving.b" icon="save" @click.native="save">{{ $i18n('upload') }}</loading-button>
       <span class="state" v-if="saving.state">{{ saving.state }}</span>
     </div>
     <div class="time" flex>
-      <span><span>创建:</span>{{ (info ? info.time : 0) | time(false) }}</span>
-      <span><span>修改:</span>{{ (info ? info.modifyTime : 0) | time(false) }}</span>
+      <span><span>{{ $i18n('create') }}:</span>{{ (info ? info.time : 0) | time(false) }}</span>
+      <span><span>{{ $i18n('update') }}:</span>{{ (info ? info.modifyTime : 0) | time(false) }}</span>
     </div>
     <div class="edit">
       <div class="images" flex v-viewer>
         <span class="head" flex>
           <svg-icon name="picture"/>
-          封面
+          {{ $i18n('cover') }}
         </span>
         <div class="list-item" v-for="(i,idx) in info.images" :key="i" flex>
           <loading-img :src="i" :size="[12, 8]" :data-viewer="true"/>
           <label class="bottom" flex>
             <input :value="i" :data-idx="idx" @focusout="editImg"/>
-            <single-button class="del-btn" @click.native="delImg(idx)">删除</single-button>
+            <single-button class="del-btn" @click.native="delImg(idx)">{{ $i18n('del') }}</single-button>
           </label>
         </div>
         <span class="add" @click="addImg" flex>
@@ -33,7 +33,7 @@
         </span>
       </div>
       <label class="text">
-        <p flex><svg-icon name="text"/>文本:</p>
+        <p flex><svg-icon name="text"/>{{ $i18n('content') }}:</p>
         <textarea v-model="text"></textarea>
       </label>
     </div>
@@ -50,6 +50,7 @@ import SingleButton from "@/components/single-button";
 import LoadingButton from "@/components/loading-button";
 import LoadingImg from "@/components/loading-img";
 import md from "@/rebuild/json/md.json";
+import config from "@/rebuild/json/config.json";
 
 const newInfo = {
   file: "",
@@ -79,7 +80,10 @@ export default {
   },
   head (){
     return {
-      title: this.id === 'new'?'新建':this.info.summary
+      title: this.id === 'new'?'新建':this.info.summary,
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   computed: {
@@ -196,7 +200,7 @@ export default {
           state: '',
         }
       } else {
-        this.$message.warning('请先登录!');
+        this.$message.warning(this.$i18n('needLogin'));
         this.$emit('login')
       }
     }

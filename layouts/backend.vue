@@ -22,9 +22,11 @@ import Menu from "~/pages/backend/menu";
 import config from "~/rebuild/json/config.json";
 import {mapMutations} from "vuex";
 import Login from "~/pages/backend/login";
+import mixins from "@/utils/mixins";
 
 export default {
   components: {Login, Menu, Message},
+  mixins: [mixins],
   data (){
     return {
       loginState: 'none', // none | doing | ok
@@ -37,11 +39,6 @@ export default {
       title: 'manage'
   },
   mounted() {
-    if (process.server) return ;
-    const fontSize = localStorage.getItem('font-size');
-    if (fontSize) {
-      document.documentElement.style.fontSize = fontSize + 'px';
-    }
     Vue.prototype.$message = this.$refs.message;
   },
   methods: {

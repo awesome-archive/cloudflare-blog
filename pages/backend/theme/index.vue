@@ -1,17 +1,17 @@
 <template>
   <div class="theme" flex>
     <div class="head" flex>
-      <loading-button icon="reset" @click.native="reset">还原默认</loading-button>
+      <loading-button icon="reset" @click.native="reset">{{ $i18n('reset') }}</loading-button>
       <span class="state">{{ saving.state }}</span>
-      <loading-button :loading="saving.b" icon="save" @click.native="save">保存</loading-button>
+      <loading-button :loading="saving.b" icon="save" @click.native="save">{{ $i18n('save') }}</loading-button>
     </div>
     <div class="body" flex>
       <div class="edit" flex ref="text">
         <div class="left" :style="{width: mdWidth}" flex>
           <span class="icon" flex>
             <svg-icon name="edit"/>
-            <span>编辑sass</span>
-            <a target="_blank" href="https://sass-lang.com/" title="sass是什么?" flex>
+            <span>{{ $i18n('edit') }}sass</span>
+            <a target="_blank" href="https://sass-lang.com/" flex>
               <svg-icon name="info"/>
             </a>
           </span>
@@ -21,7 +21,7 @@
         <div class="right" flex>
           <span class="icon" flex>
             <svg-icon name="brash"/>
-            <span>效果</span>
+            <span>{{ $i18n('result') }}</span>
           </span>
           <div ref="markdown">
             <span class="--markdown" ref="html" v-html="html" v-viewer></span>
@@ -79,7 +79,10 @@ export default {
       style: [{
         id: 'fake-markdown-style',
       }],
-      title: '网站主题'
+      title: '网站主题',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   computed: {

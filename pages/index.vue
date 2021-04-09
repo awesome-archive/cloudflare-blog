@@ -3,18 +3,18 @@
     <div class="btns" flex>
       <NuxtLink to="/article" flex>
         <svg-icon name="article"/>
-        <span class="name">文章</span>
-        <span write-font class="tip">"技术"文章</span>
+        <span class="name">{{ $i18n('articles') }}</span>
+        <span write-font class="tip">{{ $i18n('articlesDesc') }}</span>
       </NuxtLink>
       <NuxtLink to="/record" flex>
         <svg-icon name="record"/>
-        <span class="name">记录</span>
-        <span write-font class="tip">一框琐事</span>
+        <span class="name">{{ $i18n('records') }}</span>
+        <span write-font class="tip">{{ $i18n('recordsDesc') }}</span>
       </NuxtLink>
       <NuxtLink to="/msg-board" flex>
         <svg-icon name="comments"/>
-        <span class="name">留言板</span>
-        <span write-font class="tip">谁的话语</span>
+        <span class="name">{{ $i18n('msgBoard') }}</span>
+        <span write-font class="tip">{{ $i18n('msgBoardDesc') }}</span>
       </NuxtLink>
     </div>
     <div class="info" flex>
@@ -45,7 +45,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${config.name}的博客 博客 主页 home` }
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,主页,home` },
       ],
     }
   },
@@ -94,7 +94,7 @@ export default {
         color: white;
         font-size: 1.2rem;
         text-align: center;
-        width: 5rem;
+        width: 6rem;
       }
 
       > .tip {

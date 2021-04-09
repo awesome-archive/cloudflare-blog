@@ -18,7 +18,7 @@ export default {
   head () {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: `${config.name}的博客 关于 about` }
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,关于,about` }
       ],
       title: config.corner
     }

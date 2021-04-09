@@ -1,7 +1,7 @@
 <template>
   <div class="login" flex>
     <svg-icon :name="status"/>
-    <strong v-html="state"></strong>
+    <strong v-html="$i18n(state)"></strong>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   components: {SvgIcon},
   data() {
     return {
-      state: '处理中...',
+      state: 'processing',
       status: 'loading'
     }
   },
@@ -39,22 +39,22 @@ export default {
       }).then(res => {
         const mather = res.data.match(/^access_token=([^&]+)&.*?$/);
         if (mather){
-          this.state = '登录成功!正在跳转...<br/>若此页面未自动关闭，请手动关闭本页';
+          this.state = 'oauthSuccess';
           this.status = 'success';
           localStorage.setItem(tokenKey, mather[1]);
           setTimeout(()=>{
             window.close();
           }, 500)
         }else{
-          this.state = '参数错误!';
+          this.state = 'badParam';
           this.status = 'error';
         }
       }).catch(err=>{
-        this.state = '请求失败:'+err;
+        this.state = this.$i18n('errReq')+':'+err;
         this.status = 'error';
       })
     }else{
-      this.state = '缺少code?!';
+      this.state = 'omitCode';
       this.status = 'error';
     }
   }

@@ -27,7 +27,7 @@ Vue.directive('tips', {
   componentUpdated (){
 
   },
-  update (){
-
+  update (el, binding){
+    el.title = binding.value
   },
 })

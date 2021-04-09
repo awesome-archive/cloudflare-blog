@@ -7,15 +7,15 @@
           <span flex><svg-icon :fill="searchFocus?'black':'#ddd'" name="search"/></span>
         </label>
         <div class="view">
-          <a :class="{active: activeView==='list'}" @click="toggleView('list')">列表</a>
-          <a :class="{active: activeView==='simple'}" @click="toggleView('simple')">简要</a>
+          <a :class="{active: activeView==='list'}" @click="toggleView('list')">{{ $i18n('viewsList') }}</a>
+          <a :class="{active: activeView==='simple'}" @click="toggleView('simple')">{{ $i18n('viewsSimple') }}</a>
         </div>
       </div>
       <div class="tags" flex>
       <span @click="removeTag(tag)" v-for="tag in searchTags" :key="tag"
             :style="{background: $options.filters.color(tag)}" flex>
         {{ tag }}
-        <span title="取消过滤">
+        <span :title="$i18n('removeFilter')">
           <svg-icon name="trash"/>
         </span>
       </span>
@@ -27,7 +27,7 @@
             <div class="time" flex>
               <span>{{ item.time | time(true) }}</span>
               <div flex>
-                <span>最后修改</span>
+                <span>{{ $i18n('lastModify') }}</span>
                 <time>{{ item.modifyTime | time(true) }}</time>
               </div>
             </div>
@@ -44,7 +44,7 @@
                 <div class="tags" flex>
                   <span class="tag" v-for="tag in item.tags" @click.prevent.stop="addTag(tag)"
                         :style="{background: $options.filters.color(tag)}"
-                        :title="`搜索-${tag}`">{{ tag }}</span>
+                        :title="`${$i18n('search')}-${tag}`">{{ tag }}</span>
                   <span class="comment" flex>
                     <svg-icon name="comments"/>
                     {{ commentNumDict[item.file] || 0 }}
@@ -58,9 +58,9 @@
         </template>
         <div v-show="activeView==='simple'" class="simple" flex>
           <div v-for="a in datedList" class="year" flex>
-            <b write-font :title="a[0]+'年'">{{ a[0] + '年' }}</b>
+            <b write-font :title="a[0]+$i18n('year')">{{ a[0] + $i18n('year') }}</b>
             <div v-for="b in a[1]" class="month" flex>
-              <b write-font :title="b[0]+'月'">{{ b[0] + '月' }}</b>
+              <b write-font :title="b[0]+$i18n('month')">{{ b[0] + $i18n('month') }}</b>
               <div class="list" flex>
                 <div v-for="item in b[1]" class="simple-item" flex>
                   <time write-font>{{ simpleTime(item.time) }}</time>
@@ -93,7 +93,7 @@ export default {
     for (const e of mdConfig) {
       const time = dayjs(e.time);
       const year = time.year();
-      const month = time.format('MM');
+      const month = time.format('M');
       let find_year = datedList.find(e => e[0] === year);
       if (!find_year) {
         find_year = [year, []];
@@ -125,7 +125,7 @@ export default {
   head() {
     return {
       meta: [
-        {hid: 'description', name: 'description', content: `${config.name}的博客 文章列表`}
+        {hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,文章列表`}
       ],
       title: '文章列表'
     }

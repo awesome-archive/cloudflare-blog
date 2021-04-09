@@ -1,6 +1,6 @@
 <template>
   <top-dialog class="record-detail" v-if="info.hasOwnProperty('images')" @click.native.self="close">
-    <a @click="close">关闭</a>
+    <a @click="close">{{ $i18n('close') }}</a>
     <div class="image" flex v-viewer>
       <loading-img v-for="(i,idx) in info.images" :src="i" :key="idx" :data-viewer="true"/>
     </div>
@@ -16,6 +16,7 @@ import record from "~/rebuild/json/record.json";
 import LoadingImg from "@/components/loading-img";
 import TopDialog from "@/components/top-dialog";
 import SvgIcon from "@/components/svg-icon";
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "Detail",
@@ -26,12 +27,22 @@ export default {
       text: ''
     }
   },
-  async asyncData({params}) {
+  head () {
+    return {
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,个人记录,records` },
+      ],
+    }
+  },
+  async asyncData({params, redirect}) {
     const id = params.detail;
     const info = record.find(v=>v.file === id)||{};
+    if (!info.file){
+      return redirect('/record')
+    }
     return {
       id,
-      text: info?(await import(`!!raw-loader!~/rebuild/record/${id}.txt`)).default:'',
+      text: (await import(`!!raw-loader!~/rebuild/record/${id}.txt`)).default,
       info,
     }
   },

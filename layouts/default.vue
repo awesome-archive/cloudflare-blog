@@ -22,6 +22,7 @@ import Footer from "~/block/Footer";
 import Vue from 'vue';
 import '~/utils/filter';
 import config from "~/rebuild/json/config.json";
+import mixins from "@/utils/mixins";
 const routes = {
   '^/?$': {name: 'home', bg: '/image/home.png'},
   '^/about/?$': {name: 'about', bg: '/image/about.png'},
@@ -35,6 +36,7 @@ routes[`^${config.aboutUrl}/?$`] = {name: 'realAbout', bg: '/image/about.png'}
 
 export default {
   components: {Message, TheHead: Head, TheFooter: Footer},
+  mixins: [mixins],
   data() {
     return {
       showBg: false,

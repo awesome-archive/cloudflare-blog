@@ -12,3 +12,8 @@
 2. `git remote set-url origin 'your repo'`
 3. 创建一个`cloudflare page`
 4. `git push`
+
+#### Todo
+[ ] 主题切换
+[ ] 收纳箱
+[ ] record页面特效

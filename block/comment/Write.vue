@@ -35,8 +35,8 @@
       </div>
       <resizer :orient="'v'" @start="startResize" @resize="doResize"/>
       <div class="submit" flex>
-        <single-button v-if="cancel" :size="0.8" @click.native="$emit('cancel')">取消</single-button>
-        <loading-button icon="save" :loading="loading" :size="0.8" @click.native="submitComment">提交</loading-button>
+        <single-button v-if="cancel" :size="0.8" @click.native="$emit('cancel')">{{ $i18n('cancel') }}</single-button>
+        <loading-button icon="save" :loading="loading" :size="0.8" @click.native="submitComment">{{ $i18n('submit') }}</loading-button>
       </div>
     </div>
     <div class="preview" v-if="showPreview">

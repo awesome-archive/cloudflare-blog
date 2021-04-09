@@ -2,20 +2,20 @@
   <div class="record" flex>
     <div class="head" flex>
       <label class="search">
-        <span>搜索</span>
+        <span>{{ $i18n('search') }}</span>
         <input v-model="search"/>
       </label>
       <single-button class="select-" :active="selecting"
-                     @click.native="selecting=!selecting">{{selecting?'取消':'选择'}}</single-button>
+                     @click.native="selecting=!selecting">{{selecting?$i18n('cancel'):$i18n('choose')}}</single-button>
       <NuxtLink to="/backend/record/detail?id=new">
-        <loading-button icon="add" class="new">新建</loading-button>
+        <loading-button icon="add" class="new">{{ $i18n('new') }}</loading-button>
       </NuxtLink>
     </div>
     <div class="delete" v-if="selecting" flex>
       <a>{{deleting.state}}</a>
-      <single-button class="del-btn" :disabled="deleting.b" @click.native="deleteSome">删除</single-button>
+      <single-button class="del-btn" :disabled="deleting.b" @click.native="deleteSome">{{ $i18n('del') }}</single-button>
       <span class="check-box" :class="{active: allSelected}" @click="changeSelectAll"></span>
-      <span class="txt">全选</span>
+      <span class="txt">{{ $i18n('chooseAll') }}</span>
     </div>
     <div class="delete" v-else-if="deleting.b" flex>
       <a>{{deleting.state}}</a>
@@ -24,9 +24,9 @@
       <table>
         <thead>
         <tr>
-          <td>图</td>
-          <td>文</td>
-          <td>操作</td>
+          <td>{{ $i18n('image') }}</td>
+          <td>{{ $i18n('content') }}</td>
+          <td>{{ $i18n('operate') }}</td>
         </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
           <td>
             <span v-if="selecting" :class="{active: selectList.indexOf(item.file)!==-1}" class="check-box"
                   @click="toggleSelect(item.file)"></span>
-            <single-button class="del-btn" v-else @click.native="deleteItem([item.file])">删除</single-button>
+            <single-button class="del-btn" v-else @click.native="deleteItem([item.file])">{{ $i18n('del') }}</single-button>
           </td>
         </tr>
         </tbody>
@@ -57,6 +57,7 @@ import SingleButton from "@/components/single-button";
 import LoadingImg from "@/components/loading-img";
 import LoadingButton from "@/components/loading-button";
 import {mapState} from "vuex";
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "RecordList",
@@ -76,7 +77,10 @@ export default {
   },
   head (){
     return {
-      title: '记录列表'
+      title: '记录列表',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   computed: {
@@ -122,11 +126,11 @@ export default {
     async deleteItem(files) {
       if (this.deleting.b) return;
       if (this.gitUtil) {
-        if (confirm('确认删除?')) {
+        if (confirm(this.$i18n('configDelete'))) {
           let err = null;
           this.deleting = {
             bool: true,
-            state: '更新record.json'
+            state: this.$i18n('_update')+'record.json'
           };
           // 更新record
           const newRecordList = [];
@@ -137,12 +141,11 @@ export default {
           }
           sortByTime(newRecordList);
           let res = await this.gitUtil.updateJsonFile('record.json', newRecordList);
-          this.deleting.state = '准备删除';
           if (res[0]) {
             // 删除文件夹
             res = await this.gitUtil.removeSome(files, this.deleting, 'record');
             if (res[0]) {
-              this.$message.success('删除成功!');
+              this.$message.success(this.$i18n('deleteOk'));
               this.$emit('refresh')
             } else {
               err = res[1];
@@ -159,7 +162,7 @@ export default {
           };
         }
       } else {
-        this.$message.warning('请先登录!');
+        this.$message.warning(this.$i18n('needLogin'));
         this.$emit('login')
       }
     },

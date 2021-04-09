@@ -1,24 +1,35 @@
 <template>
   <footer flex>
-    <NuxtLink to="/backend" class="favicon" flex v-tips="'后台管理'">
+    <NuxtLink to="/backend" class="favicon" flex v-tips="$i18n('backend')">
       <img :src="`/favicon.svg?stamp=${timeStamp}`" alt="icon"/>
     </NuxtLink>
     <div class="link" flex>
-      <a v-for="k in Object.keys(links)" :key="k" target="_blank" :href="config[k]" v-tips="links[k]" flex>
+      <a v-for="k in ['aboutthis', 'github', 'email']" :key="k" target="_blank" :href="config[k]" v-tips="$i18n(k)" flex>
         <svg-icon :name="k"/>
       </a>
     </div>
     <div class="adjust">
       <div class="font-size" flex>
-        <single-button v-tips="'字体减小'" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
+        <single-button v-tips="$i18n('fontSizeEnlarge')" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
         <span>{{fontSize}}</span>
-        <single-button v-tips="'字体增大'" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
+        <single-button v-tips="$i18n('fontSizeReduce')" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
+      </div>
+    </div>
+    <div class="lang" tabindex="1"
+         onfocus="this.classList.add('show')"
+         onblur="this.classList.remove('show')">
+      <span flex>
+        <svg-icon name="arrow"/>
+        language
+      </span>
+      <div class="choose" flex>
+        <a v-for="i in langs" :class="{active: $store.state.lang===i}" :key="i" @click="changeLang(i)">{{i}}</a>
       </div>
     </div>
     <div class="copyright" flex>
       <span>Copyright (c) {{ config.copyright }} <b write-font>{{ config.name }}</b><b> | {{ domain }}</b></span>
       <span flex>All right reserved
-        <a :href="`${isDev?'':'/dynamic'}/rss.xml`" target="_blank"  v-tips="'rss订阅'">
+        <a :href="`${isDev?'':'/dynamic'}/rss.xml`" target="_blank" v-tips="$i18n('rssFeed')">
           <svg-icon name="rss"/>
         </a>
       </span>
@@ -31,6 +42,8 @@ import SvgIcon from "@/components/svg-icon";
 import SingleButton from "@/components/single-button";
 import {timeStamp} from '~/utils/utils'
 import config from '~/rebuild/json/config.json'
+import {i18n} from "@/plugins/i18n";
+import {mapMutations} from "vuex";
 
 export default {
   name: "TheFooter",
@@ -38,13 +51,9 @@ export default {
   data() {
     return {
       config,
+      langs: i18n.map(v=>v.name),
       timeStamp,
       isDev: process.env.NODE_ENV==='development',
-      links: {
-        aboutthis: '本站介绍',
-        github: 'github',
-        email: '联系邮箱'
-      },
       fontSize: 0
     }
   },
@@ -60,13 +69,14 @@ export default {
     this.fontSize = fontSize || +getComputedStyle(document.documentElement).fontSize.replace('px', '');
   },
   methods: {
+    ...mapMutations(['changeLang']),
     changeFont (cant, delta){
       if (!cant){
         this.fontSize += delta;
         localStorage.setItem('font-size', this.fontSize.toString());
         document.documentElement.style.fontSize = this.fontSize + 'px';
       }
-    }
+    },
   }
 }
 </script>
@@ -136,6 +146,64 @@ footer{
       >span{
         margin: 0 0.5rem;
         color: white;
+      }
+    }
+  }
+  >.lang{
+    position: relative;
+    margin: 0 1rem;
+    outline: none;
+    user-select: none;
+    &.show{
+      >span{
+        >svg{
+          transform: rotate(90deg);
+        }
+      }
+      >div {
+        display: flex;
+      }
+    }
+    >span{
+      background: white;
+      border-radius: .15rem;
+      font-size: .9rem;
+      padding: .25rem .5rem;
+      cursor: pointer;
+      >svg{
+        width: .8rem;
+        height: .8rem;
+        margin-right: .6rem;
+        transition: all .15s ease-out;
+        transform: rotate(-90deg);
+      }
+    }
+    >div{
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      transform: translateY(calc(-100% - 1rem));
+      display: none;
+      transition: all .15s ease-out;
+      box-shadow: 0 0 .6rem rgba(0, 0, 0, .5);
+      >a{
+        cursor: pointer;
+        background: white;
+        padding: .3rem .6rem;
+        font-size: .88rem;
+        transition: all .15s linear;
+        width: 3rem;
+        line-height: 1rem;
+        &:not(:last-of-type){
+          border-bottom: 1px solid gray;
+        }
+        &:not(.active):hover{
+          background: #88f9ff;
+        }
+        &.active{
+          background: #0046ff;
+          color: white;
+        }
       }
     }
   }

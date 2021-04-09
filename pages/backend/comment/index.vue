@@ -3,13 +3,13 @@
     <div class="head" flex>
       <div class="search" flex>
         <input v-model="search"/>
-        <single-button :size="0.95" @click.native="doSearch()">搜索</single-button>
+        <single-button :size="0.95" @click.native="doSearch()">{{ $i18n('search') }}</single-button>
       </div>
       <span>{{processing.state}}</span>
       <select v-model="filter" @change="doSearch()">
-        <option selected value="">全部</option>
-        <option value="open">正常的</option>
-        <option value="closed">关闭的</option>
+        <option selected value="">{{ $i18n('all') }}</option>
+        <option value="open">{{ $i18n('normal') }}</option>
+        <option value="closed">{{ $i18n('closed') }}</option>
       </select>
     </div>
     <div class="loading" v-if="searching" flex>
@@ -19,10 +19,10 @@
       <table>
         <thead>
           <tr>
-            <th>标题</th>
-            <th>用户</th>
-            <th>内容</th>
-            <th>操作</th>
+            <th>{{ $i18n('title') }}</th>
+            <th>{{ $i18n('user') }}</th>
+            <th>{{ $i18n('content') }}</th>
+            <th>{{ $i18n('operate') }}</th>
           </tr>
         </thead>
         <tbody v-viewer>
@@ -41,9 +41,11 @@
               <span class="--markdown" v-html="calcMdToHtml(item.content)"></span>
             </td>
             <td>
-              <single-button class="off" :disabled="processing.b" v-if="item.state.toLowerCase()==='open'" :size="0.9" @click.native="closeIssue(item.id)">关闭</single-button>
-              <single-button class="on" :disabled="processing.b" v-else :size="0.9" @click.native="reopenIssue(item.id)">恢复</single-button>
-              <single-button class="del-btn" :disabled="processing.b" @click.native="deleteIssue(item.id)">删除</single-button>
+              <single-button class="off" :disabled="processing.b" v-if="item.state.toLowerCase()==='open'" :size="0.9" @click.native="closeIssue(item.id)">
+                {{ $i18n('close') }}</single-button>
+              <single-button class="on" :disabled="processing.b" v-else :size="0.9" @click.native="reopenIssue(item.id)">
+                {{ $i18n('reopen') }}</single-button>
+              <single-button class="del-btn" :disabled="processing.b" @click.native="deleteIssue(item.id)">{{ $i18n('del') }}</single-button>
             </td>
           </tr>
         </tbody>
@@ -63,6 +65,7 @@ import SingleButton from "@/components/single-button";
 import SvgIcon from "@/components/svg-icon";
 import Pagination from "@/components/pagination";
 import '~/rebuild/markdown.scss'
+import config from "@/rebuild/json/config.json";
 
 export default {
   name: "Comment",
@@ -85,7 +88,10 @@ export default {
   },
   head (){
     return {
-      title: '评论管理'
+      title: '评论管理',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
+      ],
     }
   },
   created() {
@@ -122,7 +128,7 @@ export default {
           });
         }
       }else{
-        this.$message.error('获取评论失败:'+res[1])
+        this.$message.error(this.$i18n('getCmtErr')+':'+res[1])
       }
       this.searching = false;
       this.$nextTick(()=>{
@@ -154,16 +160,16 @@ export default {
           .replace(/(^|\s*)>/g, '$1&gt;'), true)
     },
     async reopenIssue(id) {
-      this.processing.state = '正在恢复...'
+      this.processing.state = this.$i18n('reopening')
       await this.doIt('reopen', id)
     },
     async closeIssue(id) {
-      this.processing.state = '正在关闭...'
+      this.processing.state = this.$i18n('closing')
       await this.doIt('close', id)
     },
     async deleteIssue (id){
-      if (confirm('确定删除?此操作无法恢复!')) {
-        this.processing.state = '正在删除...'
+      if (confirm(this.$i18n('confirmDelete'))) {
+        this.processing.state = this.$i18n('deleting')
         await this.doIt('delete', id)
       }
     },
@@ -174,7 +180,7 @@ export default {
       if (res[0]){
         this.doSearch().then()
       }else{
-        this.$message.error('操作失败:'+res[1])
+        this.$message.error(this.$i18n('operateErr')+':'+res[1])
       }
       this.processing = {
         b: false,
