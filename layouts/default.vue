@@ -28,7 +28,7 @@ const routes = {
   '^/about/?$': {name: 'about', bg: '/image/about.png'},
   '^/article/?$': {name: 'article', bg: '/image/article.png'},
   '^/article/\\d+/?$': {name: 'article-detail', bg: '/image/articleDetail.png'},
-  '^/record/?$': {name: 'record', bg: '/image/record.png'},
+  '^/record/?\\d*/?$': {name: 'record', bg: '/image/record.png'},
   '^/msg-board/?$': {name: 'msg-board', bg: '/image/msgBoard.png'},
 }
 
