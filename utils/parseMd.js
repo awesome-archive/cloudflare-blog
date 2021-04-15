@@ -35,11 +35,11 @@ const
             if (c === 'sticker') return a;
             const mather = c.match(/^(.*?)\[(.*?) x (.*?)]$/);
             if (!mather) {
-                return `${b}<span class="image-container"><img alt="${c}" src="${d}"/><small>${c}</small></span>`
+                return `${b}<span class="image-container"><img alt="${c}" src="${d}"/><small class="desc">${c}</small></span>`
             }
             // with dimension
             const [_, alt, w, h] = mather;
-            return `${b}<span class="image-container"><img alt="${alt}" style="${w ? `width: ${w} !important;` : ''}${h ? `height: ${h} !important;` : ''}" src="${d}"/><small>${alt}</small></span>`
+            return `${b}<span class="image-container"><img alt="${alt}" style="${w ? `width: ${w} !important;` : ''}${h ? `height: ${h} !important;` : ''}" src="${d}"/><small class="desc">${alt}</small></span>`
         }
     },
     colorTextExtension = {
@@ -56,6 +56,22 @@ const
         type: 'lang',
         regex: /(^|[^\\])\[html]([\s\S]*?)\[\/html]/g,
         replace: `$1<span class="raw-html">$2</span>`
+    },
+    youtubeExtension = {
+        type: 'lang',
+        regex: /(^|[^\\])\[youtube]\[(.+?)]\((https?:\/\/.*?)\)\[\/youtube]/g,
+        replace: `$1<div class="embed-vide youtube">
+                        <iframe src="$3" title="$2" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <small class="desc">$2</small>
+                    </div>`
+    },
+    biliExtension = {
+        type: 'lang',
+        regex: /(^|[^\\])\[bili]\[(.+?)]\((https?:\/\/.*?)\)\[\/bili]/g,
+        replace: `$1<div class="embed-vide bili">
+                        <iframe src="$3" title="$2" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <small class="desc">$2</small>
+                    </div>`
     },
     fieldExtension = {
         type: 'lang',
@@ -108,12 +124,12 @@ const options = {
 const converter = new showdown.Converter({
     ...options,
     extensions: [paragraphTabExtension, anchorIdExtension, anchorRefExtension, linkExtension, commonImgExtension, colorTextExtension, writeFontExtension,
-        htmlExtension, fieldExtension, selfSiteUrlExtension, hidableExtension]
+        htmlExtension, youtubeExtension, biliExtension, fieldExtension, selfSiteUrlExtension, hidableExtension]
 });
 const commentConverter = new showdown.Converter({
     ...options,
     extensions: [paragraphTabExtension, anchorRefExtension, linkExtension, commonImgExtension, colorTextExtension, writeFontExtension,
-        fieldExtension, selfSiteUrlExtension, hidableExtension]
+        fieldExtension, youtubeExtension, biliExtension, selfSiteUrlExtension, hidableExtension]
 });
 
 export function parseMarkdown(text, isComment) {

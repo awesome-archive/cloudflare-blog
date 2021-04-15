@@ -3,9 +3,7 @@
     <p>本站markdown语法说明</p>
     <ul>
       <li>
-        <a href="https://guides.github.com/features/mastering-markdown/#syntax" target="_blank">
-          markdown基础语法+GFM
-        </a>
+        <a href="https://guides.github.com/features/mastering-markdown/#syntax" target="_blank">markdown基础语法+GFM </a>
       </li>
       <li v-for="item in guide">
         <b>{{ item[0] }}:</b>
@@ -35,6 +33,8 @@ export default {
         ['#{self}(articleId)', '指向本站id是articleId的链接，#代表外链'],
         ['--标题--\n文字\n-- --', '一个field'],
         ['==标题==\n文字\n== ==', '可隐藏内容'],
+        ['[youtube][描述](地址)[/youtube]', '内嵌youtube内容'],
+        ['[bili][描述](地址)[/bili]', '内嵌bilibili内容'],
       ]
     }
   }
@@ -69,6 +69,9 @@ export default {
 
         > span {
           font-size: 0.75rem;
+          >b{
+            color: red;
+          }
         }
       }
     }
