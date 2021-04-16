@@ -10,9 +10,9 @@
     </div>
     <div class="adjust">
       <div class="font-size" flex>
-        <single-button v-tips="$i18n('fontSizeEnlarge')" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
+        <single-button v-tips="$i18n('fontSizeReduce')" :disabled="fontSize<=5" :size="0.9" @click.native="changeFont(fontSize<=5, -1)">A-</single-button>
         <span>{{fontSize}}</span>
-        <single-button v-tips="$i18n('fontSizeReduce')" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
+        <single-button v-tips="$i18n('fontSizeEnlarge')" :disabled="fontSize>=25" :size="0.9" @click.native="changeFont(fontSize>=25, 1)">A+</single-button>
       </div>
     </div>
     <div class="lang" tabindex="1"
@@ -29,7 +29,7 @@
     <div class="copyright" flex>
       <span>Copyright (c) {{ config.copyright }} <b write-font>{{ config.name }}</b><b> | {{ domain }}</b></span>
       <span flex>All right reserved
-        <a :href="`${isDev?'':'/dynamic'}/rss.xml`" target="_blank" v-tips="$i18n('rssFeed')">
+        <a href="/rss.xml" target="_blank" v-tips="$i18n('rssFeed')">
           <svg-icon name="rss"/>
         </a>
       </span>
@@ -53,7 +53,6 @@ export default {
       config,
       langs: i18n.map(v=>v.name),
       timeStamp,
-      isDev: process.env.NODE_ENV==='development',
       fontSize: 0
     }
   },

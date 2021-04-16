@@ -129,6 +129,8 @@ export const i18n = [
       repos: '仓库数',
       reposSize: '仓库大小',
       submit: '提交',
+      year: '年',
+      month: '月',
     }
   },
   {
@@ -260,7 +262,8 @@ export const i18n = [
       repos: 'repos',
       reposSize: 'repos size',
       submit: 'submit',
-
+      year: '',
+      month: '',
     }
   }
 ]

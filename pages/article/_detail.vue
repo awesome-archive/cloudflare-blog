@@ -111,7 +111,7 @@ export default {
     const info = mdConfig.find(v=>v.file === id)||{tags:[]};
     return {
       id,
-      html: info?parseMarkdown((await import(`!!raw-loader!~/rebuild/md/${id}.md`)).default):'',
+      html: info.name?parseMarkdown((await import(`!!raw-loader!~/rebuild/md/${id}.md`)).default):'',
       info,
     }
   },
@@ -131,6 +131,7 @@ export default {
     }
   },
   async mounted() {
+    if (!this.info.name) return;
     qrcode.toDataURL(location.href, (err, url) => {
       this.qrcode = url
     });
@@ -366,7 +367,7 @@ export default {
             flex-shrink: 1;
             > span{
               margin: 0.3rem 0;
-              padding: 0.2rem 0 0.2rem 0.5rem;
+              padding: 0.2rem 0 0.2rem 0.8rem;
               font-size: 0.9rem;
               cursor: pointer;
               position: relative;
