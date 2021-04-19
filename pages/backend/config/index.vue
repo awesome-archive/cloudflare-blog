@@ -62,7 +62,7 @@ export default {
         {
           name: 'appearance',
           icon: 'brash',
-          data: ['name', 'describe', 'headDescribe', 'aboutme', 'captainTitle', 'tip',
+          data: ['name', 'describe', 'headDescribe', 'SEOTitle', 'aboutme', 'captainTitle', 'tip',
             ['backgroundImg', ['random', 'img', 'comet']]
           ]
         },
@@ -95,7 +95,7 @@ export default {
   },
   head() {
     return {
-      title: '网站配置',
+      title: '网站配置'+config.SEOTitle,
       meta: [
         {hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理`},
       ],

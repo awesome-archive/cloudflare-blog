@@ -23,6 +23,14 @@ export default {
       status: 'loading'
     }
   },
+  head () {
+    return {
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,oauth` },
+      ],
+      title: 'oauth' + config.SEOTitle
+    }
+  },
   created() {
     if (process.server) return ;
     const query = queryMap();

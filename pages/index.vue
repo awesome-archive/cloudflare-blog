@@ -47,6 +47,7 @@ export default {
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,主页,home` },
       ],
+      title: config.captainTitle + config.SEOTitle
     }
   },
 }

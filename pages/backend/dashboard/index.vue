@@ -29,7 +29,7 @@ export default {
   },
   head (){
     return {
-      title: '统计面板',
+      title: '统计面板' + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

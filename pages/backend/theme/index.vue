@@ -79,7 +79,7 @@ export default {
       style: [{
         id: 'fake-markdown-style',
       }],
-      title: '网站主题',
+      title: '网站主题' + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

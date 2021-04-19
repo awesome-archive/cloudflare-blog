@@ -89,7 +89,7 @@ export default {
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,文章详情` }
       ],
-      title: this.info.name
+      title: this.info.name + config.SEOTitle,
     }
   },
   data() {

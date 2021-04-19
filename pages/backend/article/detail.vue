@@ -159,7 +159,7 @@ export default {
   },
   head (){
     return {
-      title: this.id === 'new'?'新建':this.info.name,
+      title: (this.id === 'new'?'新建':this.info.name) + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

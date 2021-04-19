@@ -22,6 +22,7 @@ export default {
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,留言板,msg-board` },
       ],
+      title: '留言板' + config.SEOTitle
     }
   },
 }

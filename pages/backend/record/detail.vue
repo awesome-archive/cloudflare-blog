@@ -80,7 +80,7 @@ export default {
   },
   head (){
     return {
-      title: this.id === 'new'?'新建':this.info.summary,
+      title: (this.id === 'new'?'新建':this.info.summary) + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

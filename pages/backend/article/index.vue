@@ -105,7 +105,7 @@ export default {
   },
   head (){
     return {
-      title: '文章列表',
+      title: '文章列表' + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

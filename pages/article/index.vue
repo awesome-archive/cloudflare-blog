@@ -127,7 +127,7 @@ export default {
       meta: [
         {hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,文章列表`}
       ],
-      title: '文章列表'
+      title: '文章列表' + config.SEOTitle,
     }
   },
   computed: {

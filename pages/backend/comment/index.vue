@@ -88,7 +88,7 @@ export default {
   },
   head (){
     return {
-      title: '评论管理',
+      title: '评论管理' + config.SEOTitle,
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,${config.name}'s blog,博客,后台管理` },
       ],

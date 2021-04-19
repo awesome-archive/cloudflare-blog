@@ -51,7 +51,7 @@ export default {
       meta: [
         { hid: 'keywords', name: 'keywords', content: `${config.name}的博客,关于,about` }
       ],
-      title: config.corner
+      title: config.corner + config.SEOTitle
     }
   },
   computed: {
