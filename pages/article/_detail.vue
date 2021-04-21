@@ -14,7 +14,7 @@
         </h1>
       </div>
       <div class="content" flex>
-        <aside class="info" :style="{transform: `translateY(${asideTop}px)`}" ref="aside" flex>
+        <aside style="display: none" class="info" :style="{transform: `translateY(${asideTop}px)`}" ref="aside" flex>
           <div :class="asideActive===null?'':(asideActive?'active':'deactive')" flex>
             <div class="anchors" flex>
               <span class="anchor" :class="{active: item.active, small: item.small}" v-for="item in anchors"
@@ -56,9 +56,6 @@
             <svg-icon name="arrow"/>
           </span>
         </aside>
-        <div v-if="loading" class="loading" flex>
-          <svg-icon name="loading"/>
-        </div>
         <span :class="{'show-aside': asideActive}" ref="markdown" class="--markdown" v-html="html" v-viewer></span>
       </div>
       <the-comment v-if="this.info.file" :title="this.info.file"/>
@@ -95,7 +92,6 @@ export default {
   data() {
     return {
       md: mdConfig,
-      loading: true,
       anchors: [],
       asideActive: null,
       asideTop: 0,
@@ -136,7 +132,6 @@ export default {
       this.qrcode = url
     });
     this.body.addEventListener('scroll', this.moveAside);
-    this.loading = false;
     this.$nextTick(() => {
       const el = this.$refs.markdown;
       processMdHtml(el, false, this.md)
@@ -303,6 +298,7 @@ export default {
       position: relative;
       justify-content: flex-end;
       > .info{
+        display: flex !important;
         position: absolute;
         left: 0;
         top: 0;
