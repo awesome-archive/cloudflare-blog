@@ -1,6 +1,6 @@
 <template>
   <svg aria-hidden="true">
-    <use :fill="calcFill" :xlink:href="icon"></use>
+    <use :fill="calcFill" :href="icon"></use>
   </svg>
 </template>
 
