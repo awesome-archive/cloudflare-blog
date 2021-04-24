@@ -63,8 +63,8 @@
               <b write-font :title="b[0]+$i18n('month')">{{ b[0] + $i18n('month') }}</b>
               <div class="list" flex>
                 <div v-for="item in b[1]" class="simple-item" flex>
-                  <time write-font>{{ simpleTime(item.time) }}</time>
                   <NuxtLink :to="`/article/${item.file}`">{{ item.name }}</NuxtLink>
+                  <time write-font>{{ simpleTime(item.time) }}</time>
                 </div>
               </div>
             </div>
@@ -615,9 +615,11 @@ export default {
 
                 > time {
                   margin-right: .3rem;
+                  width: 2.8rem;
                   font-size: 1.1rem;
                   color: #232323;
                   flex-shrink: 0;
+                  order: 1;
                 }
 
                 > a {
@@ -626,10 +628,14 @@ export default {
                   color: black;
                   border-left: 1px solid gray;
                   padding-left: .5rem;
+                  order: 2;
 
                   &:hover {
                     text-decoration: underline;
                     color: #0003ff;
+                    ~ time{
+                      font-weight: bold;
+                    }
                   }
                 }
               }
