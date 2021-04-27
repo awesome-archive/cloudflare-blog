@@ -40,8 +40,11 @@
 
   hr {
     width: 100%;
-    background: black;
-    margin: 1rem 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00000033, #000000, #00000033);
+    margin: 2rem 0;
+    border: none;
+    border-radius: 20%/50%;
   }
 
   p {
@@ -431,7 +434,7 @@
       border-radius: 0 0 .3rem .3rem;
     }
   }
-  div.embed-vide{
+  div.embed-video{
     width: 100%;
     max-width: 50rem;
     height: 30rem;
@@ -451,7 +454,7 @@
         padding: 0.5rem 0.8rem;
       }
     }
-    div.embed-vide{
+    div.embed-video{
       height: 20rem;
     }
   }

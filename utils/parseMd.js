@@ -60,7 +60,7 @@ const
     youtubeExtension = {
         type: 'lang',
         regex: /(^|[^\\])\[youtube]\[(.+?)]\((https?:\/\/.*?)\)\[\/youtube]/g,
-        replace: `$1<div class="embed-vide youtube">
+        replace: `$1<div class="embed-video youtube">
                         <iframe src="$3" title="$2" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <small class="desc">$2</small>
                     </div>`
@@ -68,7 +68,7 @@ const
     biliExtension = {
         type: 'lang',
         regex: /(^|[^\\])\[bili]\[(.+?)]\((https?:\/\/.*?)\)\[\/bili]/g,
-        replace: `$1<div class="embed-vide bili">
+        replace: `$1<div class="embed-video bili">
                         <iframe src="$3" title="$2" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <small class="desc">$2</small>
                     </div>`
