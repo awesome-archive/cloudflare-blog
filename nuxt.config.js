@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, "rebuild/json/config.json")).toString('utf-8'))
 const mdDir = path.resolve(__dirname, 'rebuild/md')
+const recordDir = path.resolve(__dirname, 'rebuild/record')
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -72,7 +73,16 @@ export default {
     '@nuxtjs/sitemap',
   ],
   sitemap: {
-    hostname: config.domain
+    hostname: config.domain,
+    routes: fs.readdirSync(mdDir).map(filename => {
+      return {
+        route: `/article/${path.basename(filename, '.md')}`
+      }
+    }).concat(fs.readdirSync(recordDir).map(filename => {
+      return {
+        route: `/record/${path.basename(filename, '.txt')}`
+      }
+    }))
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
