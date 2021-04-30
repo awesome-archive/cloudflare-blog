@@ -81,18 +81,14 @@ export default {
     routes: fs.readdirSync(mdDir).map(filename => {
       const fileId = path.basename(filename, '.md');
       return {
-        route: {
           url: `/article/${fileId}`,
           lastmod: dayjs(mdConfig.find(v=>v.file.toString() === fileId).modifyTime).format('YYYY-MM-DD')
         }
-      }
     }).concat(fs.readdirSync(recordDir).map(filename => {
       const fileId = path.basename(filename, '.txt');
       return {
-        route: {
           url: `/record/${fileId}`,
           lastmod: dayjs(recordConfig.find(v=>v.file.toString() === fileId).modifyTime).format('YYYY-MM-DD')
-        }
       }
     }))
   },
