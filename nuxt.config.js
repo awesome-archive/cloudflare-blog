@@ -1,9 +1,13 @@
 const path = require('path');
 const fs = require('fs');
+const dayjs = require('dayjs');
 
-const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, "rebuild/json/config.json")).toString('utf-8'))
-const mdDir = path.resolve(__dirname, 'rebuild/md')
-const recordDir = path.resolve(__dirname, 'rebuild/record')
+const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, "rebuild/json/config.json")).toString('utf-8'));
+const mdConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "rebuild/json/md.json")).toString('utf-8'));
+const recordConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "rebuild/json/record.json")).toString('utf-8'));
+
+const mdDir = path.resolve(__dirname, 'rebuild/md');
+const recordDir = path.resolve(__dirname, 'rebuild/record');
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -75,12 +79,20 @@ export default {
   sitemap: {
     hostname: config.domain,
     routes: fs.readdirSync(mdDir).map(filename => {
+      const fileId = path.basename(filename, '.md');
       return {
-        route: `/article/${path.basename(filename, '.md')}`
+        route: {
+          url: `/article/${fileId}`,
+          lastmod: dayjs(mdConfig.find(v=>v.file.toString() === fileId).modifyTime).format('YYYY-MM-DD')
+        }
       }
     }).concat(fs.readdirSync(recordDir).map(filename => {
+      const fileId = path.basename(filename, '.txt');
       return {
-        route: `/record/${path.basename(filename, '.txt')}`
+        route: {
+          url: `/record/${fileId}`,
+          lastmod: dayjs(recordConfig.find(v=>v.file.toString() === fileId).modifyTime).format('YYYY-MM-DD')
+        }
       }
     }))
   },
