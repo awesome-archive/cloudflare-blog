@@ -178,7 +178,7 @@ export default {
   }
 
   > .wrap {
-    padding: .8rem;
+    padding: .4rem .8rem;
     overflow-x: auto;
     max-width: 20rem;
 
@@ -186,15 +186,16 @@ export default {
       align-items: flex-start;
 
       ::v-deep >.avatar {
-        width: 5rem;
-        height: 5rem;
+        width: 3rem;
+        height: 3rem;
+        margin-right: .4rem;
       }
 
       > div {
         flex-direction: column;
 
         > a {
-          font-size: .95rem;
+          font-size: .85rem;
           color: black;
           word-break: keep-all;
           font-weight: bold;
@@ -210,7 +211,7 @@ export default {
 
         > span {
           margin-top: .5rem;
-          font-size: .88rem;
+          font-size: .85rem;
           color: #4e4e4e;
         }
       }
@@ -230,20 +231,20 @@ export default {
         margin: .3rem 0;
 
         > svg {
-          width: 1.2rem;
-          height: 1.2rem;
+          width: 1.1rem;
+          height: 1.1rem;
           flex-shrink: 0;
         }
         >b{
           margin: 0 .8rem 0 .4rem;
-          font-size: .9rem;
-          width: 3.6rem;
+          font-size: .8rem;
+          width: 3.2rem;
           text-align: center;
           word-break: keep-all;
         }
 
         > span {
-          font-size: .98rem;
+          font-size: .82rem;
           flex-grow: 1;
           text-align: right;
 

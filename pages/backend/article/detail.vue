@@ -181,6 +181,7 @@ export default {
         vm.$router.replace('/backend/article').then();
       }else{
         vm.id = id;
+        vm.hasCache = getCache(`article-${id}`) != null;
         vm.info = info;
         let mdText = '写点什么吧!'
         if (id !== 'new') {
@@ -205,9 +206,6 @@ export default {
         processMdHtml(this.$refs.html, false, md)
       })
     },
-  },
-  created() {
-    this.hasCache = getCache(`article-${this.id}`)!==null;
   },
   async mounted() {
     // 初始化信息

@@ -99,12 +99,10 @@ export default {
         vm.$router.replace('/backend/record')
       }else{
         vm.id = id;
+        vm.hasCache = getCache(`article-${id}`) != null;
         vm.info = info;
       }
     })
-  },
-  created() {
-    this.hasCache = getCache(`record-${this.id}`)!==null;
   },
   async mounted() {
     if (this.id !== 'new') {
