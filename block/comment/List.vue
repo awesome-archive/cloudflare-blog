@@ -27,7 +27,7 @@
             <div class="foot" flex>
               <a class="time">{{ item.time | time(false) }}</a>
               <span class="reply" @click="clickReply(item, null)">{{ $i18n('reply') }}</span>
-              <span v-if="login===item.nick||login===config.owner" class="delete"
+              <span v-if="login===item.nick||login===config.githubName" class="delete"
                     @click="closeComment(item.id)">{{ $i18n('del') }}</span>
               <span v-for="emoji in ['+1','-1']" class="react" :down="emoji==='-1'" :class="{active: item.reactions[emoji].has && login}" :title="emoji" @click="doReact(emoji, item, item.reactions[emoji].has && login)" flex>
                 <svg-icon :name="item.doing===emoji?'loading':'thumb'"/>
