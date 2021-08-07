@@ -2,7 +2,7 @@
   <div class="comments" flex>
     <div class="head" flex>
       <div class="search" flex>
-        <input v-model="search"/>
+        <input @keydown.enter="doSearch()" v-model="search"/>
         <single-button :size="0.95" @click.native="doSearch()">{{ $i18n('search') }}</single-button>
       </div>
       <span>{{processing.state}}</span>
@@ -12,7 +12,7 @@
         <option value="closed">{{ $i18n('closed') }}</option>
       </select>
     </div>
-    <div class="loading" v-if="searching" flex>
+    <div class="loading" v-if="!searching" flex>
       <svg-icon name="loading"/>
     </div>
     <div class="body" v-else>

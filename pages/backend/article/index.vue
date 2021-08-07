@@ -117,7 +117,7 @@ export default {
       if (this.search === ''&& this.searchTags.length===0) return this.md
       const lis = [];
       this.md.forEach(e => {
-        if (e.name.search(this.search) !== -1 && e.tags.find(v=>this.searchTags.indexOf(v)!==-1)) {
+        if (e.name.search(this.search) !== -1 && this.searchTags.every(tag => e.tags.indexOf(tag) !== -1)) {
           lis.push(e)
         }
       })

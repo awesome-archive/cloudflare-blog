@@ -220,7 +220,8 @@ export default {
     }
     &:hover{
       >img{
-        box-shadow: 0 0 0.8rem rgba(255, 255, 255, 0.5);
+        transform: scale(1.15);
+        border-radius: 20%;
       }
     }
   }
