@@ -21,6 +21,11 @@ export default {
     if (this.addToBody){
       document.body.appendChild(this.$el);
     }
+  },
+  destroyed() {
+    try {
+      this.$el.remove();
+    }catch (e) {}
   }
 }
 </script>
