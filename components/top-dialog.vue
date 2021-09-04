@@ -1,7 +1,7 @@
 <template>
   <transition name="dialog-fade">
     <div class="dialog">
-      <div class="inner">
+      <div class="inner" :style="innerStyle">
         <slot></slot>
       </div>
     </div>
@@ -15,7 +15,11 @@ export default {
     addToBody: {
       type: Boolean,
       default: true
-    }
+    },
+    innerStyle: {
+      type: Object,
+      default: {}
+    },
   },
   mounted() {
     if (this.addToBody){

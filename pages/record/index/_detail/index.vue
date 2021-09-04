@@ -1,5 +1,5 @@
 <template>
-  <top-dialog class="record-detail" v-if="info.hasOwnProperty('images')" @click.native.self="close">
+  <top-dialog class="record-detail" v-if="info.hasOwnProperty('images')" @click.native.self="close" :innerStyle="style">
     <a @click="close">{{ $i18n('close') }}</a>
     <div class="image" flex v-viewer>
       <loading-img v-for="(i,idx) in info.images" :src="i" :key="idx" :data-viewer="true"/>
@@ -24,7 +24,8 @@ export default {
   data() {
     return {
       loading: false,
-      text: ''
+      text: '',
+      style: {}
     }
   },
   head () {
@@ -46,6 +47,30 @@ export default {
       info,
     }
   },
+  created() {
+    const parent = document.querySelector(`section.body > .record > .list > a[data-file="${this.info.file}"]`);
+    if (parent) {
+      const { x, y, width, height} = parent.getBoundingClientRect();
+      this.style = {
+        width: width+'px',
+        height: height+'px',
+        top: y+'px',
+        left: x+'px',
+        opacity: 0
+      }
+    }
+  },
+  mounted() {
+    setTimeout(()=>{
+      this.style = {
+        width: '80%',
+        height: '90%',
+        top: '5vw',
+        left: '10vh',
+        opacity: 1
+      }
+    })
+  },
   methods: {
     close (){
       this.$router.push('/record')
@@ -59,8 +84,12 @@ export default {
 
 .record-detail{
   ::v-deep > .inner{
-    width: 80%;
-    height: 90%;
+    @include pc{
+      transition: all .2s ease-out;
+      max-height: unset;
+      max-width: unset;
+      position: absolute;
+    }
     flex-direction: column;
     border-radius: 0;
     > .image{
@@ -123,11 +152,13 @@ export default {
   }
   @include media{
     ::v-deep >.inner{
-      width: 100%;
-      min-height: 100%;
+      width: 100% !important;
+      min-height: 100% !important;
       position: absolute;
-      top: 0;
+      top: 0 !important;
+      left: 0 !important;
       border-radius: 0;
+      opacity: 1 !important;
       >a{
         cursor: pointer;
         display: flex;

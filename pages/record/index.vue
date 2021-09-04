@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <div class="list" flex>
-      <NuxtLink class="list-item" v-for="item in record" :key="item.file" :to="'/record/'+item.file">
+      <NuxtLink class="list-item" v-for="item in record" :data-file="item.file" :key="item.file" :to="'/record/'+item.file">
         <time>{{ item.time | time(true) }}</time>
         <div class="img" flex>
           <loading-img v-for="(i,idx) in item.images.slice(0, 4)" :key="idx" :src="i"/>
@@ -54,7 +54,7 @@ export default {
       overflow: hidden;
       position: relative;
       transition: height .15s linear;
-      box-shadow: 0 0 1rem rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 1rem rgba(0, 0, 0, 0.6);
       border-radius: 0.2rem;
       background: white;
       cursor: pointer;
@@ -100,7 +100,7 @@ export default {
         background: white;
         height: 2.5rem;
         line-height: 1.2rem;
-        font-size: 0.8rem;
+        font-size: 0.88rem;
         margin-top: 0.5rem;
         @include text-overflow(2)
       }
