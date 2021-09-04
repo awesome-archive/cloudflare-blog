@@ -38,8 +38,13 @@ export default {
   },
   methods: {
     start (){
-      this.theme = Math.random()>0.5?'light':'dark'
-      this.finished = false
+      try {
+        // record界面会闪烁
+        if (!location.pathname.startsWith('/record')) {
+          this.theme = Math.random() > 0.5 ? 'light' : 'dark'
+          this.finished = false;
+        }
+      }catch {}
     },
     finish (){
       this.$el.addEventListener('animationend', ()=>{

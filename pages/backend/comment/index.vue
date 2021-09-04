@@ -12,7 +12,7 @@
         <option value="closed">{{ $i18n('closed') }}</option>
       </select>
     </div>
-    <div class="loading" v-if="!searching" flex>
+    <div class="loading" v-if="searching" flex>
       <svg-icon name="loading"/>
     </div>
     <div class="body" v-else>
@@ -29,7 +29,7 @@
           <tr v-for="item in list" :key="item.id">
             <td>
               <svg-icon :name="item.state.toLowerCase()==='open'?'checked':'unchecked'"/>
-              <a :href="calcHref(item.title)">{{item.title}}</a>
+              <a :href="calcHref(item.title)">{{calcTitle(item.title)}}</a>
             </td>
             <td>
               <div flex>
@@ -102,7 +102,6 @@ export default {
   },
   methods: {
     async doSearch(cursor) {
-      if (process.server) return;
       this.searching = true;
       const res = await getPageCommentForBackend({
         state: this.filter,
@@ -148,6 +147,14 @@ export default {
         return '/msg-board'
       }else{
         return '/article/'+tail
+      }
+    },
+    calcTitle (title){
+      const tail = title.replace(/^COMMENT-/, '');
+      if (tail === 'msg-board'){
+        return '留言板'
+      }else{
+        return md.find(v => v.file === tail)?.name
       }
     },
     async turnPage(p) {
@@ -241,7 +248,7 @@ export default {
       width: 100%;
       td{
         &:nth-child(1){
-          width: 10%;
+          width: 20%;
           position: relative;
           >svg{
             position: absolute;
@@ -250,11 +257,11 @@ export default {
             height: 1.6rem;
           }
           >a{
-            font-size: 0.95rem;
+            font-size: 0.85rem;
           }
         }
         &:nth-child(2){
-          width: 20%;
+          width: 10%;
           >div{
             flex-direction: column;
             >img{
