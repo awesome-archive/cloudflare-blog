@@ -95,6 +95,7 @@ export default {
     }
   },
   created() {
+    if (process.server) return;
     this.doSearch()
   },
   computed: {

@@ -48,6 +48,7 @@ export default {
     }
   },
   created() {
+    if (process.server) return;
     const parent = document.querySelector(`section.body > .record > .list > a[data-file="${this.info.file}"]`);
     if (parent) {
       const { x, y, width, height} = parent.getBoundingClientRect();
