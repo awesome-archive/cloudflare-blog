@@ -33,7 +33,7 @@
         </span>
       </div>
       <label class="text">
-        <p flex><svg-icon name="text"/>{{ $i18n('content') }}:</p>
+        <span flex><svg-icon name="text"/>{{ $i18n('content') }}:</span>
         <textarea v-model="text"></textarea>
       </label>
     </div>
@@ -86,6 +86,20 @@ export default {
       ],
     }
   },
+  watch: {
+    async id() {
+      if (this.id !== 'new') {
+        try {
+          const res = await import(`!!raw-loader!~/rebuild/record/${this.id}.txt`);
+          this.text = res.default
+        } catch (err) {
+          this.$message.error(parseAjaxError(err))
+        }
+      } else {
+        this.text = '';
+      }
+    }
+  },
   computed: {
     ...mapState('backend', ['gitUtil'])
   },
@@ -103,18 +117,6 @@ export default {
         vm.info = info;
       }
     })
-  },
-  async mounted() {
-    if (this.id !== 'new') {
-      try {
-        const res = await import(`!!raw-loader!~/rebuild/record/${this.id}.txt`);
-        this.text = res.default
-      } catch (err) {
-        this.$message.error(parseAjaxError(err))
-      }
-    } else {
-      this.text = '';
-    }
   },
   methods: {
     delCache (){
@@ -173,7 +175,7 @@ export default {
         }
         // 执行更新
         // 更新本地record
-        for (const i in this.record) {
+        for (let i=0;i<this.record.length;i++) {
           if (this.record[i].file === this.id) {
             this.record[i] = info;
             break
@@ -295,8 +297,10 @@ export default {
     > .images{
       flex-wrap: wrap;
       > .head{
-        margin-right: 1rem;
         font-size: 0.95rem;
+        margin-right: 1rem;
+        width: 100%;
+        padding-left: 1rem;
         > svg{
           width: 2.6rem;
           height: 2.6rem;
@@ -309,6 +313,7 @@ export default {
         border: 1px solid #bfbfbf;
         padding: 0.4rem;
         border-radius: 0.2rem;
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, .5);
         > .bottom{
           margin-top: 0.5rem;
           > input{
@@ -345,7 +350,7 @@ export default {
       margin: 1rem 0;
       border-top: 2px dashed gray;
       display: block;
-      > p{
+      > span{
         font-size: 1.1rem;
         margin-bottom: 1rem;
         >svg{

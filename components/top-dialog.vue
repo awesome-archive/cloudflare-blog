@@ -18,7 +18,7 @@ export default {
     },
     innerStyle: {
       type: Object,
-      default: {}
+      default: () => {}
     },
   },
   mounted() {

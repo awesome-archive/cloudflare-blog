@@ -2,13 +2,13 @@
   <div id="index">
     <img class="bg" src="/image/home.png" alt="bg"/>
     <section class="body" flex>
-    <div class="back-end">
-      <Menu :login-state="loginState"/>
-      <login @gitUtil="initGitUtil"/>
-      <div class="body">
-        <Nuxt keep-alive/>
+      <div class="back-end">
+        <Menu :login-state="loginState"/>
+        <login @gitUtil="initGitUtil"/>
+        <div class="body">
+          <Nuxt keep-alive/>
+        </div>
       </div>
-    </div>
     </section>
     <message ref="message"/>
   </div>

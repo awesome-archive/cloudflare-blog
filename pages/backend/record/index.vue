@@ -257,11 +257,12 @@ export default {
             &.link{
               cursor: pointer;
             }
-            .loading-img{
+            ::v-deep .loading-img{
               width: 100%;
               img{
                 width: 100%;
-                object-fit: contain;
+                max-height: 10rem;
+                object-fit: cover;
               }
             }
             > span{
