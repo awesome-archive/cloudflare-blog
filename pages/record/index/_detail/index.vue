@@ -66,8 +66,8 @@ export default {
       this.style = {
         width: '80%',
         height: '90%',
-        top: '5vw',
-        left: '10vh',
+        top: '5vh',
+        left: '10vw',
         opacity: 1
       }
     })
