@@ -1,5 +1,17 @@
 [
     {
+        "name": "vite+vue3下如何使用动态导入的svg-sprite",
+        "file": "1632073964931",
+        "cover": "/image/i.png",
+        "time": 1632073964931,
+        "modifyTime": 1632073964931,
+        "summary": "自己的一个小尝试",
+        "tags": [
+            "vue3",
+            "vite"
+        ]
+    },
+    {
         "name": "小诗",
         "file": "1623916218957",
         "cover": "/image/i.png",
